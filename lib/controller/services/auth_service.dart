@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:go_router/go_router.dart';
 
-
 class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -58,7 +57,10 @@ class AuthService {
 
       // Show success message
       if (context != null) {
-        _showSuccessSnackBar(context, 'Account created successfully! Please check your email for verification.');
+        _showSuccessSnackBar(
+          context,
+          'Account created successfully! Please check your email for verification.',
+        );
       }
       context?.go('/intro');
 
@@ -70,7 +72,10 @@ class AuthService {
       throw _handleFirebaseError(e);
     } on FirebaseException catch (e) {
       if (context != null) {
-        _showErrorSnackBar(context, 'Database error occurred. Please try again.');
+        _showErrorSnackBar(
+          context,
+          'Database error occurred. Please try again.',
+        );
       }
       throw Exception('Firestore error: ${e.message}');
     } catch (e) {
@@ -187,7 +192,7 @@ class AuthService {
     try {
       await _firebaseAuth.signOut();
       await _googleSignIn.signOut();
-      
+
       if (context != null) {
         _showSuccessSnackBar(context, 'Successfully signed out');
       }
@@ -201,16 +206,22 @@ class AuthService {
   User? get currentUser => _firebaseAuth.currentUser;
 
   /// Password Reset ///
-  Future<void> sendPasswordResetEmail(String email, {BuildContext? context}) async {
+  Future<void> sendPasswordResetEmail(
+    String email, {
+    BuildContext? context,
+  }) async {
     try {
       if (context != null) {
         _showLoadingSnackBar(context, 'Sending reset email...');
       }
 
       await _firebaseAuth.sendPasswordResetEmail(email: email.trim());
-      
+
       if (context != null) {
-        _showSuccessSnackBar(context, 'Password reset email sent! Check your inbox.');
+        _showSuccessSnackBar(
+          context,
+          'Password reset email sent! Check your inbox.',
+        );
       }
     } on FirebaseAuthException catch (e) {
       if (context != null) {
@@ -219,7 +230,10 @@ class AuthService {
       throw _handleFirebaseError(e);
     } catch (e) {
       if (context != null) {
-        _showErrorSnackBar(context, 'Failed to send reset email. Please try again.');
+        _showErrorSnackBar(
+          context,
+          'Failed to send reset email. Please try again.',
+        );
       }
       rethrow;
     }
@@ -236,10 +250,7 @@ class AuthService {
             const Icon(Icons.error_outline, color: Colors.white),
             const SizedBox(width: 8),
             Expanded(
-              child: Text(
-                message,
-                style: const TextStyle(color: Colors.white),
-              ),
+              child: Text(message, style: const TextStyle(color: Colors.white)),
             ),
           ],
         ),
@@ -266,10 +277,7 @@ class AuthService {
             const Icon(Icons.check_circle_outline, color: Colors.white),
             const SizedBox(width: 8),
             Expanded(
-              child: Text(
-                message,
-                style: const TextStyle(color: Colors.white),
-              ),
+              child: Text(message, style: const TextStyle(color: Colors.white)),
             ),
           ],
         ),
@@ -296,10 +304,7 @@ class AuthService {
             ),
             const SizedBox(width: 12),
             Expanded(
-              child: Text(
-                message,
-                style: const TextStyle(color: Colors.white),
-              ),
+              child: Text(message, style: const TextStyle(color: Colors.white)),
             ),
           ],
         ),
@@ -319,10 +324,7 @@ class AuthService {
             const Icon(Icons.info_outline, color: Colors.white),
             const SizedBox(width: 8),
             Expanded(
-              child: Text(
-                message,
-                style: const TextStyle(color: Colors.white),
-              ),
+              child: Text(message, style: const TextStyle(color: Colors.white)),
             ),
           ],
         ),
