@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -51,7 +49,7 @@ class _SettingsScreenState extends State<SettingsScreen>
     )..repeat();
 
     _particleAnimationController.addListener(() {
-      setState(() {});
+      setState(() { });
     });
 
     _userProfileCubit.startProfileSubscription();
@@ -166,7 +164,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                     ? Icon(
                       Icons.check_circle,
                       color: themeState.currentTheme.primaryColor,
-                    )
+                      )
                     : null,
             onTap: () {
               setState(() => _selectedLanguage = language);
@@ -469,8 +467,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                                   radius: 40,
                                   backgroundColor: Colors.white,
                                   backgroundImage: NetworkImage(
-                                    'https://a0.anyrgb.com/pngimg/1140/162/user-profile-login-avatar-heroes-user-blue-icons-circle-symbol-logo-thumbnail.png',
-                                  ),
+                                    'https://a0.anyrgb.com/pngimg/1140/162/user-profile-avatar-heroes-user-blue-icons-circle-symbol-logo-thumbnail.png  '),
                                 ),
                               ),
                               const SizedBox(height: 16),
@@ -519,6 +516,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                             child: Column(
                               children: [
                                 const SizedBox(height: 20),
+
                                 const Align(
                                   alignment: Alignment.topLeft,
                                   child: Padding(
@@ -557,7 +555,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                                           context,
                                           state.user,
                                           themeState.currentTheme.primaryColor,
-                                        ),
+                                          ),
                                   ),
                                 ),
                                 _buildSectionHeader(
@@ -607,7 +605,6 @@ class _SettingsScreenState extends State<SettingsScreen>
                                     ),
                                     onTap: _showThemeColorPicker,
                                   ),
-                                ),
                                 _buildSectionHeader(
                                   'Preferences',
                                   themeState.currentTheme.primaryColor,
@@ -689,7 +686,6 @@ class _SettingsScreenState extends State<SettingsScreen>
                                       context.push('/aboutUs');
                                     },
                                   ),
-                                ),
                                 _buildSectionHeader(
                                   'Account',
                                   themeState.currentTheme.primaryColor,
@@ -706,11 +702,10 @@ class _SettingsScreenState extends State<SettingsScreen>
                                     onTap: () {
                                       // Implement logout logic
                                       AuthService().signOut().then((value) {
-                                        context.go('/slpash');
+                                        context.go('/splash');
                                       });
                                     },
                                   ),
-                                ),
                                 _buildAnimatedCard(
                                   color: Colors.red.withOpacity(0.05),
                                   child: _buildListTile(
@@ -724,13 +719,12 @@ class _SettingsScreenState extends State<SettingsScreen>
                                   ),
                                 ),
                                 const SizedBox(height: 30),
-                              ],
+                              ]),
                             ),
-                          ),
                         ),
-                      ]),
+                      ],
                     ),
-                  ],
+                  ),
                 );
               },
             );
@@ -819,7 +813,6 @@ class _SettingsScreenState extends State<SettingsScreen>
                               'Cancel',
                               style: TextStyle(color: themeColor),
                             ),
-                          ),
                         ),
                         const SizedBox(width: 16),
                         Expanded(
@@ -896,7 +889,6 @@ class _SettingsScreenState extends State<SettingsScreen>
                 ),
               ),
             ),
-          ),
         ],
       ),
     );
@@ -924,8 +916,7 @@ class _SettingsScreenState extends State<SettingsScreen>
           color: Colors.white,
           fontWeight: FontWeight.w500,
           fontSize: 16,
-        ),
-      ),
+        )),
       value: value,
       activeColor: themeColor,
       activeTrackColor: themeColor.withOpacity(0.3),
@@ -960,8 +951,7 @@ class _SettingsScreenState extends State<SettingsScreen>
           color: titleColor ?? Colors.white,
           fontWeight: FontWeight.w500,
           fontSize: 16,
-        ),
-      ),
+        )),
       subtitle:
           subtitle != null
               ? Text(
@@ -971,7 +961,8 @@ class _SettingsScreenState extends State<SettingsScreen>
               : null,
       trailing:
           trailingWidget ??
-          Icon(Icons.arrow_forward_ios, color: Colors.grey[600], size: 16),
+              trailingWidget
+              : Icon(Icons.arrow_forward_ios, color: Colors.grey[600], size: 16),
       onTap: onTap,
     );
   }
