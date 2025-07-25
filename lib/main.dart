@@ -27,6 +27,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:brevity/controller/services/firestore_service.dart';
 import 'package:brevity/controller/cubit/user_profile/user_profile_cubit.dart';
 import 'package:brevity/views/inner_screens/contact_screen.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'dart:io';
 
 // Create a class to manage authentication state
 class AuthService {
@@ -335,6 +337,26 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+
+  // FCM setup
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+  // Request permissions (iOS only)
+  if (Platform.isIOS) {
+    await messaging.requestPermission(alert: true, badge: true, sound: true);
+  }
+
+  // Get the token (for testing, print it)
+  String? token = await messaging.getToken();
+  print('FCM Token: $token');
+
+  // Listen for foreground messages
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print(
+      'Received a foreground FCM message: Title: ${message.notification?.title} Body: ${message.notification?.body}',
+    );
+    // TODO: Show a local notification using flutter_local_notifications if desired
+  });
 
   final bookmarkRepository = BookmarkServices();
   final newsService = NewsService();

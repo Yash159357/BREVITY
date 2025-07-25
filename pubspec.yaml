@@ -30,6 +30,7 @@ dependencies:
   share_plus: ^10.1.4
   showcaseview: ^4.0.1
   image_picker: ^1.1.2
+  firebase_messaging: ^15.2.10
 
 dev_dependencies:
   flutter_test:
