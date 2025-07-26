@@ -147,12 +147,13 @@ class _SignupScreenState extends State<SignupScreen>
     FocusScope.of(context).unfocus();
 
     try {
-      await AuthService().signUpWithEmail(
+      await AuthService.register(
         email: _emailController.text,
         password: _passwordController.text,
-        userName: _nameController.text,
-        context: context,
+        name: _nameController.text,
       );
+      // Navigate to home screen
+      Navigator.pushReplacementNamed(context, '/home');
     } catch (e) {
       // Handle error with animated snackbar
       ScaffoldMessenger.of(context).showSnackBar(
@@ -626,9 +627,9 @@ class _AnimatedTextFormFieldState extends State<AnimatedTextFormField>
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              boxShadow:
-                  _isFocused
+             borderRadius: BorderRadius.circular(10),
+             boxShadow:
+                 _isFocused
                       ? [
                         BoxShadow(
                           color: const Color.fromARGB(
@@ -642,7 +643,7 @@ class _AnimatedTextFormFieldState extends State<AnimatedTextFormField>
                         ),
                       ]
                       : [],
-            ),
+           ),
             child: Focus(
               onFocusChange: (focused) {
                 setState(() => _isFocused = focused);
@@ -677,10 +678,6 @@ class _AnimatedTextFormFieldState extends State<AnimatedTextFormField>
                       color: Color.fromARGB(255, 26, 175, 255),
                       width: 2,
                     ),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Colors.red, width: 2),
                   ),
                 ),
                 validator: widget.validator,
@@ -750,73 +747,72 @@ class _AnimatedButtonState extends State<AnimatedButton>
           scale: _scaleAnimation.value,
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              gradient: const LinearGradient(
-                colors: [
-                  Color.fromARGB(255, 9, 121, 232),
-                  Color.fromARGB(255, 26, 175, 255),
-                ],
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color.fromARGB(
-                    255,
-                    26,
-                    175,
-                    255,
-                  ).withOpacity(0.3),
-                  blurRadius: 15,
-                  spreadRadius: 2,
-                ),
+             borderRadius: BorderRadius.circular(10),
+             gradient: const LinearGradient(
+               colors: [
+                Color.fromARGB(255, 9, 121, 232),
+                Color.fromARGB(255, 26, 175, 255),
               ],
             ),
-            child: ElevatedButton(
-              onPressed: widget.onPressed,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.transparent,
-                shadowColor: Colors.transparent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                minimumSize: const Size(double.infinity, 50),
+            boxShadow: [
+              BoxShadow(
+                color: const Color.fromARGB(
+                  255,
+                  26,
+                  175,
+                  255,
+                ).withOpacity(0.3),
+                blurRadius: 15,
+                spreadRadius: 2,
               ),
-              child:
-                  widget.isLoading
-                      ? Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 2,
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Text(
-                            'Creating Account...',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontFamily: 'Poppins',
-                            ),
-                          ),
-                        ],
-                      )
-                      : Text(
-                        widget.text,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Poppins',
-                        ),
-                      ),
-            ),
+            ],
           ),
-        );
-      },
+          child: ElevatedButton(
+            onPressed: widget.onPressed,
+            style: ElevatedButton.styleFrom(
+             backgroundColor: Colors.transparent,
+             shadowColor: Colors.transparent,
+             shape: RoundedRectangleBorder(
+               borderRadius: BorderRadius.circular(10),
+             ),
+             minimumSize: const Size(double.infinity, 50),
+           ),
+            child:
+                widget.isLoading
+                   ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(
+                         width: 20,
+                         height: 20,
+                         child: CircularProgressIndicator(
+                           color: Colors.white,
+                           strokeWidth: 2,
+                         ),
+                       ),
+                        const SizedBox(width: 12),
+                        Text(
+                          'Creating Account...',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontFamily: 'Poppins',
+                          ),
+                        ),
+                     ],
+                   )
+                   : Text(
+                      widget.text,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Poppins',
+                      ),
+                    ),
+          ),
+        ),
+      ),
     );
   }
 }

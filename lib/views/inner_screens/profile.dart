@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:brevity/controller/cubit/theme/theme_cubit.dart';
-import 'package:brevity/controller/cubit/user_profile/user_profile_cubit.dart';
-import 'package:brevity/controller/cubit/user_profile/user_profile_state.dart';
+import 'package:brevity/controller/services/user_service.dart';
+import 'package:brevity/controller/cubit/theme_cubit.dart';
+import 'package:brevity/controller/cubit/user_profile_cubit.dart';
+import 'package:brevity/controller/cubit/user_profile_state.dart';
 import 'package:brevity/views/common_widgets/common_appbar.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -38,31 +39,31 @@ class _ProfileScreenState extends State<ProfileScreen>
     super.dispose();
   }
 
-  void _saveProfile() {
-    final userProfileCubit = context.read<UserProfileCubit>();
-    userProfileCubit
-        .updateProfile(displayName: _nameController.text)
-        .then((_) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Profile updated successfully')),
-          );
-        })
-        .catchError((error) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error updating profile: $error')),
-          );
-        });
+  void _saveProfile() async {
+    try {
+      final updatedUser = await UserService.updateProfile(
+        name: _nameController.text,
+        email: _emailController.text,
+      );
+      context.read<UserProfileCubit>().updateProfile(updatedUser);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Profile updated successfully')),
+      );
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error updating profile: $error')),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Access current theme from ThemeCubit for dynamic theming
     final currentTheme = context.read<ThemeCubit>().currentTheme;
 
     return BlocConsumer<UserProfileCubit, UserProfileState>(
       listener: (context, state) {
         if (state.status == UserProfileStatus.loaded && state.user != null) {
-          _nameController.text = state.user!.displayName;
+          _nameController.text = state.user!.name;
           _emailController.text = state.user!.email;
         }
       },
@@ -71,7 +72,6 @@ class _ProfileScreenState extends State<ProfileScreen>
           return Scaffold(
             body: Center(
               child: CircularProgressIndicator(
-                // Apply theme's primary color to loading indicator
                 color: currentTheme.primaryColor,
               ),
             ),
@@ -96,7 +96,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                 flexibleSpace: FlexibleSpaceBar(
                   background: ParticlesHeader(
                     title: "Profile Settings",
-                    // Apply theme's primary color to particle header
                     themeColor: currentTheme.primaryColor,
                     particleAnimation: _particleAnimationController,
                   ),
@@ -118,12 +117,11 @@ class _ProfileScreenState extends State<ProfileScreen>
                           children: [
                             CircleAvatar(
                               radius: 50,
-                              // Apply theme color to avatar background with opacity
-                              backgroundColor: currentTheme.primaryColor
-                                  .withAlpha(80),
+                               backgroundColor: currentTheme.primaryColor
+                               .withAlpha(80),
                               child: Text(
-                                user?.displayName.isNotEmpty == true
-                                    ? user!.displayName[0].toUpperCase()
+                                user?.name.isNotEmpty == true
+                                    ? user!.name[0].toUpperCase()
                                     : '?',
                                 style: const TextStyle(
                                   fontSize: 40,
@@ -135,7 +133,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                             Container(
                               padding: const EdgeInsets.all(6),
                               decoration: BoxDecoration(
-                                // Apply theme's primary color to edit button
                                 color: currentTheme.primaryColor,
                                 borderRadius: BorderRadius.circular(20),
                               ),
@@ -153,8 +150,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           icon: Icons.person,
                           label: 'Full Name',
                           controller: _nameController,
-                          currentTheme:
-                              currentTheme, // Pass theme to field builder
+                          currentTheme: currentTheme,
                         ),
                         const SizedBox(height: 20),
                         _buildProfileField(
@@ -163,8 +159,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           enabled: false,
-                          currentTheme:
-                              currentTheme, // Pass theme to field builder
+                          currentTheme: currentTheme,
                         ),
                         const SizedBox(height: 30),
 
@@ -173,8 +168,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           title: 'Email Verified',
                           subtitle: user?.emailVerified == true ? 'Yes' : 'No',
                           onTap: () {},
-                          currentTheme:
-                              currentTheme, // Pass theme to option builder
+                          currentTheme: currentTheme,
                         ),
                         _buildProfileOption(
                           icon: Icons.calendar_today,
@@ -184,8 +178,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   ? '${user!.createdAt!.day}/${user.createdAt!.month}/${user.createdAt!.year}'
                                   : 'Unknown',
                           onTap: () {},
-                          currentTheme:
-                              currentTheme, // Pass theme to option builder
+                          currentTheme: currentTheme,
                         ),
                         _buildProfileOption(
                           icon: Icons.update,
@@ -195,15 +188,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   ? '${user!.updatedAt!.day}/${user.updatedAt!.month}/${user.updatedAt!.year}'
                                   : 'Never',
                           onTap: () {},
-                          currentTheme:
-                              currentTheme, // Pass theme to option builder
+                          currentTheme: currentTheme,
                         ),
                         const SizedBox(height: 40),
 
                         ElevatedButton(
                           onPressed: _saveProfile,
                           style: ElevatedButton.styleFrom(
-                            // Apply theme's primary color to save button
                             backgroundColor: currentTheme.primaryColor,
                             padding: const EdgeInsets.symmetric(
                               horizontal: 40,
@@ -225,8 +216,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       ],
                     ),
                   ),
-                ]),
-              ),
+                ]))),
             ],
           ),
         );
@@ -234,12 +224,11 @@ class _ProfileScreenState extends State<ProfileScreen>
     );
   }
 
-  // Updated profile field builder with theme parameter
   Widget _buildProfileField({
     required IconData icon,
     required String label,
     required TextEditingController controller,
-    required currentTheme, // Add theme parameter for dynamic styling
+    required ThemeData currentTheme,
     TextInputType keyboardType = TextInputType.text,
     bool enabled = true,
   }) {
@@ -254,10 +243,9 @@ class _ProfileScreenState extends State<ProfileScreen>
         enabled: enabled,
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
-          // Apply theme's primary color to prefix icon
           prefixIcon: Icon(icon, color: currentTheme.primaryColor),
           labelText: label,
-          labelStyle: const TextStyle(color: Colors.white70),
+         labelStyle: const TextStyle(color: Colors.white70),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.all(16),
         ),
@@ -265,13 +253,12 @@ class _ProfileScreenState extends State<ProfileScreen>
     );
   }
 
-  // Updated profile option builder with theme parameter
   Widget _buildProfileOption({
     required IconData icon,
     required String title,
     required String subtitle,
     required VoidCallback onTap,
-    required currentTheme, // Add theme parameter for dynamic styling
+    required ThemeData currentTheme,
   }) {
     return Container(
       margin: const EdgeInsets.only(bottom: 15),
@@ -280,14 +267,12 @@ class _ProfileScreenState extends State<ProfileScreen>
         borderRadius: BorderRadius.circular(12),
       ),
       child: ListTile(
-        // Apply theme's primary color to leading icon
         leading: Icon(icon, color: currentTheme.primaryColor),
         title: Text(title, style: const TextStyle(color: Colors.white)),
         subtitle: Text(subtitle, style: const TextStyle(color: Colors.white70)),
         trailing: Icon(
           Icons.arrow_forward_ios,
           size: 16,
-          // Apply theme's primary color to trailing arrow
           color: currentTheme.primaryColor,
         ),
         onTap: onTap,
