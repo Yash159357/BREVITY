@@ -1,0 +1,215 @@
+🚀 Brevity – Short, Smart, Straight to the Point
+Stay informed effortlessly with real-time news, smooth navigation, and a personalized reading experience — all in one powerful Flutter app.
+
+📱 App Overview
+Brevity is a multi-platform news reader app that brings you the latest headlines with features like infinite scrolling, bookmarking, theming, and full-article access. Powered by Flutter and Firebase with seamless UI/UX.
+
+🎬 Demo Videos
+✨ Feature Area | 🎥 Video Preview -- | -- Login & Sign Up | Video 1 here Main App Features | Video 2 here Additional Features | Video 3 here
+🤝 Contributing
+We ❤️ open source! To contribute:
+
+bash
+CopyEdit
+# Fork the repo
+git clone https://github.com/Yash159357/BREVITY
+cd brevity
+# Create a feature branch
+git checkout -b feature/amazing-feature
+
+
+# Commit & push
+git commit -m "Add amazing feature"
+git push origin feature/amazing-feature
+
+Then open a Pull Request 🚀
+
+📜 License
+Licensed under the MIT License – see LICENSE
+
+📧 Contact Us
+✉️ Samarth: samarth2668@gmail.com
+
+✉️ Yash: yashmalihan3@gmail.com
+
+🔗 LinkedIn
+
+🔖 Code of Conduct
+Read our Code of Conduct to help foster a positive environment.
+
+Made with ❤️ by Samarth & Yash
+
+Let me know if you'd like:
+
+GitHub badges (build, license, platform)
+
+Markdown table for feature comparisons
+
+.md file for download
+
+Deployment guide (e.g., Firebase Hosting or APK build)
+
+🚀 Brevity – Short, Smart, Straight to the Point Stay informed effortlessly with real-time news, smooth navigation, and a personalized reading experience — all in one powerful Flutter app.
+📱 App Overview
+Brevity is a multi-platform news reader app that brings you the latest headlines with features like infinite scrolling, bookmarking, theming, and full-article access. Powered by Flutter and Firebase with seamless UI/UX.
+
+🎬 Demo Videos
+✨ Feature Area 🎥 Video Preview
+Login & Sign Up Video 1 here
+Main App Features Video 2 here
+Additional Features Video 3 here
+
+🌟 Core Features
+🔄 Infinite Scrolling – No end to your feed!
+
+📚 Side Navigation – Bookmark, access settings, and more
+
+🎨 Theme Customization – Light/Dark mode support
+
+🌐 Full Article Access – Open full stories in the browser
+
+🔍 Search – Find news by category or keyword
+
+🤝 One-Click Sharing – Share news with share_plus
+
+⚙️ Technical Highlights
+⚡ State Management: flutter_bloc
+
+🚦 Navigation: go_router
+
+📶 Caching: cached_network_image
+
+🎬 UI/UX: Shimmer loading, smooth transitions
+
+🏗️ Modular Architecture: Easy to scale and maintain
+
+🛠️ Tech Stack
+Layer Technologies Used
+Frontend Flutter, Dart, Bloc
+Backend Firebase (Auth, Firestore, Functions)
+APIs News API, Gemini API
+Storage Shared Preferences
+IDE VS Code, Android Studio
+Versioning Git
+
+📦 Key Dependencies
+flutter_bloc, go_router, cached_network_image, shimmer
+
+firebase_auth, cloud_firestore, firebase_core
+
+google_sign_in, http, intl, url_launcher
+
+shared_preferences, flutter_dotenv, share_plus
+
+card_swiper, showcaseview, gap, equatable
+
+📁 Folder Structure
+
+├── android/ # Android configuration
+├── ios/ # iOS config files
+├── linux/ | macos/ | windows/ | web/ # Platform support
+├── assets/ # Images, logos
+├── lib/ # Flutter source (views, models, controllers)
+├── server/ # Node.js + MongoDB backend (in-progress)
+├── test/ # Unit & widget tests
+├── pubspec.yaml # Dependencies
+├── .env # Environment variables
+🚀 Installation & Setup
+🧰 Prerequisites
+Flutter SDK (v3.29.2+)
+
+Dart SDK (v3.7.2+)
+
+Git
+
+Android Studio or VS Code with Flutter plugin
+
+Clone the repo
+git clone https://github.com/Yash159357/BREVITY
+cd brevity
+
+Install dependencies
+flutter pub get
+🔐 Configure Environment
+
+touch .env
+Add this to .env:
+
+GEMINI_API_KEY=your_gemini_api_key_here
+NEWS_API_KEY=your_news_api_key_here
+🔑 Obtain keys from:
+
+Google AI Studio
+
+NewsAPI.org
+
+🔥 Firebase Setup
+Go to Firebase Console
+
+Add your Android/iOS app
+
+Download:
+
+google-services.json → android/app/
+
+GoogleService-Info.plist → ios/Runner/
+
+▶️ Run the App
+
+flutter run # Debug mode
+flutter run --release # Release mode
+🔮 Future Plans
+🤖 Chatbot Integration – Smart fact-checking assistant
+
+🎨 UI/UX Enhancements – Sleeker transitions and visuals
+
+📚 User Onboarding – Built-in tutorials for new users
+
+🔗 Advanced Sharing – Share via socials/messaging apps
+
+📈 Personalized Feeds – Machine learning recommendations
+
+💬 Community Tools – Comments, likes, and article reactions
+
+⚙️ Backend Migration – Shift to Node.js + MongoDB for flexibility
+
+👥 Collaborators
+Photo Name Role
+🧑‍💻 Samarth Sharma Software Developer
+🧑‍💻 Yash Software Developer
+
+🤝 Contributing
+We ❤️ open source! To contribute:
+
+Fork the repo
+git clone https://github.com/Yash159357/BREVITY
+cd brevity
+
+Create a feature branch
+git checkout -b feature/amazing-feature
+
+Commit & push
+git commit -m "Add amazing feature"
+git push origin feature/amazing-feature
+Then open a Pull Request 🚀
+
+📜 License
+Licensed under the MIT License – see LICENSE
+
+📧 Contact Us
+✉️ Samarth: samarth2668@gmail.com
+
+✉️ Yash: yashmalihan3@gmail.com
+
+🔗 LinkedIn
+
+🔖 Code of Conduct
+Read our Code of Conduct to help foster a positive environment.
+
+Made with ❤️ by Samarth & Yash
+
+Let me know if you'd like:
+
+GitHub badges (build, license, platform)
+
+Markdown table for feature comparisons
