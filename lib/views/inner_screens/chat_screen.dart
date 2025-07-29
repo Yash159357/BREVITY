@@ -59,28 +59,42 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
       create: (context) => ChatBloc(geminiService: GeminiFlashService())..add(InitializeChat(article: widget.article)),
       child: Scaffold(
         backgroundColor: Colors.black,
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: RadialGradient(
-              center: Alignment.topLeft,
-              radius: 1.5,
-              colors: [
-                theme.primaryColor.withOpacity(0.1),
-                Colors.black,
-                theme.primaryColor.withOpacity(0.05),
-              ],
+        resizeToAvoidBottomInset: true,
+        body: Stack(
+          children: [
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: RadialGradient(
+                    center: Alignment.topLeft,
+                    radius: 1.5,
+                    colors: [
+                      theme.primaryColor.withOpacity(0.1),
+                      Colors.black,
+                      theme.primaryColor.withOpacity(0.05),
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ),
-          child: SafeArea(
-            child: Column(
-              children: [
-                _buildGlassAppBar(theme),
-                _buildFloatingArticleCard(theme),
-                Expanded(child: _buildMessageList(theme)),
-                _buildGlassInputField(theme),
-              ],
+            SafeArea(
+              child: Column(
+                children: [
+                  Gap(100),
+                  Expanded(
+                    child: _buildMessageList(theme),
+                  ),
+                  _buildGlassInputField(theme),
+                ],
+              ),
             ),
-          ),
+            Positioned(
+              top: 30,
+              left: 0,
+              right: 0,
+              child: _buildGlassAppBar(theme),
+            ),
+          ],
         ),
       ),
     );
@@ -123,13 +137,12 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                     ],
                   ),
                 ),
-                // --- FIX: Use BlocBuilder to access the correct ChatBloc instance ---
                 BlocBuilder<ChatBloc, ChatState>(
                   builder: (context, state) {
                     return _buildGlassButton(
                       Icons.delete_outline,
                       Colors.red,
-                      () {
+                          () {
                         context.read<ChatBloc>().add(ClearChat());
                       },
                     );
@@ -169,66 +182,63 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   }
 
   Widget _buildFloatingArticleCard(theme) {
-    return SlideTransition(
-      position: _slideAnimation,
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              theme.primaryColor.withOpacity(0.15),
-              theme.primaryColor.withOpacity(0.05),
-              Colors.white.withOpacity(0.05),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(28),
-          border: Border.all(color: theme.primaryColor.withOpacity(0.3)),
-          boxShadow: [
-            BoxShadow(
-              color: theme.primaryColor.withOpacity(0.2),
-              blurRadius: 20,
-              offset: Offset(0, 10),
-            ),
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            theme.primaryColor.withOpacity(0.15),
+            theme.primaryColor.withOpacity(0.05),
+            Colors.white.withOpacity(0.05),
           ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(28),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-            child: Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    gradient: RadialGradient(
-                      colors: [theme.primaryColor.withOpacity(0.4), theme.primaryColor.withOpacity(0.2)],
+        borderRadius: BorderRadius.circular(28),
+        border: Border.all(color: theme.primaryColor.withOpacity(0.3)),
+        boxShadow: [
+          BoxShadow(
+            color: theme.primaryColor.withOpacity(0.2),
+            blurRadius: 20,
+            offset: Offset(0, 10),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(28),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+          child: Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  gradient: RadialGradient(
+                    colors: [theme.primaryColor.withOpacity(0.4), theme.primaryColor.withOpacity(0.2)],
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: theme.primaryColor.withOpacity(0.5)),
+                ),
+                child: Icon(Icons.auto_awesome, color: theme.primaryColor, size: 28),
+              ),
+              Gap(16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Article Context', style: TextStyle(color: theme.primaryColor, fontSize: 14, fontWeight: FontWeight.w600)),
+                    Gap(6),
+                    Text(
+                      widget.article.title,
+                      style: TextStyle(color: Colors.white.withOpacity(0.95), fontSize: 16, fontWeight: FontWeight.w500, height: 1.4),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: theme.primaryColor.withOpacity(0.5)),
-                  ),
-                  child: Icon(Icons.auto_awesome, color: theme.primaryColor, size: 28),
+                  ],
                 ),
-                Gap(16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Article Context', style: TextStyle(color: theme.primaryColor, fontSize: 14, fontWeight: FontWeight.w600)),
-                      Gap(6),
-                      Text(
-                        widget.article.title,
-                        style: TextStyle(color: Colors.white.withOpacity(0.95), fontSize: 16, fontWeight: FontWeight.w500, height: 1.4),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -245,12 +255,19 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
           return ListView.builder(
             controller: _scrollController,
             padding: EdgeInsets.all(16),
-            itemCount: state.chatWindow.conversations.length,
+            itemCount: state.chatWindow.conversations.length + 1,
+            physics: ClampingScrollPhysics(),
             itemBuilder: (context, index) {
-              final conversation = state.chatWindow.conversations[index];
+              if (index == 0) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 24.0),
+                  child: _buildFloatingArticleCard(theme),
+                );
+              }
+              final conversation = state.chatWindow.conversations[index - 1];
               return TweenAnimationBuilder<double>(
                 tween: Tween(begin: 0.0, end: 1.0),
-                duration: Duration(milliseconds: 400 + (index * 100)),
+                duration: Duration(milliseconds: 400 + ((index - 1) * 100)),
                 builder: (context, value, child) {
                   return Transform.scale(
                     scale: 0.8 + (0.2 * value),
@@ -260,7 +277,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                         children: [
                           _buildUserMessage(conversation.request, theme),
                           Gap(16),
-                          _buildAiMessage(conversation.response, theme, shouldAnimate: index == state.chatWindow.conversations.length - 1),
+                          _buildAiMessage(conversation.response, theme, shouldAnimate: index - 1 == state.chatWindow.conversations.length - 1),
                           Gap(24),
                         ],
                       ),
@@ -274,10 +291,16 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
           return ListView.builder(
             controller: _scrollController,
             padding: EdgeInsets.all(16),
-            itemCount: state.chatWindow.conversations.length + 1,
+            itemCount: state.chatWindow.conversations.length + 2,
+            physics: ClampingScrollPhysics(),
             itemBuilder: (context, index) {
-              if (index < state.chatWindow.conversations.length) {
-                final conversation = state.chatWindow.conversations[index];
+              if (index == 0) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 24.0),
+                  child: _buildFloatingArticleCard(theme),
+                );
+              } else if (index < state.chatWindow.conversations.length + 1) {
+                final conversation = state.chatWindow.conversations[index - 1];
                 return Column(
                   children: [
                     _buildUserMessage(conversation.request, theme),
@@ -298,55 +321,73 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
             },
           );
         } else if (state is ChatError) {
-          return Center(
-            child: Container(
-              padding: EdgeInsets.all(32),
-              margin: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.red.withOpacity(0.15), Colors.red.withOpacity(0.05)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+          return ListView(
+            controller: _scrollController,
+            padding: EdgeInsets.all(16),
+            physics: ClampingScrollPhysics(),
+            children: [
+              _buildFloatingArticleCard(theme),
+              Gap(24),
+              Center(
+                child: Container(
+                  padding: EdgeInsets.all(32),
+                  margin: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Colors.red.withOpacity(0.15), Colors.red.withOpacity(0.05)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(color: Colors.red.withOpacity(0.3)),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          gradient: RadialGradient(colors: [Colors.red.withOpacity(0.3), Colors.red.withOpacity(0.1)]),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Icon(Icons.error_outline, color: Colors.red, size: 48),
+                      ),
+                      Gap(20),
+                      Text('Something went wrong', style: TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.w600)),
+                      Gap(8),
+                      Text(state.message, style: TextStyle(color: Colors.red.shade300, fontSize: 14), textAlign: TextAlign.center),
+                    ],
+                  ),
                 ),
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: Colors.red.withOpacity(0.3)),
               ),
+            ],
+          );
+        }
+        return ListView(
+          controller: _scrollController,
+          padding: EdgeInsets.all(16),
+          physics: ClampingScrollPhysics(),
+          children: [
+            _buildFloatingArticleCard(theme),
+            Gap(24),
+            Center(
               child: Column(
-                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    padding: EdgeInsets.all(16),
+                    padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      gradient: RadialGradient(colors: [Colors.red.withOpacity(0.3), Colors.red.withOpacity(0.1)]),
+                      gradient: RadialGradient(colors: [theme.primaryColor.withOpacity(0.2), theme.primaryColor.withOpacity(0.05)]),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Icon(Icons.error_outline, color: Colors.red, size: 48),
+                    child: CircularProgressIndicator(color: theme.primaryColor, strokeWidth: 3),
                   ),
                   Gap(20),
-                  Text('Something went wrong', style: TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.w600)),
-                  Gap(8),
-                  Text(state.message, style: TextStyle(color: Colors.red.shade300, fontSize: 14), textAlign: TextAlign.center),
+                  Text('Initializing chat...', style: TextStyle(color: Colors.white70, fontSize: 16)),
                 ],
               ),
             ),
-          );
-        }
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  gradient: RadialGradient(colors: [theme.primaryColor.withOpacity(0.2), theme.primaryColor.withOpacity(0.05)]),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: CircularProgressIndicator(color: theme.primaryColor, strokeWidth: 3),
-              ),
-              Gap(20),
-              Text('Initializing chat...', style: TextStyle(color: Colors.white70, fontSize: 16)),
-            ],
-          ),
+          ],
         );
       },
     );
@@ -466,13 +507,13 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                           Expanded(
                             child: shouldAnimate
                                 ? TypewriterText(
-                                    text: message,
-                                    style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w400, height: 1.4),
-                                  )
+                              text: message,
+                              style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w400, height: 1.4),
+                            )
                                 : Text(
-                                    message,
-                                    style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w400, height: 1.4),
-                                  ),
+                              message,
+                              style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w400, height: 1.4),
+                            ),
                           ),
                         ],
                       ),
@@ -636,13 +677,13 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                     decoration: BoxDecoration(
                       gradient: _isComposing && !isLoading
                           ? LinearGradient(
-                              colors: [theme.primaryColor, theme.primaryColor.withOpacity(0.7)],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            )
+                        colors: [theme.primaryColor, theme.primaryColor.withOpacity(0.7)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      )
                           : LinearGradient(
-                              colors: [Colors.grey.withOpacity(0.3), Colors.grey.withOpacity(0.1)],
-                            ),
+                        colors: [Colors.grey.withOpacity(0.3), Colors.grey.withOpacity(0.1)],
+                      ),
                       borderRadius: BorderRadius.circular(24),
                       border: Border.all(
                         color: _isComposing ? theme.primaryColor.withOpacity(0.6) : Colors.white.withOpacity(0.2),
@@ -650,12 +691,12 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                       ),
                       boxShadow: _isComposing && !isLoading
                           ? [
-                              BoxShadow(
-                                color: theme.primaryColor.withOpacity(0.4),
-                                blurRadius: 16,
-                                offset: Offset(0, 8),
-                              ),
-                            ]
+                        BoxShadow(
+                          color: theme.primaryColor.withOpacity(0.4),
+                          blurRadius: 16,
+                          offset: Offset(0, 8),
+                        ),
+                      ]
                           : null,
                     ),
                     child: ClipRRect(
@@ -665,27 +706,27 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                         child: IconButton(
                           icon: isLoading
                               ? SizedBox(
-                                  width: 24,
-                                  height: 24,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                                  ),
-                                )
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            ),
+                          )
                               : Icon(Icons.send_rounded, color: Colors.white, size: 24),
                           onPressed: _isComposing && !isLoading
                               ? () {
-                                  final message = _controller.text.trim();
-                                  if (message.isNotEmpty) {
-                                    final currentState = context.read<ChatBloc>().state;
-                                    if (currentState is ChatLoaded) {
-                                      _pendingMessage = message;
-                                      context.read<ChatBloc>().add(SendMessage(message: message, chatWindow: currentState.chatWindow));
-                                    }
-                                    _controller.clear();
-                                    setState(() => _isComposing = false);
-                                  }
-                                }
+                            final message = _controller.text.trim();
+                            if (message.isNotEmpty) {
+                              final currentState = context.read<ChatBloc>().state;
+                              if (currentState is ChatLoaded) {
+                                _pendingMessage = message;
+                                context.read<ChatBloc>().add(SendMessage(message: message, chatWindow: currentState.chatWindow));
+                              }
+                              _controller.clear();
+                              setState(() => _isComposing = false);
+                            }
+                          }
                               : null,
                         ),
                       ),
