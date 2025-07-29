@@ -152,6 +152,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
                 Text(
                   _getCategoryName(widget.category),
                   style: const TextStyle(
+
                     fontSize: 23,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -198,7 +199,7 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
     );
   }
 }
-
+//correct this todo
 class _NewsCard extends StatelessWidget {
   final Article article;
   final CardSwiperController controller;
@@ -283,7 +284,7 @@ class _NewsCard extends StatelessWidget {
                         ),
                       ),
                       const Gap(12),
-                      Text(
+                      Text( //todo
                         DateFormat('MMM dd, y • h:mm a').format(article.publishedAt),
                         style: TextStyle(
                           color: Colors.white.withAlpha(229),
