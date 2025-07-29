@@ -284,11 +284,18 @@ class _NewsCard extends StatelessWidget {
                         ),
                       ),
                       const Gap(12),
-                      Text( //todo
-                        DateFormat('MMM dd, y • h:mm a').format(article.publishedAt),
-                        style: TextStyle(
-                          color: Colors.white.withAlpha(229),
-                          fontSize: 14,
+                      Expanded( // Using Expanded to give it maximum space
+                        child: FittedBox( // FittedBox will try to fit its child
+                          fit: BoxFit.scaleDown, // Shrink text if necessary
+                          alignment: Alignment.centerLeft, // Align text to the left if shrunk
+                          child: Text(
+                            DateFormat('MMM dd, y • h:mm a').format(article.publishedAt),
+                            style: TextStyle(
+                              color: Colors.white.withAlpha(229),
+                              fontSize: 14,
+                            ),
+                            // No overflow or maxLines needed here, FittedBox handles it
+                          ),
                         ),
                       ),
                     ],
