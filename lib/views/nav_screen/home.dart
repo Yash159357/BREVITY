@@ -9,7 +9,6 @@ import 'package:brevity/controller/bloc/bookmark_bloc/bookmark_bloc.dart';
 import 'package:brevity/controller/bloc/bookmark_bloc/bookmark_event.dart';
 import 'package:brevity/controller/bloc/bookmark_bloc/bookmark_state.dart';
 import 'package:brevity/controller/bloc/news_scroll_bloc/news_scroll_bloc.dart';
-
 import 'package:brevity/controller/cubit/theme/theme_cubit.dart';
 import 'package:brevity/controller/services/news_services.dart';
 import 'package:brevity/models/article_model.dart';
