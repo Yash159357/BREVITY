@@ -69,9 +69,9 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                     center: Alignment.topLeft,
                     radius: 1.5,
                     colors: [
-                      theme.primaryColor.withOpacity(0.1),
+                      theme.primaryColor.withValues(alpha:0.1),
                       Colors.black,
-                      theme.primaryColor.withOpacity(0.05),
+                      theme.primaryColor.withValues(alpha:0.05),
                     ],
                   ),
                 ),
@@ -113,12 +113,12 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.white.withOpacity(0.1), Colors.white.withOpacity(0.05)],
+                  colors: [Colors.white.withValues(alpha:0.1), Colors.white.withValues(alpha:0.05)],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: Colors.white.withOpacity(0.2)),
+                border: Border.all(color: Colors.white.withValues(alpha:0.2)),
               ),
               child: Row(
                 children: [
@@ -134,7 +134,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                           ).createShader(bounds),
                           child: Text('NewsAI Assistant', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
                         ),
-                        Text('Powered by Gemini', style: TextStyle(color: theme.primaryColor.withOpacity(0.8), fontSize: 12)),
+                        Text('Powered by Gemini', style: TextStyle(color: theme.primaryColor.withValues(alpha:0.8), fontSize: 12)),
                       ],
                     ),
                   ),
@@ -162,12 +162,12 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [color.withOpacity(0.2), color.withOpacity(0.1)],
+          colors: [color.withValues(alpha:0.2), color.withValues(alpha:0.1)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha:0.3)),
       ),
       child: Material(
         color: Colors.transparent,
@@ -195,18 +195,18 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  theme.primaryColor.withOpacity(0.15),
-                  theme.primaryColor.withOpacity(0.05),
-                  Colors.white.withOpacity(0.05),
+                  theme.primaryColor.withValues(alpha:0.15),
+                  theme.primaryColor.withValues(alpha:0.05),
+                  Colors.white.withValues(alpha:0.05),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
               borderRadius: BorderRadius.circular(28),
-              border: Border.all(color: theme.primaryColor.withOpacity(0.3)),
+              border: Border.all(color: theme.primaryColor.withValues(alpha:0.3)),
               boxShadow: [
                 BoxShadow(
-                  color: theme.primaryColor.withOpacity(0.2),
+                  color: theme.primaryColor.withValues(alpha:0.2),
                   blurRadius: 20,
                   offset: Offset(0, 10),
                 ),
@@ -218,10 +218,10 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                   padding: EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     gradient: RadialGradient(
-                      colors: [theme.primaryColor.withOpacity(0.4), theme.primaryColor.withOpacity(0.2)],
+                      colors: [theme.primaryColor.withValues(alpha:0.4), theme.primaryColor.withValues(alpha:0.2)],
                     ),
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: theme.primaryColor.withOpacity(0.5)),
+                    border: Border.all(color: theme.primaryColor.withValues(alpha:0.5)),
                   ),
                   child: Icon(Icons.auto_awesome, color: theme.primaryColor, size: 28),
                 ),
@@ -234,7 +234,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                       Gap(6),
                       Text(
                         widget.article.title,
-                        style: TextStyle(color: Colors.white.withOpacity(0.95), fontSize: 16, fontWeight: FontWeight.w500, height: 1.4),
+                        style: TextStyle(color: Colors.white.withValues(alpha:0.95), fontSize: 16, fontWeight: FontWeight.w500, height: 1.4),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -338,12 +338,12 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                   margin: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [Colors.red.withOpacity(0.15), Colors.red.withOpacity(0.05)],
+                      colors: [Colors.red.withValues(alpha:0.15), Colors.red.withValues(alpha:0.05)],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
                     borderRadius: BorderRadius.circular(24),
-                    border: Border.all(color: Colors.red.withOpacity(0.3)),
+                    border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -351,7 +351,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                       Container(
                         padding: EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          gradient: RadialGradient(colors: [Colors.red.withOpacity(0.3), Colors.red.withOpacity(0.1)]),
+                          gradient: RadialGradient(colors: [Colors.red.withValues(alpha:0.3), Colors.red.withValues(alpha:0.1)]),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Icon(Icons.error_outline, color: Colors.red, size: 48),
@@ -381,7 +381,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                   Container(
                     padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      gradient: RadialGradient(colors: [theme.primaryColor.withOpacity(0.2), theme.primaryColor.withOpacity(0.05)]),
+                      gradient: RadialGradient(colors: [theme.primaryColor.withValues(alpha:0.2), theme.primaryColor.withValues(alpha:0.05)]),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: CircularProgressIndicator(color: theme.primaryColor, strokeWidth: 3),
@@ -424,7 +424,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                       padding: EdgeInsets.all(18),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [theme.primaryColor, theme.primaryColor.withOpacity(0.7)],
+                          colors: [theme.primaryColor, theme.primaryColor.withValues(alpha:0.7)],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
@@ -436,7 +436,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: theme.primaryColor.withOpacity(0.4),
+                            color: theme.primaryColor.withValues(alpha:0.4),
                             blurRadius: 16,
                             offset: Offset(0, 8),
                           ),
@@ -484,7 +484,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                       padding: EdgeInsets.all(18),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [Colors.white.withOpacity(0.1), Colors.white.withOpacity(0.05)],
+                          colors: [Colors.white.withValues(alpha:0.1), Colors.white.withValues(alpha:0.05)],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
@@ -494,10 +494,10 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                           bottomLeft: Radius.circular(6),
                           bottomRight: Radius.circular(24),
                         ),
-                        border: Border.all(color: theme.primaryColor.withOpacity(0.3)),
+                        border: Border.all(color: theme.primaryColor.withValues(alpha:0.3)),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.3),
+                            color: Colors.black.withValues(alpha:0.3),
                             blurRadius: 16,
                             offset: Offset(0, 8),
                           ),
@@ -510,10 +510,10 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               gradient: RadialGradient(
-                                colors: [theme.primaryColor.withOpacity(0.4), theme.primaryColor.withOpacity(0.2)],
+                                colors: [theme.primaryColor.withValues(alpha:0.4), theme.primaryColor.withValues(alpha:0.2)],
                               ),
                               borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: theme.primaryColor.withOpacity(0.5)),
+                              border: Border.all(color: theme.primaryColor.withValues(alpha:0.5)),
                             ),
                             child: Icon(Icons.smart_toy, color: theme.primaryColor, size: 18),
                           ),
@@ -561,15 +561,15 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                     padding: EdgeInsets.all(18),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [Colors.white.withOpacity(0.1), Colors.white.withOpacity(0.05)],
+                        colors: [Colors.white.withValues(alpha:0.1), Colors.white.withValues(alpha:0.05)],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
                       borderRadius: BorderRadius.circular(24),
-                      border: Border.all(color: theme.primaryColor.withOpacity(0.3)),
+                      border: Border.all(color: theme.primaryColor.withValues(alpha:0.3)),
                       boxShadow: [
                         BoxShadow(
-                          color: theme.primaryColor.withOpacity(0.2),
+                          color: theme.primaryColor.withValues(alpha:0.2),
                           blurRadius: 16,
                           offset: Offset(0, 8),
                         ),
@@ -582,7 +582,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             gradient: RadialGradient(
-                              colors: [theme.primaryColor.withOpacity(0.4), theme.primaryColor.withOpacity(0.2)],
+                              colors: [theme.primaryColor.withValues(alpha:0.4), theme.primaryColor.withValues(alpha:0.2)],
                             ),
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -631,15 +631,15 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
             padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.white.withOpacity(0.1), Colors.white.withOpacity(0.05)],
+                colors: [Colors.white.withValues(alpha:0.1), Colors.white.withValues(alpha:0.05)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
               borderRadius: BorderRadius.circular(28),
-              border: Border.all(color: Colors.white.withOpacity(0.2)),
+              border: Border.all(color: Colors.white.withValues(alpha:0.2)),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
+                  color: Colors.black.withValues(alpha:0.2),
                   blurRadius: 20,
                   offset: Offset(0, 10),
                 ),
@@ -655,13 +655,13 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                       child: Container(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
-                            colors: [Colors.white.withOpacity(0.15), Colors.white.withOpacity(0.05)],
+                            colors: [Colors.white.withValues(alpha:0.15), Colors.white.withValues(alpha:0.05)],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
                           borderRadius: BorderRadius.circular(24),
                           border: Border.all(
-                            color: _isComposing ? theme.primaryColor.withOpacity(0.6) : Colors.white.withOpacity(0.2),
+                            color: _isComposing ? theme.primaryColor.withValues(alpha:0.6) : Colors.white.withValues(alpha:0.2),
                             width: 2,
                           ),
                         ),
@@ -673,8 +673,8 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                           onChanged: (text) => setState(() => _isComposing = text.isNotEmpty),
                           decoration: InputDecoration(
                             hintText: 'Ask me anything about this article...',
-                            hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
-                            prefixIcon: Icon(Icons.auto_awesome_outlined, color: theme.primaryColor.withOpacity(0.8), size: 22),
+                            hintStyle: TextStyle(color: Colors.white.withValues(alpha:0.6)),
+                            prefixIcon: Icon(Icons.auto_awesome_outlined, color: theme.primaryColor.withValues(alpha:0.8), size: 22),
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                           ),
@@ -692,22 +692,22 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                       decoration: BoxDecoration(
                         gradient: _isComposing && !isLoading
                             ? LinearGradient(
-                          colors: [theme.primaryColor, theme.primaryColor.withOpacity(0.7)],
+                          colors: [theme.primaryColor, theme.primaryColor.withValues(alpha:0.7)],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         )
                             : LinearGradient(
-                          colors: [Colors.grey.withOpacity(0.3), Colors.grey.withOpacity(0.1)],
+                          colors: [Colors.grey.withValues(alpha:0.3), Colors.grey.withValues(alpha:0.1)],
                         ),
                         borderRadius: BorderRadius.circular(24),
                         border: Border.all(
-                          color: _isComposing ? theme.primaryColor.withOpacity(0.6) : Colors.white.withOpacity(0.2),
+                          color: _isComposing ? theme.primaryColor.withValues(alpha:0.6) : Colors.white.withValues(alpha:0.2),
                           width: 2,
                         ),
                         boxShadow: _isComposing && !isLoading
                             ? [
                           BoxShadow(
-                            color: theme.primaryColor.withOpacity(0.4),
+                            color: theme.primaryColor.withValues(alpha:0.4),
                             blurRadius: 16,
                             offset: Offset(0, 8),
                           ),

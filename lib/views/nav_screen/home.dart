@@ -342,7 +342,7 @@ class _NewsCard extends StatelessWidget {
                     Text(
                       'By ${article.author}',
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.6),
+                        color: Colors.white.withValues(alpha:0.6),
                         fontSize: 13,
                         fontStyle: FontStyle.italic,
                       ),
