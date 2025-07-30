@@ -12,7 +12,7 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
   final NewsService newsService;
   int _page = 1;
   // --- CHANGE THIS VALUE ---
-  final int _pageSize = 8; // Change from 10 to 8
+  final int _pageSize = 3; // Change from 10 to 8
   // -------------------------
   NewsCategory _currentCategory = NewsCategory.general;
 
