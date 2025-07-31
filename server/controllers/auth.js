@@ -34,6 +34,8 @@ const register = async (req, res) => {
             profileImage
         });
 
+        await user.activate();
+
         const emailVerificationToken = await user.generateEmailVerificationToken();
 
         await sendEmail({
@@ -90,20 +92,38 @@ const login = async (req, res) => {
             });
         }
 
-        // Check if account is locked
-        if (user.isLocked) {
-            return res.status(423).json({
-                success: false,
-                message: 'Account is temporarily locked due to too many failed login attempts'
-            });
-        }
-
-        // Check if account is active
-        if (!user.emailVerified) {
-            return res.status(401).json({
-                success: false,
-                message: 'Please verify your email to activate your account'
-            });
+        // Check if user can login (includes status, email verification, and lock checks)
+        if (!user.canLogin()) {
+            if (user.isSuspended()) {
+                return res.status(423).json({
+                    success: false,
+                    message: 'Account is suspended'
+                });
+            }
+            if (user.status === 'deleted') {
+                return res.status(403).json({
+                    success: false,
+                    message: 'Account not found'
+                });
+            }
+            if (!user.isActive()) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Account is not active'
+                });
+            }
+            if (!user.emailVerified) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Please verify your email to activate your account'
+                });
+            }
+            if (user.isLocked) {
+                return res.status(423).json({
+                    success: false,
+                    message: 'Account is temporarily locked due to too many failed login attempts'
+                });
+            }
         }
 
         // Compare password
@@ -131,7 +151,6 @@ const login = async (req, res) => {
 
         // Return user data (without password)
         const userData = await User.findById(user._id).select('-password -refreshTokens');
-
         res.json({
             success: true,
             message: 'Login successful',

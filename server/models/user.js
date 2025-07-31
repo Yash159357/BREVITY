@@ -21,6 +21,23 @@ const userSchema = new mongoose.Schema({
             'Please enter a valid email'
         ]
     },
+    // Account Status
+    status: {
+        type: String,
+        enum: {
+            values: ['active', 'inactive', 'suspended', 'deleted'],
+            message: 'Status must be one of: active, inactive, suspended, or deleted'
+        },
+        default: 'inactive',
+    },
+    statusChangedAt: {
+        type: Date,
+        default: Date.now
+    },
+    statusChangedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
     password: {
         type: String,
         required: [true, 'Password is required'],
@@ -66,15 +83,22 @@ const userSchema = new mongoose.Schema({
 userSchema.index({ email: 1 });
 userSchema.index({ emailVerificationToken: 1 });
 userSchema.index({ passwordResetToken: 1 });
+userSchema.index({ status: 1 });
 
 // Virtual for account lock status
 userSchema.virtual('isLocked').get(function () {
     return !!(this.lockUntil && this.lockUntil > Date.now());
 });
 
-// Update updatedAt before saving
+// Update updatedAt and track status changes before saving
 userSchema.pre('save', function (next) {
     this.updatedAt = Date.now();
+    
+    // Track status changes
+    if (this.isModified('status')) {
+        this.statusChangedAt = Date.now();
+    }
+    
     next();
 });
 
@@ -125,7 +149,7 @@ userSchema.methods.generateEmailVerificationToken = async function () {
 }
 
 // Instance method to handle failed login attempts
-userSchema.methods.incLoginAttempts = function () {
+userSchema.methods.incLoginAttempts = async function () {
     // Clear attempts if lock has expired
     if (this.lockUntil && this.lockUntil < Date.now()) {
         return this.updateOne({
@@ -138,9 +162,13 @@ userSchema.methods.incLoginAttempts = function () {
     const maxAttempts = parseInt(process.env.MAX_LOGIN_ATTEMPTS) || 5;
     const lockTime = parseInt(process.env.LOCK_TIME) || 30; // minutes
 
-    // Lock account after max attempts
+    // Lock and suspend account after max attempts
     if (this.loginAttempts + 1 >= maxAttempts && !this.isLocked) {
-        updates.$set = { lockUntil: Date.now() + lockTime * 60 * 1000 };
+        updates.$set = { 
+            lockUntil: Date.now() + lockTime * 60 * 1000,
+            status: 'suspended',
+            statusChangedAt: Date.now()
+        };
     }
 
     return this.updateOne(updates);
@@ -148,9 +176,69 @@ userSchema.methods.incLoginAttempts = function () {
 
 // Instance method to reset login attempts
 userSchema.methods.resetLoginAttempts = function () {
-    return this.updateOne({
+    const updates = {
         $unset: { loginAttempts: 1, lockUntil: 1 }
-    });
+    };
+    
+    // Reactivate if suspended due to failed login attempts
+    if (this.status === 'suspended') {
+        updates.$set = {
+            status: 'active',
+            statusChangedAt: Date.now()
+        };
+    }
+    
+    return this.updateOne(updates);
+};
+
+// Instance methods for status management
+userSchema.methods.activate = function (changedBy = null) {
+    this.status = 'active';
+    this.statusChangedAt = Date.now();
+    if (changedBy) this.statusChangedBy = changedBy;
+    return this.save();
+};
+
+userSchema.methods.deactivate = function (changedBy = null) {
+    this.status = 'inactive';
+    this.statusChangedAt = Date.now();
+    if (changedBy) this.statusChangedBy = changedBy;
+    return this.save();
+};
+
+userSchema.methods.suspend = function (changedBy = null) {
+    this.status = 'suspended';
+    this.statusChangedAt = Date.now();
+    if (changedBy) this.statusChangedBy = changedBy;
+    return this.save();
+};
+
+userSchema.methods.softDelete = function (changedBy = null) {
+    this.status = 'deleted';
+    this.statusChangedAt = Date.now();
+    if (changedBy) this.statusChangedBy = changedBy;
+    return this.save();
+};
+
+// Status check methods
+userSchema.methods.isActive = function () {
+    return this.status === 'active';
+};
+
+userSchema.methods.isInactive = function () {
+    return this.status === 'inactive';
+};
+
+userSchema.methods.isSuspended = function () {
+    return this.status === 'suspended';
+};
+
+userSchema.methods.isDeleted = function () {
+    return this.status === 'deleted';
+};
+
+userSchema.methods.canLogin = function () {
+    return this.status === 'active' && this.emailVerified && !this.isLocked;
 };
 
 module.exports = mongoose.model('User', userSchema);
