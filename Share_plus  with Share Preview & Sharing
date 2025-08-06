@@ -1,0 +1,150 @@
+This PR introduces a  implementation of the share_plus package in the app, showcasing how users can share content easily with a preview and multiple sharing options. This feature enhances user experience by allowing effortless sharing of text, URLs, images, and files through native platform share dialogs.
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Preview Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .share-card {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .share-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        .share-button {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        }
+        .share-button:hover {
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 100%);
+        }
+        .preview-card {
+            border: 1px dashed #e5e7eb;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-12">
+        <div class="max-w-3xl mx-auto">
+            <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Content Share Preview</h1>
+            
+            <!-- Share Preview Card -->
+            <div class="bg-white rounded-xl share-card p-6 mb-8">
+                <div class="flex justify-between items-start mb-6">
+                    <h2 class="text-xl font-semibold text-gray-800">Share Preview</h2>
+                    <div id="share-result" class="text-sm px-3 py-1 rounded-full bg-green-50 text-green-700 hidden">
+                        Shared successfully!
+                    </div>
+                </div>
+                
+                <!-- Preview Card -->
+                <div id="preview-content" class="preview-card rounded-lg p-4 mb-6">
+                    <img id="preview-image" src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/829b7263-bbd6-45c3-99e8-8479b620ff7f.png" alt="Modern workspace with laptop, notebook and coffee cup on a wooden desk" class="w-full h-auto rounded-lg mb-4">
+                    <h3 id="preview-title" class="text-lg font-medium text-gray-800">How to build a successful habit</h3>
+                    <p id="preview-description" class="text-gray-600 mt-2 mb-4">Learn the science behind habit formation and practical strategies to implement them in your daily life.</p>
+                    <div class="text-sm text-blue-600">Read more →</div>
+                </div>
+                
+                <!-- Share Controls -->
+                <div class="space-y-4">
+                    <div>
+                        <label for="share-title" class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                        <input type="text" id="share-title" value="How to build a successful habit" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label for="share-text" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                        <textarea id="share-text" rows="3" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">Learn the science behind habit formation and practical strategies to implement them in your daily life.</textarea>
+                    </div>
+                    <div>
+                        <label for="share-url" class="block text-sm font-medium text-gray-700 mb-1">URL</label>
+                        <input type="text" id="share-url" value="https://example.com/habit-formation" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button id="update-preview" 
+                    class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium rounded-lg transition-colors">
+                    Update Preview
+                </button>
+                <button id="share-button" 
+                    class="px-6 py-3 share-button text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                    </svg>
+                    Share Content
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update preview when form changes
+            document.getElementById('update-preview').addEventListener('click', updatePreview);
+            
+            // Share button click handler
+            document.getElementById('share-button').addEventListener('click', shareContent);
+            
+            // Input fields update preview on change
+            document.querySelectorAll('#share-title, #share-text, #share-url').forEach(input => {
+                input.addEventListener('input', updatePreview);
+            });
+            
+            function updatePreview() {
+                const title = document.getElementById('share-title').value;
+                const text = document.getElementById('share-text').value;
+                const url = document.getElementById('share-url').value;
+                
+                document.getElementById('preview-title').textContent = title;
+                document.getElementById('preview-description').textContent = text;
+            }
+            
+            async function shareContent() {
+                const title = document.getElementById('share-title').value;
+                const text = document.getElementById('share-text').value;
+                const url = document.getElementById('share-url').value;
+                
+                const shareData = {
+                    title: title,
+                    text: text,
+                    url: url
+                };
+                
+                try {
+                    if (navigator.share && navigator.canShare(shareData)) {
+                        await navigator.share(shareData);
+                        showSuccess();
+                    } else {
+                        // Fallback for browsers that don't support Web Share API
+                        const combinedText = `${title}\n\n${text}\n\n${url}`;
+                        await navigator.clipboard.writeText(combinedText);
+                        alert('Content copied to clipboard! You can now paste it anywhere.');
+                        showSuccess();
+                    }
+                } catch (err) {
+                    console.error('Error sharing:', err);
+                }
+            }
+            
+            function showSuccess() {
+                const resultDiv = document.getElementById('share-result');
+                resultDiv.classList.remove('hidden');
+                setTimeout(() => {
+                    resultDiv.classList.add('hidden');
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
