@@ -1,3 +1,4 @@
+import 'package:brevity/utils/logger.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
@@ -358,7 +359,7 @@ class NewsService {
         }
       } catch (e) {
         // Log invalid article but continue processing others
-        print('Warning: Failed to parse article: $e');
+        Log.e('Warning: Failed to parse article: $e');
         continue;
       }
     }
@@ -461,7 +462,7 @@ class NewsService {
         return MapEntry(category, articles);
       } catch (e) {
         // Return empty list for failed categories instead of failing entirely
-        print('Warning: Failed to fetch $category news: $e');
+        Log.e('Warning: Failed to fetch $category news: $e');
         return MapEntry(category, <Article>[]);
       }
     });

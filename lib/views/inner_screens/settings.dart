@@ -8,7 +8,6 @@ import 'package:go_router/go_router.dart';
 import 'package:brevity/controller/cubit/user_profile/user_profile_cubit.dart';
 import 'package:brevity/controller/cubit/user_profile/user_profile_state.dart';
 import 'package:brevity/controller/services/auth_service.dart';
-import 'package:brevity/models/user_model.dart';
 import 'package:brevity/views/common_widgets/common_appbar.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../controller/cubit/theme/theme_cubit.dart';
@@ -950,112 +949,6 @@ class _SettingsScreenState extends State<SettingsScreen>
               },
             );
           },
-        ),
-      ),
-    );
-  }
-
-  void _showEditProfileDialog(
-      BuildContext context,
-      UserModel? user,
-      Color themeColor,
-      ) {
-    if (user == null) return;
-    final theme = Theme.of(context);
-
-    final TextEditingController displayNameController =
-    TextEditingController(text: user.displayName);
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-        child: Dialog(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          child: Container(
-            decoration: BoxDecoration(
-              color: theme.cardColor,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: themeColor.withAlpha(50),
-                  blurRadius: 15,
-                  spreadRadius: 2,
-                ),
-              ],
-            ),
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Edit Profile',
-                  style: theme.textTheme.titleLarge,
-                ),
-                const SizedBox(height: 24),
-                TextField(
-                  controller: displayNameController,
-                  style: theme.textTheme.bodyLarge,
-                  decoration: InputDecoration(
-                    labelText: 'Display Name',
-                    labelStyle: TextStyle(color: theme.colorScheme.onSurface.withAlpha((0.7 * 255).toInt())),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: theme.colorScheme.onSurface.withAlpha((0.3 * 255).toInt())),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: themeColor),
-                    ),
-                    prefixIcon: Icon(Icons.person, color: themeColor),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () => Navigator.pop(context),
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(color: themeColor),
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: Text(
-                          'Cancel',
-                          style: TextStyle(color: themeColor),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          context.read<UserProfileCubit>().updateProfile(
-                            displayName: displayNameController.text,
-                          );
-                          Navigator.pop(context);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: themeColor,
-                          foregroundColor: theme.colorScheme.onPrimary,
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: const Text('Save'),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
         ),
       ),
     );
