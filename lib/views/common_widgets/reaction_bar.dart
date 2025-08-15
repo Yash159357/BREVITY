@@ -210,7 +210,7 @@ class _ReactionButtonState extends State<_ReactionButton>
                 border: Border.all(
                   color: widget.reaction.isSelected
                       ? widget.primaryColor
-                      : Colors.white.withAlpha((0.6 * 255).toInt()),
+                      : Colors.white.withOpacity(0.6),
                   width: 1.5,
                 ),
               ),
@@ -225,7 +225,7 @@ class _ReactionButtonState extends State<_ReactionButton>
                           ? [
                         Shadow(
                           blurRadius: 4,
-                          color: widget.primaryColor.withAlpha((0.5 * 255).toInt()),
+                          color: widget.primaryColor.withOpacity(0.5),
                           offset: const Offset(0, 0),
                         ),
                       ]
@@ -241,7 +241,7 @@ class _ReactionButtonState extends State<_ReactionButton>
                       style: TextStyle(
                         color: widget.reaction.isSelected
                             ? widget.primaryColor
-                            : Colors.white.withAlpha((0.8 * 255).toInt()),
+                            : Colors.white.withOpacity(0.8),
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),

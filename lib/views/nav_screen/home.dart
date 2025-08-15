@@ -5,7 +5,6 @@ import 'package:brevity/controller/bloc/news_scroll_bloc/news_scroll_bloc.dart';
 import 'package:brevity/controller/cubit/theme/theme_cubit.dart';
 import 'package:brevity/models/article_model.dart';
 import 'package:brevity/models/news_category.dart';
-import 'package:brevity/utils/logger.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -273,7 +272,7 @@ class _NewsCardState extends State<_NewsCard> {
       }
     });
     // TODO: Implement backend integration
-    Log.d('Article ${isLiked ? 'liked' : 'unliked'}: ${widget.article.title}');
+    print('Article ${isLiked ? 'liked' : 'unliked'}: ${widget.article.title}');
   }
 
   void _handleDislike() {
@@ -286,7 +285,7 @@ class _NewsCardState extends State<_NewsCard> {
       }
     });
     // TODO: Implement backend integration
-    Log.d(
+    print(
       'Article ${isDisliked ? 'disliked' : 'undisliked'}: ${widget.article.title}',
     );
   }

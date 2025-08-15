@@ -9,7 +9,6 @@ const rateLimit = require('express-rate-limit');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const bookmarkRoutes = require('./routes/bookmark');
-const newsRoutes = require('./routes/news');
 const passport = require('passport');
 
 // Import controllers
@@ -63,7 +62,6 @@ app.use(passport.initialize());
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/bookmarks', bookmarkRoutes);
-app.use('/api/news', newsRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
