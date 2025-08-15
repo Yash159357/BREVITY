@@ -1,6 +1,6 @@
 class ApiConfig {
   // Update this URL to match your backend deployment
-  static const String baseUrl = 'http://localhost:5001/api';
+  static const String baseUrl = 'https://brevitybackend.onrender.com/api';
   
   // For development, use:
   // static const String baseUrl = 'http://localhost:5001/api';
