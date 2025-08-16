@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'package:http_parser/http_parser.dart';
 
 class UserRepository {
-  final String _baseUrl = 'https://brevitybackend.onrender.com/api/users';
+  final String _baseUrl = 'https://brevity-backend-khaki.vercel.app/api/users';
   String? _accessToken;
 
   // Singleton pattern
@@ -24,7 +24,7 @@ class UserRepository {
   Future<UserModel> getUserProfile(String uid) async {
     try {
       final response = await http.get(
-        Uri.parse('https://brevitybackend.onrender.com/api/auth/me'),
+        Uri.parse('https://brevity-backend-khaki.vercel.app/api/auth/me'),
         headers: {
           'Authorization': 'Bearer $_accessToken',
           'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ class UserRepository {
   }
 
   // Update user profile
-  Future<UserModel> updateUserProfile(UserModel user, {File? profileImage}) async {
+  Future<UserModel> updateUserProfile(UserModel user, {File? profileImage, bool removeImage = false}) async {
     try {
       final uri = Uri.parse('$_baseUrl/profile');
       final request = http.MultipartRequest('PUT', uri);
@@ -70,6 +70,11 @@ class UserRepository {
 
       // Add form fields
       request.fields['displayName'] = user.displayName;
+
+      // Add removeImage flag if needed
+      if (removeImage) {
+        request.fields['removeImage'] = 'true';
+      }
 
       // Add profile image if provided
       if (profileImage != null) {
@@ -131,6 +136,25 @@ class UserRepository {
       }
     } catch (e) {
       throw Exception('Failed to update profile: $e');
+    }
+  }
+
+  Future<void> removeUserProfileImage(String uid) async {
+    try {
+      final response = await http.delete(
+        Uri.parse('$_baseUrl/profile/image'),
+        headers: {
+          'Authorization': 'Bearer $_accessToken',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode != 200) {
+        final errorData = json.decode(response.body);
+        throw Exception(errorData['message'] ?? 'Failed to remove profile image');
+      }
+    } catch (e) {
+      throw Exception('Failed to remove profile image: $e');
     }
   }
 

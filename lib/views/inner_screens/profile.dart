@@ -64,7 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen>
     });
   }
 
-  Future<void> _pickImage() async {
+  Future<void> _pickImageFromGallery() async {
     try {
       final XFile? image = await _imagePicker.pickImage(
         source: ImageSource.gallery,
@@ -85,34 +85,81 @@ class _ProfileScreenState extends State<ProfileScreen>
     }
   }
 
+  Future<void> _pickImageFromCamera() async {
+    try {
+      final XFile? image = await _imagePicker.pickImage(
+        source: ImageSource.camera,
+        maxWidth: 1024,
+        maxHeight: 1024,
+        imageQuality: 85,
+      );
+
+      if (image != null) {
+        setState(() {
+          _selectedImage = File(image.path);
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to take photo: $e')),
+      );
+    }
+  }
+
   void _showImageOptions() {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return SafeArea(
-          child: Wrap(
-            children: [
-              ListTile(
-                leading: const Icon(Icons.photo_library),
-                title: const Text('Choose from Gallery'),
-                onTap: () {
-                  Navigator.pop(context);
-                  _pickImage();
-                },
+        return BlocBuilder<UserProfileCubit, UserProfileState>(
+          builder: (context, state) {
+            final user = state.user;
+            return SafeArea(
+              child: Wrap(
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.camera_alt),
+                    title: const Text('Take Photo'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      _pickImageFromCamera();
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.photo_library),
+                    title: const Text('Choose from Gallery'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      _pickImageFromGallery();
+                    },
+                  ),
+                  if (_selectedImage != null || _hasProfileImage(state, user))
+                    ListTile(
+                      leading: const Icon(Icons.delete),
+                      title: const Text('Remove Photo'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        setState(() {
+                          _selectedImage = null;
+                        });
+                        // Remove the profile picture completely
+                        final userProfileCubit = context.read<UserProfileCubit>();
+                        userProfileCubit.removeProfileImage().then((_) {
+                          if (!mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Profile photo removed successfully')),
+                          );
+                        }).catchError((error) {
+                          if (!mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Error removing photo: $error')),
+                          );
+                        });
+                      },
+                    ),
+                ],
               ),
-              if (_selectedImage != null)
-                ListTile(
-                  leading: const Icon(Icons.delete),
-                  title: const Text('Remove Photo'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    setState(() {
-                      _selectedImage = null;
-                    });
-                  },
-                ),
-            ],
-          ),
+            );
+          },
         );
       },
     );

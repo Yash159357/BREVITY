@@ -9,6 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../controller/cubit/user_profile/user_profile_cubit.dart';
+import '../../controller/cubit/user_profile/user_profile_state.dart';
+
 class SidePage extends StatefulWidget {
   const SidePage({super.key});
 
@@ -28,6 +31,8 @@ class _SidePageState extends State<SidePage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _topNewsFuture = _newsService.fetchGeneralNews(page: 1, pageSize: 3);
+
+    context.read<UserProfileCubit>().loadUserProfile();
 
     _animationController = AnimationController(
       vsync: this,
@@ -57,6 +62,21 @@ class _SidePageState extends State<SidePage> with TickerProviderStateMixin {
     _particleAnimationController.dispose();
     _searchController.dispose();
     super.dispose();
+  }
+
+  bool _hasProfileImage(UserProfileState state, user) {
+    return state.localProfileImage != null ||
+        (user?.profileImageUrl != null && user!.profileImageUrl!.isNotEmpty);
+  }
+
+  ImageProvider? _getProfileImage(UserProfileState state, user) {
+    if (state.localProfileImage != null) {
+      return FileImage(state.localProfileImage!);
+    }
+    if (user?.profileImageUrl != null && user!.profileImageUrl!.isNotEmpty) {
+      return NetworkImage(user.profileImageUrl!);
+    }
+    return null;
   }
 
   void _handleSearch() {
@@ -114,18 +134,28 @@ class _SidePageState extends State<SidePage> with TickerProviderStateMixin {
                           children: [
                             Row(
                               children: [
-                                CircleAvatar(
-                                  backgroundColor:
-                                      theme.colorScheme.secondaryContainer,
-                                  radius: 24,
-                                  child: IconButton(
-                                    color:
-                                        theme.colorScheme.onSecondaryContainer,
-                                    icon: const Icon(Icons.person, size: 28),
-                                    onPressed: () {
-                                      context.push("/sidepage/profile");
-                                    },
-                                  ),
+                                BlocBuilder<UserProfileCubit, UserProfileState>(
+                                  builder: (context, state) {
+                                    return CircleAvatar(
+                                      radius: 24,
+                                      backgroundColor: _hasProfileImage(state, state.user)
+                                          ? Colors.transparent
+                                          : theme.colorScheme.secondaryContainer,
+                                      backgroundImage: _getProfileImage(state, state.user),
+                                      child: InkWell(
+                                        onTap: () {
+                                          context.push("/sidepage/profile");
+                                        },
+                                        child: !_hasProfileImage(state, state.user)
+                                            ? Icon(
+                                          Icons.person,
+                                          size: 28,
+                                          color: theme.colorScheme.onSecondaryContainer,
+                                        )
+                                            : null,
+                                      ),
+                                    );
+                                  },
                                 ),
                                 const Spacer(),
                                 TextButton.icon(

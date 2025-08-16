@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:brevity/views/inner_screens/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -28,7 +29,6 @@ class _SettingsScreenState extends State<SettingsScreen>
   late AnimationController _animationController;
   late Animation<double> _animation;
   late AnimationController _particleAnimationController;
-  final UserProfileCubit _userProfileCubit = UserProfileCubit();
   bool _reminderEnabled = false;
   String _reminderTime = '09:00';
   final NotificationService _notificationService = NotificationService();
@@ -36,6 +36,9 @@ class _SettingsScreenState extends State<SettingsScreen>
   @override
   void initState() {
     super.initState();
+
+    context.read<UserProfileCubit>().loadUserProfile();
+
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 800),
@@ -72,7 +75,6 @@ class _SettingsScreenState extends State<SettingsScreen>
   void dispose() {
     _animationController.dispose();
     _particleAnimationController.dispose();
-    _userProfileCubit.close();
     super.dispose();
   }
 
@@ -393,6 +395,21 @@ class _SettingsScreenState extends State<SettingsScreen>
     );
   }
 
+  bool _hasProfileImage(UserProfileState state, user) {
+    return state.localProfileImage != null ||
+        (user?.profileImageUrl != null && user!.profileImageUrl!.isNotEmpty);
+  }
+
+  ImageProvider? _getProfileImage(UserProfileState state, user) {
+    if (state.localProfileImage != null) {
+      return FileImage(state.localProfileImage!);
+    }
+    if (user?.profileImageUrl != null && user!.profileImageUrl!.isNotEmpty) {
+      return NetworkImage(user.profileImageUrl!);
+    }
+    return null;
+  }
+
   void _showTimePickerDialog() {
     final theme = Theme.of(context);
     final themeCubit = context.read<ThemeCubit>();
@@ -675,496 +692,385 @@ class _SettingsScreenState extends State<SettingsScreen>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return BlocProvider(
-      create: (context) => _userProfileCubit,
-      child: Scaffold(
-        backgroundColor: theme.colorScheme.surface,
-        body: BlocBuilder<ThemeCubit, ThemeState>(
-          builder: (context, themeState) {
-            return BlocBuilder<UserProfileCubit, UserProfileState>(
-              builder: (context, state) {
-                if (state.status == UserProfileStatus.loading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+    return Scaffold(
+      backgroundColor: theme.colorScheme.surface,
+      body: BlocBuilder<ThemeCubit, ThemeState>(
+        builder: (context, themeState) {
+          return BlocBuilder<UserProfileCubit, UserProfileState>(
+            builder: (context, state) {
+              if (state.status == UserProfileStatus.loading) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
-                if (state.status == UserProfileStatus.error) {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.error_outline,
-                          color: Colors.red,
-                          size: 48,
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'Error: ${state.errorMessage}',
-                          style: theme.textTheme.bodyLarge,
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 16),
-                        ElevatedButton(
-                          onPressed: () {},
-                          child: const Text('Retry'),
-                        ),
-                      ],
+              if (state.status == UserProfileStatus.error) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.error_outline,
+                        color: Colors.red,
+                        size: 48,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Error: ${state.errorMessage}',
+                        style: theme.textTheme.bodyLarge,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: const Text('Retry'),
+                      ),
+                    ],
+                  ),
+                );
+              }
+
+              return CustomScrollView(
+                physics: const BouncingScrollPhysics(),
+                slivers: [
+                  SliverAppBar(
+                    backgroundColor: theme.colorScheme.surface.withAlpha(
+                      (0.85 * 255).toInt(),
                     ),
-                  );
-                }
-
-                return CustomScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  slivers: [
-                    SliverAppBar(
-                      backgroundColor: theme.colorScheme.surface.withAlpha(
-                        (0.85 * 255).toInt(),
+                    expandedHeight: 220,
+                    pinned: true,
+                    elevation: 0,
+                    leading: IconButton(
+                      icon: const Icon(Icons.arrow_back_ios_new, size: 20),
+                      color: theme.colorScheme.onSurface.withAlpha(
+                        (0.7 * 255).toInt(),
                       ),
-                      expandedHeight: 220,
-                      pinned: true,
-                      elevation: 0,
-                      leading: IconButton(
-                        icon: const Icon(Icons.arrow_back_ios_new, size: 20),
-                        color: theme.colorScheme.onSurface.withAlpha(
-                          (0.7 * 255).toInt(),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                    flexibleSpace: FlexibleSpaceBar(
+                      background: ParticlesHeader(
+                        title: "",
+                        themeColor: themeState.currentTheme.primaryColor,
+                        particleAnimation: _particleAnimationController,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: LinearGradient(
+                                  colors: [
+                                    themeState.currentTheme.primaryColor,
+                                    Colors.purpleAccent,
+                                  ],
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: themeState.currentTheme.primaryColor
+                                        .withAlpha(125),
+                                    blurRadius: 20,
+                                    spreadRadius: 2,
+                                  ),
+                                ],
+                              ),
+                              child: CircleAvatar(
+                                radius: 40,
+                                backgroundColor:
+                                    _hasProfileImage(state, state.user)
+                                        ? Colors.transparent
+                                        : themeState.currentTheme.primaryColor
+                                            .withAlpha((0.2 * 255).toInt()),
+                                backgroundImage: _getProfileImage(
+                                  state,
+                                  state.user,
+                                ),
+                                child:
+                                    !_hasProfileImage(state, state.user)
+                                        ? Icon(
+                                          Icons.person,
+                                          size: 48,
+                                          color: Colors.white,
+                                        )
+                                        : null,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              state.user?.displayName ?? 'User',
+                              style: theme.textTheme.headlineSmall?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                shadows: const [
+                                  Shadow(color: Colors.black45, blurRadius: 5),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              state.user?.email ?? '',
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: theme.colorScheme.onSurface.withAlpha(
+                                  (0.8 * 255).toInt(),
+                                ),
+                                shadows: const [
+                                  Shadow(color: Colors.black45, blurRadius: 5),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                        onPressed: () => Navigator.of(context).pop(),
                       ),
-                      flexibleSpace: FlexibleSpaceBar(
-                        background: ParticlesHeader(
-                          title: "",
-                          themeColor: themeState.currentTheme.primaryColor,
-                          particleAnimation: _particleAnimationController,
+                    ),
+                  ),
+                  SliverList(
+                    delegate: SliverChildListDelegate([
+                      FadeTransition(
+                        opacity: _animation,
+                        child: SlideTransition(
+                          position: Tween<Offset>(
+                            begin: const Offset(0, 0.1),
+                            end: Offset.zero,
+                          ).animate(_animation),
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(
-                                padding: const EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  gradient: LinearGradient(
-                                    colors: [
+                              const SizedBox(height: 20),
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.fromLTRB(
+                                    20,
+                                    8,
+                                    0,
+                                    8,
+                                  ),
+                                  child: Text(
+                                    'Settings',
+                                    style: theme.textTheme.headlineMedium
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          letterSpacing: 1.2,
+                                        ),
+                                  ),
+                                ),
+                              ),
+                              _buildSectionHeader(
+                                'Profile',
+                                themeState.currentTheme.primaryColor,
+                              ),
+                              _buildAnimatedCard(
+                                child: _buildListTile(
+                                  icon: Icons.person,
+                                  title: 'Edit Profile',
+                                  subtitle: 'Update your personal information',
+                                  themeColor:
                                       themeState.currentTheme.primaryColor,
-                                      Colors.purpleAccent,
-                                    ],
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: themeState
-                                          .currentTheme
-                                          .primaryColor
-                                          .withAlpha(125),
-                                      blurRadius: 20,
-                                      spreadRadius: 2,
-                                    ),
-                                  ],
-                                ),
-                                child: const CircleAvatar(
-                                  radius: 40,
-                                  backgroundColor: Colors.white,
-                                  backgroundImage: NetworkImage(
-                                    'https://a0.anyrgb.com/pngimg/1140/162/user-profile-login-avatar-heroes-user-blue-icons-circle-symbol-logo-thumbnail.png',
-                                  ),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) => const ProfileScreen(),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
-                              const SizedBox(height: 16),
-                              Text(
-                                state.user?.displayName ?? 'User',
-                                style: theme.textTheme.headlineSmall?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  shadows: const [
-                                    Shadow(
-                                      color: Colors.black45,
-                                      blurRadius: 5,
-                                    ),
-                                  ],
+                              _buildSectionHeader(
+                                'Appearance',
+                                themeState.currentTheme.primaryColor,
+                              ),
+                              _buildAnimatedCard(
+                                child: _buildSwitchTile(
+                                  icon: Icons.dark_mode,
+                                  title: 'Dark Mode',
+                                  value: themeState.currentTheme.isDarkMode,
+                                  themeColor:
+                                      themeState.currentTheme.primaryColor,
+                                  onChanged:
+                                      (val) => context
+                                          .read<ThemeCubit>()
+                                          .toggleDarkMode(val),
                                 ),
                               ),
-                              const SizedBox(height: 4),
-                              Text(
-                                state.user?.email ?? '',
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: theme.colorScheme.onSurface.withAlpha(
-                                    (0.8 * 255).toInt(),
+                              _buildAnimatedCard(
+                                child: _buildListTile(
+                                  icon: Icons.color_lens,
+                                  title: 'App Theme',
+                                  subtitle: 'Change app accent color',
+                                  themeColor:
+                                      themeState.currentTheme.primaryColor,
+                                  trailingWidget: Container(
+                                    width: 24,
+                                    height: 24,
+                                    decoration: BoxDecoration(
+                                      color:
+                                          themeState.currentTheme.primaryColor,
+                                      shape: BoxShape.circle,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: themeState
+                                              .currentTheme
+                                              .primaryColor
+                                              .withAlpha((0.4 * 255).toInt()),
+                                          blurRadius: 5,
+                                          spreadRadius: 1,
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  shadows: const [
-                                    Shadow(
-                                      color: Colors.black45,
-                                      blurRadius: 5,
-                                    ),
-                                  ],
+                                  onTap: _showThemeColorPicker,
                                 ),
                               ),
+                              _buildSectionHeader(
+                                'Preferences',
+                                themeState.currentTheme.primaryColor,
+                              ),
+                              _buildAnimatedCard(
+                                child: _buildSwitchTile(
+                                  icon: Icons.notifications_active,
+                                  title: 'Push Notifications',
+                                  themeColor:
+                                      themeState.currentTheme.primaryColor,
+                                  value: _notificationsEnabled,
+                                  onChanged:
+                                      (val) => setState(
+                                        () => _notificationsEnabled = val,
+                                      ),
+                                ),
+                              ),
+                              _buildAnimatedCard(
+                                child: _buildSwitchTile(
+                                  icon: Icons.bookmark_add_outlined,
+                                  title: 'Daily Bookmark Reminder',
+                                  themeColor:
+                                      themeState.currentTheme.primaryColor,
+                                  value: _reminderEnabled,
+                                  onChanged: _toggleReminderEnabled,
+                                ),
+                              ),
+                              _buildAnimatedCard(
+                                child: _buildListTile(
+                                  icon: Icons.schedule,
+                                  title: 'Reminder Time',
+                                  subtitle: _reminderTime,
+                                  themeColor:
+                                      themeState.currentTheme.primaryColor,
+                                  onTap:
+                                      _reminderEnabled
+                                          ? _showTimePickerDialog
+                                          : null,
+                                ),
+                              ),
+                              _buildAnimatedCard(
+                                child: _buildListTile(
+                                  icon: Icons.language,
+                                  title: 'Language',
+                                  subtitle: _selectedLanguage,
+                                  themeColor:
+                                      themeState.currentTheme.primaryColor,
+                                  onTap: _showLanguageDialog,
+                                ),
+                              ),
+                              _buildSectionHeader(
+                                'App',
+                                themeState.currentTheme.primaryColor,
+                              ),
+                              _buildAnimatedCard(
+                                child: _buildListTile(
+                                  icon: Icons.share,
+                                  title: 'Share App',
+                                  subtitle: 'Tell your friends about us',
+                                  themeColor:
+                                      themeState.currentTheme.primaryColor,
+                                  onTap:
+                                      () => Share.share(
+                                        'Hey! I\'m using this amazing app. You can try it too! 📲\n\nDownload here: https://play.google.com/store/apps/details?id=com.placeholder',
+                                      ),
+                                ),
+                              ),
+                              _buildAnimatedCard(
+                                child: _buildListTile(
+                                  icon: Icons.star_rate,
+                                  title: 'Rate App',
+                                  subtitle: 'Leave feedback on the store',
+                                  themeColor:
+                                      themeState.currentTheme.primaryColor,
+                                  onTap: () {},
+                                ),
+                              ),
+                              _buildSectionHeader(
+                                'Contact',
+                                themeState.currentTheme.primaryColor,
+                              ),
+                              _buildAnimatedCard(
+                                child: _buildListTile(
+                                  icon: Icons.contact_mail,
+                                  title: 'Contact Us',
+                                  subtitle: 'Get in touch with support',
+                                  themeColor:
+                                      themeState.currentTheme.primaryColor,
+                                  onTap: () => context.push('/contactUs'),
+                                ),
+                              ),
+                              _buildAnimatedCard(
+                                child: _buildListTile(
+                                  icon: Icons.info,
+                                  title: 'About Us',
+                                  subtitle: 'Learn more about us',
+                                  themeColor:
+                                      themeState.currentTheme.primaryColor,
+                                  onTap: () {
+                                    context.push('/aboutUs');
+                                  },
+                                ),
+                              ),
+                              _buildSectionHeader(
+                                'Account',
+                                themeState.currentTheme.primaryColor,
+                              ),
+                              _buildAnimatedCard(
+                                child: _buildListTile(
+                                  icon: Icons.logout,
+                                  title: 'Log Out',
+                                  subtitle: 'See you again soon',
+                                  themeColor:
+                                      themeState.currentTheme.primaryColor,
+                                  titleColor:
+                                      themeState.currentTheme.primaryColor,
+                                  onTap: () {
+                                    AuthService().signOut().then((value) {
+                                      if (context.mounted) {
+                                        context.go('/splash');
+                                      }
+                                    });
+                                  },
+                                ),
+                              ),
+                              _buildAnimatedCard(
+                                color: Colors.red.withAlpha(
+                                  (0.1 * 255).toInt(),
+                                ),
+                                child: _buildListTile(
+                                  icon: Icons.delete_forever,
+                                  iconColor: Colors.red,
+                                  title: 'Delete Profile',
+                                  titleColor: Colors.red,
+                                  subtitle: 'Permanently erase your data',
+                                  themeColor: Colors.red,
+                                  onTap: _confirmDeleteProfile,
+                                ),
+                              ),
+                              const SizedBox(height: 30),
                             ],
                           ),
                         ),
                       ),
-                    ),
-                    SliverList(
-                      delegate: SliverChildListDelegate([
-                        FadeTransition(
-                          opacity: _animation,
-                          child: SlideTransition(
-                            position: Tween<Offset>(
-                              begin: const Offset(0, 0.1),
-                              end: Offset.zero,
-                            ).animate(_animation),
-                            child: Column(
-                              children: [
-                                const SizedBox(height: 20),
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                      20,
-                                      8,
-                                      0,
-                                      8,
-                                    ),
-                                    child: Text(
-                                      'Settings',
-                                      style: theme.textTheme.headlineMedium
-                                          ?.copyWith(
-                                            fontWeight: FontWeight.bold,
-                                            letterSpacing: 1.2,
-                                          ),
-                                    ),
-                                  ),
-                                ),
-                                _buildSectionHeader(
-                                  'Profile',
-                                  themeState.currentTheme.primaryColor,
-                                ),
-                                _buildAnimatedCard(
-                                  child: _buildListTile(
-                                    icon: Icons.person,
-                                    title: 'Edit Profile',
-                                    subtitle:
-                                        'Update your personal information',
-                                    themeColor:
-                                        themeState.currentTheme.primaryColor,
-                                    onTap:
-                                        () => _showEditProfileDialog(
-                                          context,
-                                          state.user,
-                                          themeState.currentTheme.primaryColor,
-                                        ),
-                                  ),
-                                ),
-                                _buildSectionHeader(
-                                  'Appearance',
-                                  themeState.currentTheme.primaryColor,
-                                ),
-                                _buildAnimatedCard(
-                                  child: _buildSwitchTile(
-                                    icon: Icons.dark_mode,
-                                    title: 'Dark Mode',
-                                    value: themeState.currentTheme.isDarkMode,
-                                    themeColor:
-                                        themeState.currentTheme.primaryColor,
-                                    onChanged:
-                                        (val) => context
-                                            .read<ThemeCubit>()
-                                            .toggleDarkMode(val),
-                                  ),
-                                ),
-                                _buildAnimatedCard(
-                                  child: _buildListTile(
-                                    icon: Icons.color_lens,
-                                    title: 'App Theme',
-                                    subtitle: 'Change app accent color',
-                                    themeColor:
-                                        themeState.currentTheme.primaryColor,
-                                    trailingWidget: Container(
-                                      width: 24,
-                                      height: 24,
-                                      decoration: BoxDecoration(
-                                        color:
-                                            themeState
-                                                .currentTheme
-                                                .primaryColor,
-                                        shape: BoxShape.circle,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: themeState
-                                                .currentTheme
-                                                .primaryColor
-                                                .withAlpha((0.4 * 255).toInt()),
-                                            blurRadius: 5,
-                                            spreadRadius: 1,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    onTap: _showThemeColorPicker,
-                                  ),
-                                ),
-                                _buildSectionHeader(
-                                  'Preferences',
-                                  themeState.currentTheme.primaryColor,
-                                ),
-                                _buildAnimatedCard(
-                                  child: _buildSwitchTile(
-                                    icon: Icons.notifications_active,
-                                    title: 'Push Notifications',
-                                    themeColor:
-                                        themeState.currentTheme.primaryColor,
-                                    value: _notificationsEnabled,
-                                    onChanged:
-                                        (val) => setState(
-                                          () => _notificationsEnabled = val,
-                                        ),
-                                  ),
-                                ),
-                                _buildAnimatedCard(
-                                  child: _buildSwitchTile(
-                                    icon: Icons.bookmark_add_outlined,
-                                    title: 'Daily Bookmark Reminder',
-                                    themeColor:
-                                        themeState.currentTheme.primaryColor,
-                                    value: _reminderEnabled,
-                                    onChanged: _toggleReminderEnabled,
-                                  ),
-                                ),
-                                _buildAnimatedCard(
-                                  child: _buildListTile(
-                                    icon: Icons.schedule,
-                                    title: 'Reminder Time',
-                                    subtitle: _reminderTime,
-                                    themeColor:
-                                        themeState.currentTheme.primaryColor,
-                                    onTap:
-                                        _reminderEnabled
-                                            ? _showTimePickerDialog
-                                            : null,
-                                  ),
-                                ),
-                                _buildAnimatedCard(
-                                  child: _buildListTile(
-                                    icon: Icons.language,
-                                    title: 'Language',
-                                    subtitle: _selectedLanguage,
-                                    themeColor:
-                                        themeState.currentTheme.primaryColor,
-                                    onTap: _showLanguageDialog,
-                                  ),
-                                ),
-                                _buildSectionHeader(
-                                  'App',
-                                  themeState.currentTheme.primaryColor,
-                                ),
-                                _buildAnimatedCard(
-                                  child: _buildListTile(
-                                    icon: Icons.share,
-                                    title: 'Share App',
-                                    subtitle: 'Tell your friends about us',
-                                    themeColor:
-                                        themeState.currentTheme.primaryColor,
-                                    onTap:
-                                        () => Share.share(
-                                          'Hey! I\'m using this amazing app. You can try it too! 📲\n\nDownload here: https://play.google.com/store/apps/details?id=com.placeholder',
-                                        ),
-                                  ),
-                                ),
-                                _buildAnimatedCard(
-                                  child: _buildListTile(
-                                    icon: Icons.star_rate,
-                                    title: 'Rate App',
-                                    subtitle: 'Leave feedback on the store',
-                                    themeColor:
-                                        themeState.currentTheme.primaryColor,
-                                    onTap: () {},
-                                  ),
-                                ),
-                                _buildSectionHeader(
-                                  'Contact',
-                                  themeState.currentTheme.primaryColor,
-                                ),
-                                _buildAnimatedCard(
-                                  child: _buildListTile(
-                                    icon: Icons.contact_mail,
-                                    title: 'Contact Us',
-                                    subtitle: 'Get in touch with support',
-                                    themeColor:
-                                        themeState.currentTheme.primaryColor,
-                                    onTap: () => context.push('/contactUs'),
-                                  ),
-                                ),
-                                _buildAnimatedCard(
-                                  child: _buildListTile(
-                                    icon: Icons.info,
-                                    title: 'About Us',
-                                    subtitle: 'Learn more about us',
-                                    themeColor:
-                                        themeState.currentTheme.primaryColor,
-                                    onTap: () {
-                                      context.push('/aboutUs');
-                                    },
-                                  ),
-                                ),
-                                _buildSectionHeader(
-                                  'Account',
-                                  themeState.currentTheme.primaryColor,
-                                ),
-                                _buildAnimatedCard(
-                                  child: _buildListTile(
-                                    icon: Icons.logout,
-                                    title: 'Log Out',
-                                    subtitle: 'See you again soon',
-                                    themeColor:
-                                        themeState.currentTheme.primaryColor,
-                                    titleColor:
-                                        themeState.currentTheme.primaryColor,
-                                    onTap: () {
-                                      AuthService().signOut().then((value) {
-                                        if (context.mounted) {
-                                          context.go('/splash');
-                                        }
-                                      });
-                                    },
-                                  ),
-                                ),
-                                _buildAnimatedCard(
-                                  color: Colors.red.withAlpha(
-                                    (0.1 * 255).toInt(),
-                                  ),
-                                  child: _buildListTile(
-                                    icon: Icons.delete_forever,
-                                    iconColor: Colors.red,
-                                    title: 'Delete Profile',
-                                    titleColor: Colors.red,
-                                    subtitle: 'Permanently erase your data',
-                                    themeColor: Colors.red,
-                                    onTap: _confirmDeleteProfile,
-                                  ),
-                                ),
-                                const SizedBox(height: 30),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ]),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-        ),
+                    ]),
+                  ),
+                ],
+              );
+            },
+          );
+        },
       ),
-    );
-  }
-
-  void _showEditProfileDialog(
-    BuildContext context,
-    UserModel? user,
-    Color themeColor,
-  ) {
-    if (user == null) return;
-    final theme = Theme.of(context);
-
-    final TextEditingController displayNameController = TextEditingController(
-      text: user.displayName,
-    );
-
-    showDialog(
-      context: context,
-      builder:
-          (BuildContext context) => BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-            child: Dialog(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: theme.cardColor,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: themeColor.withAlpha(50),
-                      blurRadius: 15,
-                      spreadRadius: 2,
-                    ),
-                  ],
-                ),
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('Edit Profile', style: theme.textTheme.titleLarge),
-                    const SizedBox(height: 24),
-                    TextField(
-                      controller: displayNameController,
-                      style: theme.textTheme.bodyLarge,
-                      decoration: InputDecoration(
-                        labelText: 'Display Name',
-                        labelStyle: TextStyle(
-                          color: theme.colorScheme.onSurface.withAlpha(
-                            (0.7 * 255).toInt(),
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: theme.colorScheme.onSurface.withAlpha(
-                              (0.3 * 255).toInt(),
-                            ),
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: themeColor),
-                        ),
-                        prefixIcon: Icon(Icons.person, color: themeColor),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: OutlinedButton(
-                            onPressed: () => Navigator.pop(context),
-                            style: OutlinedButton.styleFrom(
-                              side: BorderSide(color: themeColor),
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            child: Text(
-                              'Cancel',
-                              style: TextStyle(color: themeColor),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              context.read<UserProfileCubit>().updateProfile(
-                                displayName: displayNameController.text,
-                              );
-                              Navigator.pop(context);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: themeColor,
-                              foregroundColor: theme.colorScheme.onPrimary,
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            child: const Text('Save'),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
     );
   }
 

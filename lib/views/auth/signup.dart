@@ -193,7 +193,7 @@ class _SignupScreenState extends State<SignupScreen>
     }
   }
 
-  Future<void> _pickImage() async {
+  Future<void> _pickImageFromGallery() async {
     try {
       final XFile? image = await _imagePicker.pickImage(
         source: ImageSource.gallery,
@@ -216,6 +216,81 @@ class _SignupScreenState extends State<SignupScreen>
         ),
       );
     }
+  }
+
+  Future<void> _pickImageFromCamera() async {
+    try {
+      final XFile? image = await _imagePicker.pickImage(
+        source: ImageSource.camera,
+        maxWidth: 1024,
+        maxHeight: 1024,
+        imageQuality: 85,
+      );
+
+      if (image != null) {
+        setState(() {
+          _selectedImage = File(image.path);
+        });
+        HapticFeedback.lightImpact();
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to take photo: $e'),
+          backgroundColor: errorColor,
+        ),
+      );
+    }
+  }
+
+  void _showImageOptions() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: panelBottom,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Wrap(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: Icon(Icons.camera_alt, color: primaryB),
+                      title: const Text('Take Photo', style: TextStyle(color: Colors.white)),
+                      onTap: () {
+                        Navigator.pop(context);
+                        _pickImageFromCamera();
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.photo_library, color: primaryB),
+                      title: const Text('Choose from Gallery', style: TextStyle(color: Colors.white)),
+                      onTap: () {
+                        Navigator.pop(context);
+                        _pickImageFromGallery();
+                      },
+                    ),
+                    if (_selectedImage != null)
+                      ListTile(
+                        leading: Icon(Icons.delete, color: errorColor),
+                        title: const Text('Remove Photo', style: TextStyle(color: Colors.white)),
+                        onTap: () {
+                          Navigator.pop(context);
+                          _removeImage();
+                        },
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   void _removeImage() {
@@ -288,10 +363,12 @@ class _SignupScreenState extends State<SignupScreen>
             children: [
               Icon(Icons.error_rounded, color: errorColor, size: 20),
               const SizedBox(width: 8),
-              Expanded(child: Text(
-                'Signup failed: $errorMessage',
-                style: TextStyle(color: Colors.white),
-              )),
+              Expanded(
+                child: Text(
+                  'Signup failed: $errorMessage',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ],
           ),
           backgroundColor: const Color(0xFF1F2937),
@@ -485,107 +562,94 @@ class _SignupScreenState extends State<SignupScreen>
                                         (_emailValid ? 1 : 0) +
                                         (_passwordValid ? 1 : 0)) /
                                     3,
-                        backgroundColor: Colors.white.withAlpha((0.1 * 255).toInt()),
+                        backgroundColor: Colors.white.withAlpha(
+                          (0.1 * 255).toInt(),
+                        ),
                         valueColor: AlwaysStoppedAnimation(primaryB),
                         minHeight: 2,
                       ),
 
                       const SizedBox(height: 20), // was 24
-
                       // Profile Image Picker
-                      GestureDetector(
-                        onTap: _pickImage,
-                        child: Container(
-                          height: 120,
-                          width: 120,
-                          margin: const EdgeInsets.symmetric(vertical: 16),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white.withAlpha((0.05 * 255).toInt()),
-                            border: Border.all(
-                              color: _selectedImage != null ? primaryB : Colors.white.withAlpha((0.1 * 255).toInt()),
-                              width: 2,
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Name field - takes remaining space
+                          Expanded(
+                            child: EnhancedTextField(
+                              controller: _nameController,
+                              label: 'Full Name',
+                              hintText: 'Enter your full name',
+                              icon: Icons.person_outline_rounded,
+                              keyboardType: TextInputType.name,
+                              isValid: _nameValid,
+                              errorText: _nameError,
+                              validator: (v) {
+                                if (v == null || v.isEmpty) return 'Name is required';
+                                if (v.length < 2) return 'Name must be at least 2 characters';
+                                return null;
+                              },
                             ),
                           ),
-                          child: _selectedImage != null
-                              ? Stack(
-                            children: [
-                              ClipOval(
-                                child: Image.file(
-                                  _selectedImage!,
-                                  width: 116,
-                                  height: 116,
-                                  fit: BoxFit.cover,
+
+                          const SizedBox(width: 16),
+
+                          // Profile picture
+                          GestureDetector(
+                            onTap: _showImageOptions,
+                            child: Container(
+                              margin: const EdgeInsets.only(top: 20),
+                              height: 60,
+                              width: 60,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white.withAlpha((0.05 * 255).toInt()),
+                                border: Border.all(
+                                  color: _selectedImage != null ? primaryB : Colors.white.withAlpha((0.1 * 255).toInt()),
+                                  width: 2,
                                 ),
                               ),
-                              Positioned(
-                                top: 0,
-                                right: 0,
-                                child: GestureDetector(
-                                  onTap: _removeImage,
-                                  child: Container(
-                                    padding: const EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                      color: errorColor,
-                                      shape: BoxShape.circle,
-                                      border: Border.all(color: Colors.white, width: 2),
-                                    ),
-                                    child: const Icon(
-                                      Icons.close,
-                                      color: Colors.white,
-                                      size: 16,
+                              child: _selectedImage != null
+                                  ? Stack(
+                                children: [
+                                  ClipOval(
+                                    child: Image.file(
+                                      _selectedImage!,
+                                      width: 56,
+                                      height: 56,
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
-                                ),
-                              ),
-                            ],
-                          )
-                              : Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
+                                  Positioned(
+                                    top: -2,
+                                    right: -2,
+                                    child: GestureDetector(
+                                      onTap: _removeImage,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(2),
+                                        decoration: BoxDecoration(
+                                          color: errorColor,
+                                          shape: BoxShape.circle,
+                                          border: Border.all(color: Colors.white, width: 1),
+                                        ),
+                                        child: const Icon(
+                                          Icons.close,
+                                          color: Colors.white,
+                                          size: 10,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                                  : Icon(
                                 Icons.add_a_photo_rounded,
                                 color: primaryB,
-                                size: 32,
+                                size: 20,
                               ),
-                              const SizedBox(height: 8),
-                              Text(
-                                'Add Photo',
-                                style: TextStyle(
-                                  color: primaryB,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              Text(
-                                '(Optional)',
-                                style: TextStyle(
-                                  color: mutedText,
-                                  fontSize: 10,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-
-                      const SizedBox(height: 14),
-
-                      EnhancedTextField(
-                        controller: _nameController,
-                        label: 'Full Name',
-                        hintText: 'Enter your full name',
-                        icon: Icons.person_outline_rounded,
-                        keyboardType: TextInputType.name,
-                        isValid: _nameValid,
-                        errorText: _nameError,
-                        validator: (v) {
-                          if (v == null || v.isEmpty) return 'Name is required';
-                          if (v.length < 2) {
-                            return 'Name must be at least 2 characters';
-                          }
-                          return null;
-                        },
+                        ],
                       ),
 
                       const SizedBox(height: 14), // was 16
@@ -1321,7 +1385,9 @@ class _EnhancedSocialButtonState extends State<EnhancedSocialButton>
                     _isHovered
                         ? [
                           BoxShadow(
-                            color: widget.iconColor.withAlpha((0.1 * 255).toInt()),
+                            color: widget.iconColor.withAlpha(
+                              (0.1 * 255).toInt(),
+                            ),
                             blurRadius: 8,
                             offset: const Offset(0, 2),
                           ),
