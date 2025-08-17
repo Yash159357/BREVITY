@@ -8,7 +8,9 @@ const {
     getCurrentUser,
     forgotPassword,
     resetPassword,
-    resendVerification
+    resendVerification,
+    deleteAccount,
+    getAccountType
 } = require('../controllers/auth');
 
 const router = express.Router();
@@ -23,5 +25,7 @@ router.post('/reset-password', resetPassword);
 
 router.post('/logout', authMiddleware, logout);
 router.get('/me', authMiddleware, getCurrentUser);
+router.delete('/delete-account', authMiddleware, deleteAccount);
+router.get('/account-type', authMiddleware, getAccountType);
 
 module.exports = router;

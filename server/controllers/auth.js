@@ -422,6 +422,100 @@ const resendVerification = async (req, res) => {
 }
 
 
+// Delete account
+const deleteAccount = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const { password } = req.body;
+
+        // Find user with password field
+        const user = await User.findById(userId).select('+password');
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found'
+            });
+        }
+
+        // Check if user is OAuth-only
+        if (user.isOAuthOnly()) {
+            // OAuth users don't need password verification
+            await user.softDelete(userId);
+            
+            return res.status(200).json({
+                success: true,
+                message: 'Account deleted successfully',
+                accountType: 'oauth'
+            });
+        }
+
+        // For local users, require password verification
+        if (!password) {
+            return res.status(400).json({
+                success: false,
+                message: 'Password is required for account deletion',
+                accountType: 'local'
+            });
+        }
+
+        // Verify password for local users
+        const isValidPassword = await user.comparePassword(password);
+        if (!isValidPassword) {
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid password'
+            });
+        }
+
+        // Delete account
+        await user.softDelete(userId);
+
+        res.status(200).json({
+            success: true,
+            message: 'Account deleted successfully',
+            accountType: 'local'
+        });
+
+    } catch (error) {
+        console.error('Delete account error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to delete account',
+            error: error.message
+        });
+    }
+};
+
+// Get account type (for frontend to know verification requirements)
+const getAccountType = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found'
+            });
+        }
+
+        res.json({
+            success: true,
+            data: {
+                accountType: user.isOAuthOnly() ? 'oauth' : 'local',
+                oauthProviders: user.oauthProviders || [],
+                requiresPasswordForDeletion: !user.isOAuthOnly()
+            }
+        });
+
+    } catch (error) {
+        console.error('Get account type error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to get account type',
+            error: error.message
+        });
+    }
+};
+
 module.exports = {
     register,
     login,
@@ -430,5 +524,7 @@ module.exports = {
     resetPassword,
     getCurrentUser,
     verifyEmail,
-    resendVerification
+    resendVerification,
+    deleteAccount,
+    getAccountType
 };

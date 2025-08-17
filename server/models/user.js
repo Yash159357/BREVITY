@@ -40,10 +40,23 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: [true, 'Password is required'],
+        required: function() {
+            return !this.oauthProviders || this.oauthProviders.length === 0;
+        },
         minlength: [8, 'Password must be at least 8 characters'],
         select: false // Don't include password in queries by default
     },
+    oauthProviders: [{
+        provider: {
+            type: String,
+            enum: ['google', 'github', 'facebook', 'twitter']
+        },
+        providerId: String,
+        createdAt: {
+            type: Date,
+            default: Date.now
+        }
+    }],
     profileImage: {
         url: String,
         publicId: String // Cloudinary public ID for deletion
@@ -239,6 +252,11 @@ userSchema.methods.isDeleted = function () {
 
 userSchema.methods.canLogin = function () {
     return this.status === 'active' && this.emailVerified && !this.isLocked;
+};
+
+// Check if user is OAuth-only (no local password)
+userSchema.methods.isOAuthOnly = function () {
+    return this.oauthProviders && this.oauthProviders.length > 0 && !this.password;
 };
 
 module.exports = mongoose.model('User', userSchema);
