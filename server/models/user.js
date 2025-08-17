@@ -254,7 +254,7 @@ userSchema.methods.canLogin = function () {
     return this.status === 'active' && this.emailVerified && !this.isLocked;
 };
 
-// Check if user is OAuth-only (no local password)
+//if user is OAuth-only (no local password)
 userSchema.methods.isOAuthOnly = function () {
     return this.oauthProviders && this.oauthProviders.length > 0 && !this.password;
 };
