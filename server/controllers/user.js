@@ -7,9 +7,9 @@ const { verifyGoogleToken } = require('../config/passport');
 const updateProfile = async (req, res) => {
     try {
         const userId = req.user._id;
-        const { displayName } = req.body;
-        const user = await User.findById(userId);
+        const updateData = {};
 
+        const user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({
                 success: false,
@@ -17,13 +17,19 @@ const updateProfile = async (req, res) => {
             });
         }
 
-        // Update display name if provided
-        if (displayName !== undefined) {
-            user.displayName = displayName;
+        // Handle removeImage flag first (for full profile updates)
+        if (req.body.removeImage === 'true') {
+            if (user.profileImage?.publicId) {
+                try {
+                    await deleteImage(user.profileImage.publicId);
+                } catch (error) {
+                    console.error('Error deleting old profile image:', error);
+                }
+            }
+            updateData.profileImage = undefined;
         }
-
-        // Handle profile image update
-        if (req.file) {
+        // Handle profile image update (only if not removing and file provided)
+        else if (req.file) {
             // Delete old image if exists
             if (user.profileImage?.publicId) {
                 try {
@@ -33,17 +39,33 @@ const updateProfile = async (req, res) => {
                 }
             }
 
-            // Set new image
-            user.profileImage = {
+            updateData.profileImage = {
                 url: req.file.path,
                 publicId: req.file.filename
             };
         }
 
-        await user.save();
+        // Only update displayName if it's provided and different
+        if (req.body.displayName !== undefined && req.body.displayName.trim() !== user.displayName) {
+            updateData.displayName = req.body.displayName.trim();
+        }
 
-        // Return updated user data
-        const updatedUser = await User.findById(userId).select('-password -refreshTokens');
+        // Only update if there's data to update
+        if (Object.keys(updateData).length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'No fields to update'
+            });
+        }
+
+        updateData.updatedAt = new Date();
+
+        // Update user with only changed fields
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            updateData,
+            { new: true, runValidators: true }
+        ).select('-password -refreshTokens');
 
         res.json({
             success: true,

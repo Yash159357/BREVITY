@@ -5,7 +5,7 @@ class UserModel {
   final bool emailVerified;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final String? profileImageUrl; // Add this line
+  final String? profileImageUrl;
 
   UserModel({
     required this.uid,
@@ -14,7 +14,7 @@ class UserModel {
     this.emailVerified = false,
     this.createdAt,
     this.updatedAt,
-    this.profileImageUrl, // Add this line
+    this.profileImageUrl,
   });
 
   // Convert to map for sending data to the backend
@@ -24,10 +24,27 @@ class UserModel {
       'displayName': displayName,
       'email': email,
       'emailVerified': emailVerified,
-      'createdAt': createdAt?.toIso8601String(), // Convert DateTime to ISO 8601 string
-      'updatedAt': updatedAt?.toIso8601String(), // Convert DateTime to ISO 8601 string
-      'profileImageUrl': profileImageUrl, // Add this line
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
+      'profileImageUrl': profileImageUrl,
     };
+  }
+
+  // ✅ Add fromMap for deserialization
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
+      uid: map['uid'] ?? '',
+      displayName: map['displayName'] ?? '',
+      email: map['email'] ?? '',
+      emailVerified: map['emailVerified'] ?? false,
+      createdAt: map['createdAt'] != null
+          ? DateTime.tryParse(map['createdAt'])
+          : null,
+      updatedAt: map['updatedAt'] != null
+          ? DateTime.tryParse(map['updatedAt'])
+          : null,
+      profileImageUrl: map['profileImageUrl'],
+    );
   }
 
   // Create empty user

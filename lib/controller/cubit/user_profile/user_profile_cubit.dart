@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:brevity/controller/services/firestore_service.dart'; // This is your UserRepository
 import 'package:brevity/controller/services/auth_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../models/user_model.dart';
 import 'user_profile_state.dart';
 
@@ -28,6 +30,59 @@ class UserProfileCubit extends Cubit<UserProfileState> {
     });
   }
 
+  Future<void> updateProfilePartial(Map<String, dynamic> changedFields) async {
+    try {
+      emit(state.copyWith(status: UserProfileStatus.loading));
+
+      // Call API with only changed fields
+      final updatedUser = await _userRepository.updateUserPartial(changedFields);
+
+      // Save to local storage - this ensures name/email changes are persisted
+      await saveLocalProfile(updatedUser);
+
+      emit(state.copyWith(
+        user: updatedUser,
+        status: UserProfileStatus.loaded,
+        localProfileImage: changedFields.containsKey('profileImage')
+            ? changedFields['profileImage']
+            : state.localProfileImage,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        status: UserProfileStatus.error,
+        errorMessage: e.toString(),
+      ));
+      rethrow;
+    }
+  }
+
+  Future<void> loadLocalProfile() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final profileJson = prefs.getString('user_profile');
+      if (profileJson != null) {
+        final profileData = json.decode(profileJson);
+        final user = UserModel.fromMap(profileData); // Use fromMap instead of fromJson
+        emit(state.copyWith(
+          user: user,
+          status: UserProfileStatus.loaded,
+        ));
+      }
+    } catch (e) {
+      // If loading local profile fails, just continue without it
+      print('Failed to load local profile: $e');
+    }
+  }
+
+  Future<void> saveLocalProfile(UserModel user) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('user_profile', json.encode(user.toMap())); // Use toMap instead of toJson
+    } catch (e) {
+      print('Failed to save local profile: $e');
+    }
+  }
+
   // Update user profile
   Future<void> updateProfile({
     required String displayName,
@@ -37,7 +92,7 @@ class UserProfileCubit extends Cubit<UserProfileState> {
     try {
       emit(state.copyWith(
         status: UserProfileStatus.loading,
-        localProfileImage: removeImage ? null : profileImage, // Handle image removal
+        localProfileImage: removeImage ? null : profileImage,
       ));
 
       final UserModel? currentUser = _authService.currentUser;
@@ -45,7 +100,7 @@ class UserProfileCubit extends Cubit<UserProfileState> {
         emit(state.copyWith(
           status: UserProfileStatus.error,
           errorMessage: 'No authenticated user found',
-          localProfileImage: null, // Clear local image on error
+          localProfileImage: null,
         ));
         return;
       }
@@ -57,39 +112,36 @@ class UserProfileCubit extends Cubit<UserProfileState> {
         emailVerified: currentUser.emailVerified,
         createdAt: currentUser.createdAt,
         updatedAt: DateTime.now(),
-        // Set profileImageUrl to null if removing image, otherwise keep existing
         profileImageUrl: removeImage ? null : currentUser.profileImageUrl,
       );
 
-      // Set access token in repository
       final String? accessToken = _authService.accessToken;
       if (accessToken != null) {
         _userRepository.setAccessToken(accessToken);
       }
 
-      // Update profile on server - this should return the updated user with new profileImageUrl
       final UserModel updatedProfile = await _userRepository.updateUserProfile(
           updatedUser,
           profileImage: removeImage ? null : profileImage,
           removeImage: removeImage
       );
 
-      // Update the auth service's current user with the new profile data
-      // This ensures the auth service has the latest user info including profileImageUrl
+      // Save updated profile to local storage
+      await saveLocalProfile(updatedProfile);
+
       await _authService.refreshUser();
 
-      // Emit the updated profile (which should include the new profileImageUrl from server)
       emit(state.copyWith(
         status: UserProfileStatus.loaded,
-        user: updatedProfile, // Use the profile returned from server
-        localProfileImage: null, // Clear local image since we now have the server URL
+        user: updatedProfile,
+        localProfileImage: null,
       ));
 
     } catch (e) {
       emit(state.copyWith(
         status: UserProfileStatus.error,
         errorMessage: 'Failed to update profile: ${e.toString()}',
-        localProfileImage: null, // Clear local image on error
+        localProfileImage: null,
       ));
     }
   }
@@ -97,10 +149,9 @@ class UserProfileCubit extends Cubit<UserProfileState> {
   // Remove profile image specifically
   Future<void> removeProfileImage() async {
     try {
-      // Immediately update state to show loading and clear local image
       emit(state.copyWith(
         status: UserProfileStatus.loading,
-        clearLocalImage: true, // Use the flag to explicitly clear
+        clearLocalImage: true,
       ));
 
       final UserModel? currentUser = _authService.currentUser;
@@ -113,16 +164,13 @@ class UserProfileCubit extends Cubit<UserProfileState> {
         return;
       }
 
-      // Set access token in repository
       final String? accessToken = _authService.accessToken;
       if (accessToken != null) {
         _userRepository.setAccessToken(accessToken);
       }
 
-      // Remove the profile image from server
       await _userRepository.removeUserProfileImage(currentUser.uid);
 
-      // Create updated user model without profile image
       final UserModel updatedUser = UserModel(
         uid: currentUser.uid,
         displayName: currentUser.displayName,
@@ -130,31 +178,98 @@ class UserProfileCubit extends Cubit<UserProfileState> {
         emailVerified: currentUser.emailVerified,
         createdAt: currentUser.createdAt,
         updatedAt: DateTime.now(),
-        profileImageUrl: null, // Remove the image URL
+        profileImageUrl: null,
       );
 
-      // Update the auth service's current user
+      // Save updated profile to local storage
+      await saveLocalProfile(updatedUser);
+
       await _authService.refreshUser();
 
-      // Emit the updated profile without the image
       emit(state.copyWith(
         status: UserProfileStatus.loaded,
         user: updatedUser,
-        clearLocalImage: true, // Ensure local image is null
+        clearLocalImage: true,
       ));
 
     } catch (e) {
-      // On error, still clear the local image but show error
       emit(state.copyWith(
         status: UserProfileStatus.error,
         errorMessage: 'Failed to remove profile image: ${e.toString()}',
-        clearLocalImage: true, // Clear local image even on error
+        clearLocalImage: true,
       ));
     }
   }
 
 // Also update the loadUserProfile method to clear local image when loading from server
   Future<void> loadUserProfile() async {
+    // Load local profile first for instant display
+    await loadLocalProfile();
+
+    // If we have local data, show it immediately
+    if (state.user != null) {
+      emit(state.copyWith(status: UserProfileStatus.loaded));
+    }
+
+    // If we haven't loaded from server yet, load from server
+    if (!state.hasLoadedFromServer) {
+      // Don't show loading if we already have local data
+      if (state.user == null) {
+        emit(state.copyWith(status: UserProfileStatus.loading));
+      }
+
+      try {
+        final UserModel? currentUser = _authService.currentUser;
+
+        if (currentUser == null) {
+          emit(state.copyWith(
+            status: UserProfileStatus.error,
+            errorMessage: 'No authenticated user found',
+          ));
+          return;
+        }
+
+        final String? accessToken = _authService.accessToken;
+        if (accessToken != null) {
+          _userRepository.setAccessToken(accessToken);
+        }
+
+        final UserModel profile = await _userRepository.getUserProfile(currentUser.uid);
+        await saveLocalProfile(profile);
+
+        emit(state.copyWith(
+          status: UserProfileStatus.loaded,
+          user: profile,
+          clearLocalImage: true,
+          hasLoadedFromServer: true,
+        ));
+      } catch (e) {
+        // If we have local data, don't show error, just keep local data
+        if (state.user != null) {
+          emit(state.copyWith(
+            status: UserProfileStatus.loaded,
+            hasLoadedFromServer: false, // Try again next time
+          ));
+        } else {
+          emit(state.copyWith(
+            status: UserProfileStatus.error,
+            errorMessage: e.toString(),
+          ));
+        }
+      }
+    }
+  }
+
+  bool _shouldRefreshProfile() {
+    // Don't refresh if we have valid user data and have loaded from server
+    if (state.user != null && state.hasLoadedFromServer) {
+      return false;
+    }
+    return true;
+  }
+
+// Add this new method for force refresh
+  Future<void> forceRefreshProfile() async {
     emit(state.copyWith(status: UserProfileStatus.loading));
 
     try {
@@ -168,18 +283,18 @@ class UserProfileCubit extends Cubit<UserProfileState> {
         return;
       }
 
-      // Set access token in repository
       final String? accessToken = _authService.accessToken;
       if (accessToken != null) {
         _userRepository.setAccessToken(accessToken);
       }
 
       final UserModel profile = await _userRepository.getUserProfile(currentUser.uid);
+      await saveLocalProfile(profile);
 
       emit(state.copyWith(
         status: UserProfileStatus.loaded,
         user: profile,
-        clearLocalImage: true, // Clear local image when loading from server
+        clearLocalImage: true,
       ));
     } catch (e) {
       emit(state.copyWith(
@@ -189,9 +304,13 @@ class UserProfileCubit extends Cubit<UserProfileState> {
     }
   }
 
-  // Refresh profile data
   Future<void> refreshProfile() async {
-    await loadUserProfile();
+    await forceRefreshProfile();
+  }
+
+  // Call this method after successful profile updates to reset the flag
+  void markForRefresh() {
+    emit(state.copyWith(hasLoadedFromServer: false));
   }
 
   @override

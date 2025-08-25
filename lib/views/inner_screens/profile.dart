@@ -49,13 +49,40 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   void _saveProfile() {
     final userProfileCubit = context.read<UserProfileCubit>();
+
+    // Create a map of only changed fields
+    Map<String, dynamic> changedFields = {};
+
+    // Check if name has changed
+    if (_nameController.text.trim() != _originalName) {
+      changedFields['displayName'] = _nameController.text.trim();
+    }
+
+    // Check if image has changed
+    if (_selectedImage != null) {
+      changedFields['profileImage'] = _selectedImage;
+    }
+
+    // Only proceed if there are changes
+    if (changedFields.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('No changes to save')),
+      );
+      return;
+    }
+
+    // Use the existing updateProfilePartial method which already handles this correctly
     userProfileCubit
-        .updateProfile(
-      displayName: _nameController.text,
-      profileImage: _selectedImage, // Pass the selected image
-    )
+        .updateProfilePartial(changedFields)
         .then((_) {
       if (!mounted) return;
+
+      // Update original values after successful save
+      setState(() {
+        _originalName = _nameController.text.trim();
+        _selectedImage = null; // Reset selected image after save
+      });
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Profile updated successfully')),
       );
@@ -187,8 +214,13 @@ class _ProfileScreenState extends State<ProfileScreen>
     return BlocConsumer<UserProfileCubit, UserProfileState>(
       listener: (context, state) {
         if (state.status == UserProfileStatus.loaded && state.user != null) {
-          _nameController.text = state.user!.displayName;
-          _emailController.text = state.user!.email;
+          // Only update controllers if they're empty or different
+          if (_nameController.text != state.user!.displayName) {
+            _nameController.text = state.user!.displayName;
+          }
+          if (_emailController.text != state.user!.email) {
+            _emailController.text = state.user!.email;
+          }
 
           // Store original values for comparison
           _originalName = state.user!.displayName;
