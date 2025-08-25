@@ -16,9 +16,8 @@ class TutorialService {
 
   // Home screen specific tutorial methods
   static Future<bool> shouldShowHomeScreenTutorial() async {
-    return true;
-    // final prefs = await SharedPreferences.getInstance();
-    // return !(prefs.getBool(_homeScreenTutorialKey) ?? false);
+    final prefs = await SharedPreferences.getInstance();
+    return !(prefs.getBool(_homeScreenTutorialKey) ?? false);
   }
 
   static Future<void> completeHomeScreenTutorial() async {

@@ -412,7 +412,7 @@ class _NewsCardState extends State<_NewsCard> {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           DateFormat(
-                            'MMM dd, y â€¢ h:mm a',
+                            'MMM dd, y • h:mm a',
                           ).format(widget.article.publishedAt),
                           style: TextStyle(
                             color: Colors.white.withAlpha(229),

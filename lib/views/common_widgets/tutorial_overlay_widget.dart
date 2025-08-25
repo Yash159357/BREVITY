@@ -206,21 +206,6 @@ class TutorialOverlay {
       opacityShadow: 0.8,
       hideSkip: false,
       useSafeArea: true,
-      skipWidget: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: const Text(
-          "SKIP",
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
-        ),
-      ),
       onFinish: () {
         onFinish();
       },
@@ -228,6 +213,7 @@ class TutorialOverlay {
         // Allow overlay clicks to continue tutorial
       },
       onSkip: () {
+        print("Skip button pressed!"); // Your print statement
         onFinish();
         return true;
       },
