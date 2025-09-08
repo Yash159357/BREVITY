@@ -89,7 +89,7 @@ class _TutorialScreenState extends State<TutorialScreen>
                       color: Colors.black54,
                       blurRadius: 16,
                       spreadRadius: 4,
-                    )
+                    ),
                   ],
                 ),
                 child: ClipRRect(
@@ -142,10 +142,7 @@ class _TutorialScreenState extends State<TutorialScreen>
               child: Center(
                 child: Text(
                   'Step ${_step + 1} of ${_gifAssets.length} • Tap anywhere to continue',
-                  style: const TextStyle(
-                    color: Colors.white70,
-                    fontSize: 14,
-                  ),
+                  style: const TextStyle(color: Colors.white70, fontSize: 14),
                 ),
               ),
             ),
