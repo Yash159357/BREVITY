@@ -77,7 +77,9 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final shouldShow = await TutorialService.shouldShowHomeScreenTutorial();
       if (shouldShow && mounted) {
-        await Future.delayed(const Duration(milliseconds: 2000)); // Increased delay
+        await Future.delayed(
+          const Duration(milliseconds: 2000),
+        ); // Increased delay
         if (mounted) {
           _showTutorial();
         }
@@ -157,94 +159,98 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
     }
 
     return Stack(
-        children: [
+      children: [
         GestureDetector(
-        onHorizontalDragEnd: (details) {
-      final velocity = details.primaryVelocity;
-      if (velocity != null && velocity > 300) {
-        context.goNamed('sidepage');
-      }
-    },
-    child: Stack(
-        children: [
-          PageView.builder(
-            controller: _pageController,
-            scrollDirection: Axis.vertical,
-            itemCount:
-                state.hasReachedMax ? articles.length + 1 : articles.length + 1,
-            onPageChanged: (index) {
-              context.read<NewsBloc>().add(UpdateNewsIndex(index));
+          onHorizontalDragEnd: (details) {
+            final velocity = details.primaryVelocity;
+            if (velocity != null && velocity > 300) {
+              context.goNamed('sidepage');
+            }
+          },
+          child: Stack(
+            children: [
+              PageView.builder(
+                controller: _pageController,
+                scrollDirection: Axis.vertical,
+                itemCount:
+                    state.hasReachedMax
+                        ? articles.length + 1
+                        : articles.length + 1,
+                onPageChanged: (index) {
+                  context.read<NewsBloc>().add(UpdateNewsIndex(index));
 
-              if (!state.hasReachedMax && index >= articles.length - 3) {
-                context.read<NewsBloc>().add(
-                  FetchNextPage(index, widget.category),
-                );
-              }
-            },
-            itemBuilder: (context, index) {
-              if (index >= articles.length) {
-                return EndOfNewsScreen();
-              }
-              final article = articles[index];
-              return _NewsCard(
-                article: article,
-                chatbotKey: index == 0 ? _chatbotKey : null,
-                headlineKey: index == 0 ? _headlineKey : null,
-                likeKey: index == 0 ? _likeKey : null,
-                dislikeKey: index == 0 ? _dislikeKey : null,
-                speakerKey: index == 0 ? _speakerKey : null,
-              );
-            },
-          ),
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Row(
-                children: [
-                  Text(
-                    _getCategoryName(widget.category),
-                    style: const TextStyle(
-                      fontSize: 23,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontFamily: 'Poppins',
-                      shadows: [
-                        Shadow(
-                          blurRadius: 15.0,
-                          color: Color.fromRGBO(0, 0, 0, 0.5),
-                          offset: Offset(2.0, 2.0),
+                  if (!state.hasReachedMax && index >= articles.length - 3) {
+                    context.read<NewsBloc>().add(
+                      FetchNextPage(index, widget.category),
+                    );
+                  }
+                },
+                itemBuilder: (context, index) {
+                  if (index >= articles.length) {
+                    return EndOfNewsScreen();
+                  }
+                  final article = articles[index];
+                  return _NewsCard(
+                    article: article,
+                    chatbotKey: index == 0 ? _chatbotKey : null,
+                    headlineKey: index == 0 ? _headlineKey : null,
+                    likeKey: index == 0 ? _likeKey : null,
+                    dislikeKey: index == 0 ? _dislikeKey : null,
+                    speakerKey: index == 0 ? _speakerKey : null,
+                  );
+                },
+              ),
+              SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        _getCategoryName(widget.category),
+                        style: const TextStyle(
+                          fontSize: 23,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontFamily: 'Poppins',
+                          shadows: [
+                            Shadow(
+                              blurRadius: 15.0,
+                              color: Color.fromRGBO(0, 0, 0, 0.5),
+                              offset: Offset(2.0, 2.0),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                      const Spacer(),
+                      // Contact Issue
+                      IconButton(
+                        icon: const Icon(
+                          Icons.info_outline,
+                          color: Colors.white,
+                          size: 22,
+                        ),
+                        onPressed: () => context.pushNamed("contactUs"),
+                      ),
+                    ],
                   ),
-                  const Spacer(),
-                  // Contact Issue
-                  IconButton(
-                    icon: const Icon(
-                      Icons.info_outline,
-                      color: Colors.white,
-                      size: 22,
-                    ),
-                    onPressed: () => context.pushNamed("contactUs"),
+                ),
+              ),
+              // Tutorial target areas (invisible and non-blocking)
+              Positioned.fill(
+                child: IgnorePointer(
+                  child: Stack(
+                    children: [
+                      Container(key: _swipeRightKey),
+                      Container(key: _swipeUpKey),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
-          // Tutorial target areas (invisible and non-blocking)
-          Positioned.fill(
-            child: IgnorePointer(
-              child: Stack(
-                children: [
-                  Container(key: _swipeRightKey),
-                  Container(key: _swipeUpKey),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    ),],);
+        ),
+      ],
+    );
   }
 
   Widget _buildLoadingShimmer() {
@@ -292,22 +298,27 @@ class _NewsCardState extends State<_NewsCard> {
   void initState() {
     super.initState();
     initTts();
-    ReactionQueue().preloadReactions().then((_) {
-      try {
-        final liked = ReactionQueue().isArticleLiked(widget.article.url);
-        final disliked = ReactionQueue().isArticleDisliked(widget.article.url);
-        if (mounted) {
-          setState(() {
-            isLiked = liked;
-            isDisliked = disliked;
-          });
-        }
-      } catch (_) {
-        // ignore
-      }
-    }).catchError((_) {
-      // ignore preload errors
-    });
+    ReactionQueue()
+        .preloadReactions()
+        .then((_) {
+          try {
+            final liked = ReactionQueue().isArticleLiked(widget.article.url);
+            final disliked = ReactionQueue().isArticleDisliked(
+              widget.article.url,
+            );
+            if (mounted) {
+              setState(() {
+                isLiked = liked;
+                isDisliked = disliked;
+              });
+            }
+          } catch (_) {
+            // ignore
+          }
+        })
+        .catchError((_) {
+          // ignore preload errors
+        });
   }
 
   initTts() {
@@ -371,7 +382,8 @@ class _NewsCardState extends State<_NewsCard> {
     if (isLiked && !previousLiked) {
       ReactionQueue().enqueueLike(widget.article);
       // If we had previously disliked and now switched to like, enqueue removal of dislike
-      if (previousDisliked) ReactionQueue().enqueueRemoveDislike(widget.article);
+      if (previousDisliked)
+        ReactionQueue().enqueueRemoveDislike(widget.article);
     } else if (!isLiked && previousLiked) {
       ReactionQueue().enqueueRemoveLike(widget.article);
     }
@@ -517,22 +529,22 @@ class _NewsCardState extends State<_NewsCard> {
                                 ),
                               ),
                               child:
-                              isLoading
-                                  ? SizedBox(
-                                width: 14,
-                                height: 14,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.white.withAlpha(204),
-                                ),
-                              )
-                                  : Icon(
-                                isPlaying
-                                    ? Icons.stop
-                                    : Icons.volume_up_rounded,
-                                color: Colors.white.withAlpha(204),
-                                size: 16,
-                              ),
+                                  isLoading
+                                      ? SizedBox(
+                                        width: 14,
+                                        height: 14,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          color: Colors.white.withAlpha(204),
+                                        ),
+                                      )
+                                      : Icon(
+                                        isPlaying
+                                            ? Icons.stop
+                                            : Icons.volume_up_rounded,
+                                        color: Colors.white.withAlpha(204),
+                                        size: 16,
+                                      ),
                             ),
                           ),
                         ],
@@ -585,22 +597,22 @@ class _NewsCardState extends State<_NewsCard> {
                                 ),
                               ),
                               child:
-                              isLoading
-                                  ? SizedBox(
-                                width: 14,
-                                height: 14,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.white.withAlpha(204),
-                                ),
-                              )
-                                  : Icon(
-                                isPlaying
-                                    ? Icons.stop
-                                    : Icons.volume_up_rounded,
-                                color: Colors.white.withAlpha(204),
-                                size: 16,
-                              ),
+                                  isLoading
+                                      ? SizedBox(
+                                        width: 14,
+                                        height: 14,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          color: Colors.white.withAlpha(204),
+                                        ),
+                                      )
+                                      : Icon(
+                                        isPlaying
+                                            ? Icons.stop
+                                            : Icons.volume_up_rounded,
+                                        color: Colors.white.withAlpha(204),
+                                        size: 16,
+                                      ),
                             ),
                           ),
                         ],
@@ -633,22 +645,22 @@ class _NewsCardState extends State<_NewsCard> {
                                 ),
                               ),
                               child:
-                              isLoading
-                                  ? SizedBox(
-                                width: 14,
-                                height: 14,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.white.withAlpha(204),
-                                ),
-                              )
-                                  : Icon(
-                                isPlaying
-                                    ? Icons.stop
-                                    : Icons.volume_up_rounded,
-                                color: Colors.white.withAlpha(204),
-                                size: 16,
-                              ),
+                                  isLoading
+                                      ? SizedBox(
+                                        width: 14,
+                                        height: 14,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          color: Colors.white.withAlpha(204),
+                                        ),
+                                      )
+                                      : Icon(
+                                        isPlaying
+                                            ? Icons.stop
+                                            : Icons.volume_up_rounded,
+                                        color: Colors.white.withAlpha(204),
+                                        size: 16,
+                                      ),
                             ),
                           ),
                         ],
@@ -764,7 +776,11 @@ class _TappableHeadline extends StatefulWidget {
   final String title;
   final Article article;
   final GlobalKey? headlineKey;
-  const _TappableHeadline({required this.title, required this.article, this.headlineKey});
+  const _TappableHeadline({
+    required this.title,
+    required this.article,
+    this.headlineKey,
+  });
 
   @override
   State<_TappableHeadline> createState() => _TappableHeadlineState();

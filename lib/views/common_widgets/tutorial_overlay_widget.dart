@@ -13,7 +13,8 @@ const Color panelBottom = Color(0xFF111827);
 const Color mutedText = Color(0xFF9AA8BF);
 
 class TutorialOverlay {
-  static void showTutorial(BuildContext context, {
+  static void showTutorial(
+    BuildContext context, {
     required GlobalKey swipeRightKey,
     required GlobalKey swipeUpKey,
     required GlobalKey chatbotKey,
@@ -113,7 +114,7 @@ class TutorialOverlay {
       ),
     );
 
-// Target 2: Swipe right for dashboard
+    // Target 2: Swipe right for dashboard
     targets.add(
       TargetFocus(
         identify: "swipe_right",
