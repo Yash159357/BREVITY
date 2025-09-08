@@ -153,7 +153,6 @@ class _ProfileScreenState extends State<ProfileScreen>
     }
   }
 
-  // UPDATED METHOD
   Future<void> _pickImageFromGallery() async {
     try {
       final XFile? image = await _imagePicker.pickImage(
@@ -183,7 +182,6 @@ class _ProfileScreenState extends State<ProfileScreen>
     }
   }
 
-  // UPDATED METHOD
   Future<void> _pickImageFromCamera() async {
     try {
       final XFile? image = await _imagePicker.pickImage(

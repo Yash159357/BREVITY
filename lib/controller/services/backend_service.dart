@@ -30,9 +30,10 @@ class ApiService {
 
   /// Initialize tokens from storage
   Future<void> initializeTokens() async {
-
     final prefs = await SharedPreferences.getInstance();
-    _accessToken = prefs.getString('accessToken'); // Changed from 'access_token' to match AuthService
+    _accessToken = prefs.getString(
+      'accessToken',
+    ); // Changed from 'access_token' to match AuthService
     _refreshToken = prefs.getString('refresh_token');
 
     try {
@@ -50,12 +51,10 @@ class ApiService {
       Log.e('BACKEND_SERVICE: Error initializing tokens', e);
       rethrow;
     }
-
   }
 
   /// Save tokens to storage
   Future<void> _saveTokens(String accessToken, String refreshToken) async {
-
     _accessToken = accessToken;
     _refreshToken = refreshToken;
 
@@ -76,7 +75,6 @@ class ApiService {
       Log.e('BACKEND_SERVICE: Error saving tokens', e);
       rethrow;
     }
-
   }
 
   /// Clear tokens from storage
@@ -85,7 +83,9 @@ class ApiService {
     _refreshToken = null;
 
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('accessToken'); // Changed from 'access_token' to match AuthService
+    await prefs.remove(
+      'accessToken',
+    ); // Changed from 'access_token' to match AuthService
     await prefs.remove('refresh_token');
     try {
       Log.d('BACKEND_SERVICE: Clearing tokens from storage');
@@ -100,7 +100,6 @@ class ApiService {
       Log.e('BACKEND_SERVICE: Error clearing tokens', e);
       rethrow;
     }
-
   }
 
   /// Get auth headers
@@ -126,7 +125,9 @@ class ApiService {
   /// Handle API response
   ApiResponse _handleResponse(http.Response response) {
     try {
-      Log.d('BACKEND_SERVICE: Handling API response (status: ${response.statusCode})');
+      Log.d(
+        'BACKEND_SERVICE: Handling API response (status: ${response.statusCode})',
+      );
       final Map<String, dynamic> data = json.decode(response.body);
 
       final apiResponse = ApiResponse(
@@ -156,11 +157,11 @@ class ApiService {
 
   /// Make HTTP request with error handling
   Future<ApiResponse> _makeRequest(
-      String method,
-      String endpoint, {
-        Map<String, dynamic>? body,
-        bool requireAuth = false,
-      }) async {
+    String method,
+    String endpoint, {
+    Map<String, dynamic>? body,
+    bool requireAuth = false,
+  }) async {
     try {
       Log.d('BACKEND_SERVICE: Making $method request to $endpoint');
       final uri = Uri.parse('$baseUrl$endpoint');
@@ -177,20 +178,20 @@ class ApiService {
           Log.d('BACKEND_SERVICE: Executing POST request');
           response = await _client
               .post(
-            uri,
-            headers: _getHeaders(includeAuth: requireAuth),
-            body: body != null ? json.encode(body) : null,
-          )
+                uri,
+                headers: _getHeaders(includeAuth: requireAuth),
+                body: body != null ? json.encode(body) : null,
+              )
               .timeout(_timeout);
           break;
         case 'PUT':
           Log.d('BACKEND_SERVICE: Executing PUT request');
           response = await _client
               .put(
-            uri,
-            headers: _getHeaders(includeAuth: requireAuth),
-            body: body != null ? json.encode(body) : null,
-          )
+                uri,
+                headers: _getHeaders(includeAuth: requireAuth),
+                body: body != null ? json.encode(body) : null,
+              )
               .timeout(_timeout);
           break;
         case 'DELETE':
@@ -204,7 +205,9 @@ class ApiService {
           throw Exception('Unsupported HTTP method: $method');
       }
 
-      Log.i('BACKEND_SERVICE: Request completed with status ${response.statusCode}');
+      Log.i(
+        'BACKEND_SERVICE: Request completed with status ${response.statusCode}',
+      );
       return _handleResponse(response);
     } catch (e) {
       Log.e('BACKEND_SERVICE: Request failed for $method $endpoint', e);
@@ -340,7 +343,9 @@ class ApiService {
         Log.i('BACKEND_SERVICE: Logout successful, clearing tokens');
         await _clearTokens();
       } else {
-        Log.w('BACKEND_SERVICE: Logout API call failed but clearing tokens anyway');
+        Log.w(
+          'BACKEND_SERVICE: Logout API call failed but clearing tokens anyway',
+        );
         await _clearTokens();
       }
 
@@ -362,7 +367,9 @@ class ApiService {
       if (response.success) {
         Log.i('BACKEND_SERVICE: Current user fetched successfully');
       } else {
-        Log.w('BACKEND_SERVICE: Failed to fetch current user - ${response.message}');
+        Log.w(
+          'BACKEND_SERVICE: Failed to fetch current user - ${response.message}',
+        );
       }
 
       return response;
@@ -422,7 +429,9 @@ class ApiService {
       if (apiResponse.success) {
         Log.i('BACKEND_SERVICE: Profile updated successfully');
       } else {
-        Log.w('BACKEND_SERVICE: Profile update failed - ${apiResponse.message}');
+        Log.w(
+          'BACKEND_SERVICE: Profile update failed - ${apiResponse.message}',
+        );
       }
 
       return apiResponse;
@@ -449,7 +458,9 @@ class ApiService {
       if (response.success) {
         Log.i('BACKEND_SERVICE: Profile image deleted successfully');
       } else {
-        Log.w('BACKEND_SERVICE: Profile image deletion failed - ${response.message}');
+        Log.w(
+          'BACKEND_SERVICE: Profile image deletion failed - ${response.message}',
+        );
       }
 
       return response;
@@ -483,7 +494,9 @@ class ApiService {
       if (response.success) {
         Log.i('BACKEND_SERVICE: Backend health check passed');
       } else {
-        Log.w('BACKEND_SERVICE: Backend health check failed - ${response.message}');
+        Log.w(
+          'BACKEND_SERVICE: Backend health check failed - ${response.message}',
+        );
       }
 
       return response;
@@ -560,14 +573,16 @@ class ApiUser {
         email: json['email'] as String,
         emailVerified: json['emailVerified'] as bool? ?? false,
         profileImage:
-        json['profileImage'] != null
-            ? ProfileImage.fromJson(json['profileImage'])
-            : null,
+            json['profileImage'] != null
+                ? ProfileImage.fromJson(json['profileImage'])
+                : null,
         preferences: UserPreferences.fromJson(json['preferences'] ?? {}),
         createdAt: DateTime.parse(json['createdAt']),
         updatedAt: DateTime.parse(json['updatedAt']),
         lastLogin:
-        json['lastLogin'] != null ? DateTime.parse(json['lastLogin']) : null,
+            json['lastLogin'] != null
+                ? DateTime.parse(json['lastLogin'])
+                : null,
       );
       Log.i('BACKEND_SERVICE: ApiUser parsed successfully');
       return user;
@@ -813,7 +828,9 @@ class AuthService {
       final response = await _apiService.deleteProfileImage();
 
       if (!response.success) {
-        Log.w('AUTH_SERVICE: Profile image deletion failed - ${response.message}');
+        Log.w(
+          'AUTH_SERVICE: Profile image deletion failed - ${response.message}',
+        );
         throw Exception(response.message);
       }
       Log.i('AUTH_SERVICE: Profile image deleted successfully');
