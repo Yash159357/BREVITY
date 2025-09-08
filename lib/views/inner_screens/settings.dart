@@ -305,156 +305,183 @@ class _SettingsScreenState extends State<SettingsScreen>
 
     showDialog(
       context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setState) => BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-          child: Dialog(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            child: Container(
-              decoration: BoxDecoration(
-                color: theme.cardColor,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.red.withAlpha(50),
-                    blurRadius: 15,
-                    spreadRadius: 2,
-                  ),
-                ],
-              ),
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(
-                    Icons.warning_amber_rounded,
-                    color: Color.fromARGB(255, 198, 48, 37),
-                    size: 60,
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'Delete Account',
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 198, 48, 37),
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'This action cannot be undone. All your data will be permanently deleted.',
-                    style: theme.textTheme.bodyMedium,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 20),
-                  
-                  // Password input field (shown for all users, but server will determine if needed)
-                  TextField(
-                    controller: passwordController,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: 'Enter your password to confirm',
-                      hintText: 'Password',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      prefixIcon: const Icon(Icons.lock),
-                    ),
-                  ),
-                  
-                  const SizedBox(height: 24),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                        onPressed: isLoading ? null : () => Navigator.pop(context),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey.shade700,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 12,
+      builder:
+          (context) => StatefulBuilder(
+            builder:
+                (context, setState) => BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                  child: Dialog(
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: theme.cardColor,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.red.withAlpha(50),
+                            blurRadius: 15,
+                            spreadRadius: 2,
                           ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: const Text('Cancel'),
+                        ],
                       ),
-                      ElevatedButton(
-                        onPressed: isLoading
-                            ? null
-                            : () async {
-                                final password = passwordController.text.trim();
-                                
-                                setState(() {
-                                  isLoading = true;
-                                });
+                      padding: const EdgeInsets.all(24),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.warning_amber_rounded,
+                            color: Color.fromARGB(255, 198, 48, 37),
+                            size: 60,
+                          ),
+                          const SizedBox(height: 16),
+                          const Text(
+                            'Delete Account',
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 198, 48, 37),
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'This action cannot be undone. All your data will be permanently deleted.',
+                            style: theme.textTheme.bodyMedium,
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 20),
 
-                                try {
-                                  await AuthService().deleteAccount(
-                                    password: password.isEmpty ? null : password,
-                                    context: context,
-                                  );
-                                  
-                                  // If we reach here, deletion was successful
-                                  // The AuthService will handle navigation
-                                  if (context.mounted) {
-                                    Navigator.pop(context);
-                                  }
-                                } catch (e) {
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-                                  
-                                  if (context.mounted) {
-                                    String errorMessage = e.toString();
-                                    // Remove "Exception: " prefix if present
-                                    if (errorMessage.startsWith('Exception: ')) {
-                                      errorMessage = errorMessage.substring(11);
-                                    }
-                                    
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(errorMessage),
-                                        backgroundColor: Colors.red,
-                                        duration: const Duration(seconds: 3),
-                                      ),
-                                    );
-                                  }
-                                }
-                              },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(255, 198, 48, 37),
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 12,
+                          // Password input field (shown for all users, but server will determine if needed)
+                          TextField(
+                            controller: passwordController,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              labelText: 'Enter your password to confirm',
+                              hintText: 'Password',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              prefixIcon: const Icon(Icons.lock),
+                            ),
                           ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: isLoading
-                            ? const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+
+                          const SizedBox(height: 24),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ElevatedButton(
+                                onPressed:
+                                    isLoading
+                                        ? null
+                                        : () => Navigator.pop(context),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.grey.shade700,
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                    vertical: 12,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
                                 ),
-                              )
-                            : const Text('Delete Account'),
+                                child: const Text('Cancel'),
+                              ),
+                              ElevatedButton(
+                                onPressed:
+                                    isLoading
+                                        ? null
+                                        : () async {
+                                          final password =
+                                              passwordController.text.trim();
+
+                                          setState(() {
+                                            isLoading = true;
+                                          });
+
+                                          try {
+                                            await AuthService().deleteAccount(
+                                              password:
+                                                  password.isEmpty
+                                                      ? null
+                                                      : password,
+                                              context: context,
+                                            );
+
+                                            // If we reach here, deletion was successful
+                                            // The AuthService will handle navigation
+                                            if (context.mounted) {
+                                              Navigator.pop(context);
+                                            }
+                                          } catch (e) {
+                                            setState(() {
+                                              isLoading = false;
+                                            });
+
+                                            if (context.mounted) {
+                                              String errorMessage =
+                                                  e.toString();
+                                              // Remove "Exception: " prefix if present
+                                              if (errorMessage.startsWith(
+                                                'Exception: ',
+                                              )) {
+                                                errorMessage = errorMessage
+                                                    .substring(11);
+                                              }
+
+                                              ScaffoldMessenger.of(
+                                                context,
+                                              ).showSnackBar(
+                                                SnackBar(
+                                                  content: Text(errorMessage),
+                                                  backgroundColor: Colors.red,
+                                                  duration: const Duration(
+                                                    seconds: 3,
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                          }
+                                        },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color.fromARGB(
+                                    255,
+                                    198,
+                                    48,
+                                    37,
+                                  ),
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                    vertical: 12,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                child:
+                                    isLoading
+                                        ? const SizedBox(
+                                          width: 20,
+                                          height: 20,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                  Colors.white,
+                                                ),
+                                          ),
+                                        )
+                                        : const Text('Delete Account'),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ],
-              ),
-            ),
+                ),
           ),
-        ),
-      ),
     );
   }
 
@@ -541,7 +568,8 @@ class _SettingsScreenState extends State<SettingsScreen>
                                     childDelegate:
                                         ListWheelChildBuilderDelegate(
                                           builder: (context, index) {
-                                            if (index < 0 || index > 23) return null;
+                                            if (index < 0 || index > 23)
+                                              return null;
                                             return Container(
                                               alignment: Alignment.center,
                                               child: Text(
@@ -607,7 +635,8 @@ class _SettingsScreenState extends State<SettingsScreen>
                                     childDelegate:
                                         ListWheelChildBuilderDelegate(
                                           builder: (context, index) {
-                                            if (index < 0 || index > 11) return null;
+                                            if (index < 0 || index > 11)
+                                              return null;
                                             final minute = index * 5;
                                             return Container(
                                               alignment: Alignment.center,
@@ -806,121 +835,151 @@ class _SettingsScreenState extends State<SettingsScreen>
                         title: "",
                         themeColor: themeState.currentTheme.primaryColor,
                         particleAnimation: _particleAnimationController,
-                        child: state.status == UserProfileStatus.loading
-                            ? Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: themeState.currentTheme.primaryColor.withAlpha(50),
-                              ),
-                              child: CircleAvatar(
-                                radius: 40,
-                                backgroundColor: themeState.currentTheme.primaryColor.withAlpha((0.2 * 255).toInt()),
-                                child: SizedBox(
-                                  width: 24,
-                                  height: 24,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                      theme.brightness == Brightness.light
-                                          ? Colors.black54
-                                          : Colors.white70,
+                        child:
+                            state.status == UserProfileStatus.loading
+                                ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(4),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: themeState
+                                            .currentTheme
+                                            .primaryColor
+                                            .withAlpha(50),
+                                      ),
+                                      child: CircleAvatar(
+                                        radius: 40,
+                                        backgroundColor: themeState
+                                            .currentTheme
+                                            .primaryColor
+                                            .withAlpha((0.2 * 255).toInt()),
+                                        child: SizedBox(
+                                          width: 24,
+                                          height: 24,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                  theme.brightness ==
+                                                          Brightness.light
+                                                      ? Colors.black54
+                                                      : Colors.white70,
+                                                ),
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            Container(
-                              height: 20,
-                              width: 120,
-                              decoration: BoxDecoration(
-                                color: theme.colorScheme.surfaceContainerHighest,
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Container(
-                              height: 16,
-                              width: 180,
-                              decoration: BoxDecoration(
-                                color: theme.colorScheme.surfaceContainerHighest,
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                            ),
-                          ],
-                        )
-                            : Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                gradient: LinearGradient(
-                                  colors: [
-                                    themeState.currentTheme.primaryColor,
-                                    themeState.currentTheme.primaryColor
-                                        .withAlpha(200),
+                                    const SizedBox(height: 16),
+                                    Container(
+                                      height: 20,
+                                      width: 120,
+                                      decoration: BoxDecoration(
+                                        color:
+                                            theme
+                                                .colorScheme
+                                                .surfaceContainerHighest,
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Container(
+                                      height: 16,
+                                      width: 180,
+                                      decoration: BoxDecoration(
+                                        color:
+                                            theme
+                                                .colorScheme
+                                                .surfaceContainerHighest,
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                                : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(4),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            themeState
+                                                .currentTheme
+                                                .primaryColor,
+                                            themeState.currentTheme.primaryColor
+                                                .withAlpha(200),
+                                          ],
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: themeState
+                                                .currentTheme
+                                                .primaryColor
+                                                .withAlpha(125),
+                                            blurRadius: 20,
+                                            spreadRadius: 2,
+                                          ),
+                                        ],
+                                      ),
+                                      child: CircleAvatar(
+                                        radius: 40,
+                                        backgroundColor:
+                                            _hasProfileImage(state, state.user)
+                                                ? Colors.transparent
+                                                : themeState
+                                                    .currentTheme
+                                                    .primaryColor
+                                                    .withAlpha(
+                                                      (0.2 * 255).toInt(),
+                                                    ),
+                                        backgroundImage: _getProfileImage(
+                                          state,
+                                          state.user,
+                                        ),
+                                        child:
+                                            !_hasProfileImage(state, state.user)
+                                                ? Icon(
+                                                  Icons.person,
+                                                  size: 48,
+                                                  color: Colors.white,
+                                                )
+                                                : null,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 16),
+                                    Text(
+                                      state.user?.displayName ?? 'User',
+                                      style: theme.textTheme.headlineSmall
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                            shadows: const [
+                                              Shadow(
+                                                color: Colors.black45,
+                                                blurRadius: 5,
+                                              ),
+                                            ],
+                                          ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      state.user?.email ?? '',
+                                      style: theme.textTheme.bodyMedium
+                                          ?.copyWith(
+                                            color: theme.colorScheme.onSurface
+                                                .withAlpha((0.8 * 255).toInt()),
+                                            shadows: const [
+                                              Shadow(
+                                                color: Colors.black45,
+                                                blurRadius: 5,
+                                              ),
+                                            ],
+                                          ),
+                                    ),
                                   ],
                                 ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: themeState.currentTheme.primaryColor
-                                        .withAlpha(125),
-                                    blurRadius: 20,
-                                    spreadRadius: 2,
-                                  ),
-                                ],
-                              ),
-                              child: CircleAvatar(
-                                radius: 40,
-                                backgroundColor:
-                                _hasProfileImage(state, state.user)
-                                    ? Colors.transparent
-                                    : themeState.currentTheme.primaryColor
-                                    .withAlpha((0.2 * 255).toInt()),
-                                backgroundImage: _getProfileImage(
-                                  state,
-                                  state.user,
-                                ),
-                                child:
-                                !_hasProfileImage(state, state.user)
-                                    ? Icon(
-                                  Icons.person,
-                                  size: 48,
-                                  color: Colors.white,
-                                )
-                                    : null,
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              state.user?.displayName ?? 'User',
-                              style: theme.textTheme.headlineSmall?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                shadows: const [
-                                  Shadow(color: Colors.black45, blurRadius: 5),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              state.user?.email ?? '',
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: theme.colorScheme.onSurface.withAlpha(
-                                  (0.8 * 255).toInt(),
-                                ),
-                                shadows: const [
-                                  Shadow(color: Colors.black45, blurRadius: 5),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
                       ),
                     ),
                   ),
@@ -1055,19 +1114,25 @@ class _SettingsScreenState extends State<SettingsScreen>
                                   icon: Icons.schedule,
                                   title: 'Reminder Time',
                                   subtitle: _reminderTime,
-                                  themeColor: _reminderEnabled
-                                      ? themeState.currentTheme.primaryColor
-                                      : theme.colorScheme.onSurface.withAlpha((0.3 * 255).toInt()),
-                                  titleColor: _reminderEnabled
-                                      ? null
-                                      : theme.colorScheme.onSurface.withAlpha((0.5 * 255).toInt()),
-                                  iconColor: _reminderEnabled
-                                      ? null
-                                      : theme.colorScheme.onSurface.withAlpha((0.3 * 255).toInt()),
+                                  themeColor:
+                                      _reminderEnabled
+                                          ? themeState.currentTheme.primaryColor
+                                          : theme.colorScheme.onSurface
+                                              .withAlpha((0.3 * 255).toInt()),
+                                  titleColor:
+                                      _reminderEnabled
+                                          ? null
+                                          : theme.colorScheme.onSurface
+                                              .withAlpha((0.5 * 255).toInt()),
+                                  iconColor:
+                                      _reminderEnabled
+                                          ? null
+                                          : theme.colorScheme.onSurface
+                                              .withAlpha((0.3 * 255).toInt()),
                                   onTap:
-                                  _reminderEnabled
-                                      ? _showTimePickerDialog
-                                      : null,
+                                      _reminderEnabled
+                                          ? _showTimePickerDialog
+                                          : null,
                                 ),
                               ),
                               _buildAnimatedCard(
