@@ -4,7 +4,7 @@ import 'dart:math' as math;
 import 'package:brevity/controller/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_cropper/image_cropper.dart'; // <-- IMPORT ADDED
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../common_widgets/auth_header.dart';
