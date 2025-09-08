@@ -29,13 +29,18 @@ class UserProfileState extends Equatable {
     bool? hasLoadedFromServer,
   }) {
     try {
-      Log.d("USER_PROFILE_STATE: Creating copyWith - status: ${status ?? this.status}, hasUser: ${(user ?? this.user) != null}, clearLocalImage: $clearLocalImage");
+      Log.d(
+        "USER_PROFILE_STATE: Creating copyWith - status: ${status ?? this.status}, hasUser: ${(user ?? this.user) != null}, clearLocalImage: $clearLocalImage",
+      );
 
       final newState = UserProfileState(
         status: status ?? this.status,
         user: user ?? this.user,
         errorMessage: errorMessage,
-        localProfileImage: clearLocalImage ? null : (localProfileImage ?? this.localProfileImage),
+        localProfileImage:
+            clearLocalImage
+                ? null
+                : (localProfileImage ?? this.localProfileImage),
         hasLoadedFromServer: hasLoadedFromServer ?? this.hasLoadedFromServer,
       );
 
@@ -107,7 +112,13 @@ class UserProfileState extends Equatable {
   List<Object?> get props {
     try {
       Log.d("USER_PROFILE_STATE: Getting props for state comparison");
-      return [status, user, errorMessage, localProfileImage, hasLoadedFromServer];
+      return [
+        status,
+        user,
+        errorMessage,
+        localProfileImage,
+        hasLoadedFromServer,
+      ];
     } catch (e, stackTrace) {
       Log.e("USER_PROFILE_STATE: Error getting props", e, stackTrace);
       return [];
