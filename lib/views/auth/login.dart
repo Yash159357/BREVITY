@@ -103,11 +103,11 @@ class _LoginScreenState extends State<LoginScreen>
     // Start entrance animations
     Future.delayed(
       const Duration(milliseconds: 160),
-          () => _fadeController.forward(),
+      () => _fadeController.forward(),
     );
     Future.delayed(
       const Duration(milliseconds: 300),
-          () => _slideController.forward(),
+      () => _slideController.forward(),
     );
 
     // Add listeners for real-time validation
@@ -131,14 +131,14 @@ class _LoginScreenState extends State<LoginScreen>
     final email = _emailController.text;
     final isValid =
         email.isNotEmpty &&
-            RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
+        RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
     if (_emailValid != isValid) {
       setState(() {
         _emailValid = isValid;
         _emailError =
-        email.isEmpty
-            ? null
-            : (isValid ? null : 'Please enter a valid email');
+            email.isEmpty
+                ? null
+                : (isValid ? null : 'Please enter a valid email');
       });
     }
   }
@@ -150,9 +150,9 @@ class _LoginScreenState extends State<LoginScreen>
       setState(() {
         _passwordValid = isValid;
         _passwordError =
-        password.isEmpty
-            ? null
-            : (isValid ? null : 'Password must be at least 6 characters');
+            password.isEmpty
+                ? null
+                : (isValid ? null : 'Password must be at least 6 characters');
       });
     }
   }
@@ -223,10 +223,12 @@ class _LoginScreenState extends State<LoginScreen>
               children: [
                 Icon(Icons.error_rounded, color: errorColor, size: 20),
                 const SizedBox(width: 8),
-                Expanded(child: Text(
-                  errorMessage,
-                  style: TextStyle(color: Colors.white),
-                )),
+                Expanded(
+                  child: Text(
+                    errorMessage,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
               ],
             ),
             backgroundColor: const Color(0xFF1F2937),
@@ -358,10 +360,10 @@ class _LoginScreenState extends State<LoginScreen>
                     50 + math.cos(_floatAnim.value * 2 * math.pi + offset) * 30;
                 final y =
                     200 +
-                        math.sin(_floatAnim.value * 2 * math.pi + offset) * 20;
+                    math.sin(_floatAnim.value * 2 * math.pi + offset) * 20;
                 final opacity =
                     (math.sin(_floatAnim.value * 2 * math.pi + offset) + 1) *
-                        0.02;
+                    0.02;
 
                 return Positioned(
                   left: x,
@@ -417,12 +419,14 @@ class _LoginScreenState extends State<LoginScreen>
                       // Progress indicator
                       LinearProgressIndicator(
                         value:
-                        (_emailValid && _passwordValid)
-                            ? 1.0
-                            : (_emailValid || _passwordValid)
-                            ? 0.5
-                            : 0.0,
-                        backgroundColor: Colors.white.withAlpha((0.1 * 255).toInt()),
+                            (_emailValid && _passwordValid)
+                                ? 1.0
+                                : (_emailValid || _passwordValid)
+                                ? 0.5
+                                : 0.0,
+                        backgroundColor: Colors.white.withAlpha(
+                          (0.1 * 255).toInt(),
+                        ),
                         valueColor: AlwaysStoppedAnimation(primaryB),
                         minHeight: 2,
                       ),
@@ -464,7 +468,7 @@ class _LoginScreenState extends State<LoginScreen>
                           onTap: () {
                             HapticFeedback.selectionClick();
                             setState(
-                                  () => _obscurePassword = !_obscurePassword,
+                              () => _obscurePassword = !_obscurePassword,
                             );
                           },
                           child: AnimatedSwitcher(
@@ -767,15 +771,15 @@ class _EnhancedTextFieldState extends State<EnhancedTextField>
                 width: _focused ? 2 : 1,
               ),
               boxShadow:
-              _focused
-                  ? [
-                BoxShadow(
-                  color: primaryA.withAlpha((0.1 * 255).toInt()),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ]
-                  : null,
+                  _focused
+                      ? [
+                        BoxShadow(
+                          color: primaryA.withAlpha((0.1 * 255).toInt()),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ]
+                      : null,
             ),
             child: TextFormField(
               controller: widget.controller,
@@ -811,13 +815,13 @@ class _EnhancedTextFieldState extends State<EnhancedTextField>
                   },
                 ),
                 suffixIcon:
-                widget.suffixIcon ??
+                    widget.suffixIcon ??
                     (_hasContent && widget.isValid
                         ? Icon(
-                      Icons.check_circle_rounded,
-                      color: successColor,
-                      size: 20,
-                    )
+                          Icons.check_circle_rounded,
+                          color: successColor,
+                          size: 20,
+                        )
                         : null),
                 border: InputBorder.none,
                 contentPadding: const EdgeInsets.symmetric(
@@ -932,7 +936,9 @@ class _EnhancedSocialButtonState extends State<EnhancedSocialButton>
                     _isHovered
                         ? [
                           BoxShadow(
-                            color: widget.iconColor.withAlpha((0.1 * 255).toInt()),
+                            color: widget.iconColor.withAlpha(
+                              (0.1 * 255).toInt(),
+                            ),
                             blurRadius: 8,
                             offset: const Offset(0, 2),
                           ),

@@ -614,14 +614,14 @@ class AuthService {
   }) async {
     try {
       Log.i('<AUTH_SERVICE> deleteAccount started');
-      
+
       if (_accessToken == null) {
         throw Exception('No access token available');
       }
 
       final uri = Uri.parse('${ApiConfig.usersUrl}/deleteAccount');
       final body = <String, dynamic>{};
-      
+
       // Add password for normal users, googleIdToken for OAuth users
       if (password != null) {
         body['password'] = password.trim();
@@ -634,14 +634,16 @@ class AuthService {
         '<AUTH_SERVICE> deleteAccount request -> URL: $uri, headers: {"Authorization": "Bearer $_accessToken", "Content-Type": "application/json"}',
       );
 
-      final response = await http.delete(
-        uri,
-        headers: {
-          'Authorization': 'Bearer $_accessToken',
-          'Content-Type': 'application/json',
-        },
-        body: json.encode(body),
-      ).timeout(_httpTimeout);
+      final response = await http
+          .delete(
+            uri,
+            headers: {
+              'Authorization': 'Bearer $_accessToken',
+              'Content-Type': 'application/json',
+            },
+            body: json.encode(body),
+          )
+          .timeout(_httpTimeout);
 
       Log.d(
         '<AUTH_SERVICE> deleteAccount response -> status: ${response.statusCode}, body: ${response.body}',
@@ -656,7 +658,10 @@ class AuthService {
         await _clearLocalAuthState();
 
         if (context != null && context.mounted) {
-          _showSuccessSnackBar(context, data['message'] ?? 'Account deleted successfully');
+          _showSuccessSnackBar(
+            context,
+            data['message'] ?? 'Account deleted successfully',
+          );
           context.go('/login');
         }
       } else {
@@ -674,7 +679,7 @@ class AuthService {
 
   // Helper method to check if current user is OAuth-only
   bool get isOAuthOnlyUser {
-     return false;
+    return false;
   }
 
   // Dispose of resources
