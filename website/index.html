@@ -8,35 +8,166 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .grid-pattern {
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0) 100%);
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0) 100%);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            box-shadow: 0 4px 14px 0 rgba(251, 191, 36, 0.3);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 20px 0 rgba(251, 191, 36, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .floating-orb {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            25% {
+                transform: translate(30px, -30px) scale(1.05);
+            }
+
+            50% {
+                transform: translate(-20px, 20px) scale(0.95);
+            }
+
+            75% {
+                transform: translate(-30px, -10px) scale(1.02);
+            }
+        }
+
+        .badge-beta {
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            color: #fbbf24;
+        }
+
+        .feature-card {
+            background: rgba(17, 24, 39, 0.5);
+            border: 1px solid rgba(251, 191, 36, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-card:hover {
+            border-color: rgba(251, 191, 36, 0.3);
+            box-shadow: 0 0 30px rgba(251, 191, 36, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .icon-wrapper {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(245, 158, 11, 0.2) 100%);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        }
+
+        .community-card {
+            background: rgba(17, 24, 39, 0.5);
+            border: 1px solid rgba(251, 191, 36, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .roadmap-active {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        }
+
+        .roadmap-completed {
+            background: #10b981;
+        }
+
+        .roadmap-pending {
+            background: rgba(75, 85, 99, 0.5);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+        }
+
+        .faq-card {
+            background: rgba(17, 24, 39, 0.5);
+            border: 1px solid rgba(251, 191, 36, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .faq-card:hover {
+            border-color: rgba(251, 191, 36, 0.2);
+            background: rgba(17, 24, 39, 0.7);
+        }
+
+        .section-dark {
+            background: rgba(0, 0, 0, 0.5);
+            border-top: 1px solid rgba(251, 191, 36, 0.1);
+            border-bottom: 1px solid rgba(251, 191, 36, 0.1);
+        }
+    </style>
 </head>
 
-<body class="bg-brevity-dark text-white overflow-x-hidden">
+<body class="bg-black text-white overflow-x-hidden">
+
+    <!-- Grid Pattern Background -->
+    <div class="fixed inset-0 grid-pattern pointer-events-none"></div>
 
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-effect border-b border-gray-800">
+    <nav class="fixed w-full z-50 backdrop-blur-md bg-black/50 border-b border-gray-800/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <div class="flex items-center space-x-2">
-                    <div class="w-10 h-10 bg-brevity-blue rounded-lg flex items-center justify-center">
-                        <span class="text-white font-bold text-xl">B</span>
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
+                        <span class="text-black font-bold text-xl">B</span>
                     </div>
-                    <span class="text-xl font-bold text-brevity-blue">BREVITY</span>
+                    <span class="text-xl font-semibold text-white">Brevity</span>
                 </div>
 
                 <div class="hidden md:flex space-x-8">
-                    <a href="#features" class="hover:text-brevity-blue transition-colors">Features</a>
-                    <a href="#how-it-works" class="hover:text-brevity-blue transition-colors">How It Works</a>
-                    <a href="#community" class="hover:text-brevity-blue transition-colors">Community</a>
-                    <a href="#github" class="hover:text-brevity-blue transition-colors">GitHub</a>
-                    <a href="#about" class="hover:text-brevity-blue transition-colors">About</a>
-                    <a href="#roadmap" class="hover:text-brevity-blue transition-colors">Roadmap</a>
-                    <a href="contact_us.html" class="hover:text-brevity-blue transition-colors">Contact</a>
+                    <a href="#features" class="text-gray-300 hover:text-amber-400 transition-colors">Features</a>
+                    <a href="#how-it-works" class="text-gray-300 hover:text-amber-400 transition-colors">How It
+                        Works</a>
+                    <a href="#community" class="text-gray-300 hover:text-amber-400 transition-colors">Community</a>
+                    <a href="#github" class="text-gray-300 hover:text-amber-400 transition-colors">GitHub</a>
+                    <a href="#about" class="text-gray-300 hover:text-amber-400 transition-colors">About</a>
+                    <a href="#roadmap" class="text-gray-300 hover:text-amber-400 transition-colors">Roadmap</a>
+                    <a href="contact_us.html" class="text-gray-300 hover:text-amber-400 transition-colors">Contact</a>
                 </div>
 
-                <div class="flex space-x-4">
-                    <button
-                        class="bg-brevity-blue hover:bg-blue-600 px-6 py-2 rounded-lg font-semibold transition-all hover-glow">
-                        Download
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <i class="fab fa-github text-gray-400"></i>
+                        <span class="text-gray-400 text-sm">281</span>
+                    </div>
+                    <button class="btn-primary px-6 py-2 rounded-xl font-semibold text-black transition-all">
+                        Get Started
                     </button>
                 </div>
             </div>
@@ -44,40 +175,84 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="pt-24 pb-16 relative overflow-hidden">
-        <div class="absolute inset-0 gradient-bg opacity-10"></div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
+    <section class="min-h-screen relative overflow-hidden flex items-center">
+        <!-- Floating orbs for visual effect -->
+        <div class="absolute top-20 right-20 w-96 h-96 floating-orb rounded-full"></div>
+        <div class="absolute bottom-20 left-10 w-64 h-64 floating-orb rounded-full" style="animation-delay: -10s;">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-32 pb-16">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
                 <div class="animate-slide-in-left">
-                    <h1 class="text-5xl md:text-7xl font-bold mb-6 text-glow">
-                        Stay Informed,<br>
-                        <span class="text-brevity-blue">Stay Brief</span>
+                    <!-- Beta Badge -->
+                    <div
+                        class="inline-flex items-center space-x-2 badge-beta px-4 py-2 rounded-full text-sm font-medium mb-8">
+                        <span>WE ARE IN PUBLIC BETA</span>
+                    </div>
+
+                    <!-- Category Label -->
+                    <p class="text-amber-400 font-semibold text-sm uppercase tracking-wider mb-4">MEET BREVITY</p>
+
+                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                        A personal AI assistant<br>
+                        for <span class="text-gradient">overwhelmed readers</span>
                     </h1>
-                    <p class="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
-                        Short, Smart, Straight to the point. Get AI-powered news summaries that respect your time.
+
+                    <p class="text-xl text-gray-400 mb-10 leading-relaxed max-w-xl">
+                        Brevity handles your daily news consumption, so you can focus on what matters.
                     </p>
-                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
+
+                    <div class="flex flex-col sm:flex-row gap-4">
                         <button
-                            class="bg-brevity-blue hover:bg-blue-600 px-8 py-4 rounded-lg text-lg font-semibold transition-all hover-glow flex items-center justify-center space-x-2">
-                            <i class="fab fa-apple"></i>
-                            <span>Download for iOS</span>
+                            class="btn-primary px-8 py-4 rounded-xl text-lg font-semibold text-black transition-all flex items-center justify-center">
+                            Get Started
                         </button>
                         <button
-                            class="border-2 border-brevity-blue text-brevity-blue hover:bg-brevity-blue hover:text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all hover-glow flex items-center justify-center space-x-2">
-                            <i class="fab fa-discord"></i>
-                            <span>Join Discord</span>
+                            class="border border-gray-700 hover:border-amber-400/50 px-8 py-4 rounded-xl text-lg font-semibold transition-all flex items-center justify-center space-x-3 group">
+                            <i class="fab fa-github text-xl group-hover:text-amber-400 transition-colors"></i>
+                            <span>Star on GitHub</span>
                         </button>
                     </div>
                 </div>
 
-                <div class="animate-slide-in-right">
+                <div class="animate-slide-in-right relative">
                     <div class="relative">
+                        <!-- Glowing effect behind image -->
                         <div
-                            class="absolute inset-0 bg-brevity-blue rounded-full filter blur-3xl opacity-20 animate-pulse-slow">
+                            class="absolute inset-0 bg-gradient-to-br from-amber-400/20 to-orange-500/20 rounded-full filter blur-3xl">
                         </div>
-                        <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=800&fit=crop&crop=center"
-                            alt="Brevity Mobile App Preview"
-                            class="relative z-10 mx-auto rounded-3xl shadow-2xl hover-glow max-w-sm w-full">
+
+                        <!-- Abstract visual element -->
+                        <div class="relative mx-auto max-w-md">
+                            <svg viewBox="0 0 400 400" class="w-full h-full animate-pulse-slow">
+                                <defs>
+                                    <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <!-- Interconnected circles representing AI neural connections -->
+                                <circle cx="200" cy="200" r="180" fill="none" stroke="url(#gradient1)" stroke-width="3"
+                                    opacity="0.3" />
+                                <circle cx="200" cy="200" r="150" fill="none" stroke="url(#gradient1)" stroke-width="2"
+                                    opacity="0.4" transform="rotate(45 200 200)" />
+                                <circle cx="200" cy="200" r="120" fill="none" stroke="url(#gradient1)" stroke-width="2"
+                                    opacity="0.5" transform="rotate(-45 200 200)" />
+                                <circle cx="200" cy="100" r="30" fill="url(#gradient1)" opacity="0.8" />
+                                <circle cx="300" cy="200" r="25" fill="url(#gradient1)" opacity="0.7" />
+                                <circle cx="200" cy="300" r="20" fill="url(#gradient1)" opacity="0.6" />
+                                <circle cx="100" cy="200" r="25" fill="url(#gradient1)" opacity="0.7" />
+                                <!-- Connecting lines -->
+                                <line x1="200" y1="100" x2="300" y2="200" stroke="url(#gradient1)" stroke-width="1"
+                                    opacity="0.3" />
+                                <line x1="300" y1="200" x2="200" y2="300" stroke="url(#gradient1)" stroke-width="1"
+                                    opacity="0.3" />
+                                <line x1="200" y1="300" x2="100" y2="200" stroke="url(#gradient1)" stroke-width="1"
+                                    opacity="0.3" />
+                                <line x1="100" y1="200" x2="200" y2="100" stroke="url(#gradient1)" stroke-width="1"
+                                    opacity="0.3" />
+                            </svg>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -92,22 +267,23 @@
                 <div class="carousel-container flex space-x-6 overflow-x-auto pb-4" id="carousel">
                     <div class="flex-none w-80">
                         <img src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400&h=800&fit=crop"
-                            alt="News Feed" class="rounded-2xl shadow-lg hover-glow">
+                            alt="News Feed" class="rounded-2xl shadow-lg hover:shadow-amber-400/20 transition-all">
                         <p class="text-center mt-4 text-gray-300">AI-Powered Summaries</p>
                     </div>
                     <div class="flex-none w-80">
                         <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=800&fit=crop"
-                            alt="AI Chatbot" class="rounded-2xl shadow-lg hover-glow">
+                            alt="AI Chatbot" class="rounded-2xl shadow-lg hover:shadow-amber-400/20 transition-all">
                         <p class="text-center mt-4 text-gray-300">Inbuilt AI Chatbot</p>
                     </div>
                     <div class="flex-none w-80">
                         <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=400&h=800&fit=crop"
-                            alt="Themes" class="rounded-2xl shadow-lg hover-glow">
+                            alt="Themes" class="rounded-2xl shadow-lg hover:shadow-amber-400/20 transition-all">
                         <p class="text-center mt-4 text-gray-300">Custom Themes</p>
                     </div>
                     <div class="flex-none w-80">
                         <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=800&fit=crop"
-                            alt="Real-time Updates" class="rounded-2xl shadow-lg hover-glow">
+                            alt="Real-time Updates"
+                            class="rounded-2xl shadow-lg hover:shadow-amber-400/20 transition-all">
                         <p class="text-center mt-4 text-gray-300">Real-time Updates</p>
                     </div>
                 </div>
@@ -116,57 +292,59 @@
     </section>
 
     <!-- Core Features -->
-    <section id="features" class="py-20 bg-brevity-gray">
+    <section id="features" class="py-20 section-dark">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold text-center mb-16 animate-fade-in">Why Choose Brevity?</h2>
+            <h2 class="text-4xl font-bold text-center mb-4 animate-fade-in">Why Choose Brevity?</h2>
+            <p class="text-center text-gray-400 mb-16 text-lg">Powerful features designed for modern readers</p>
+
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="glass-effect p-8 rounded-2xl hover-glow animate-slide-up">
-                    <div class="w-16 h-16 bg-brevity-blue rounded-full flex items-center justify-center mb-6">
-                        <i class="fas fa-compress-alt text-2xl text-white"></i>
+                <div class="feature-card p-8 rounded-2xl transition-all animate-slide-up">
+                    <div class="icon-wrapper w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-compress-alt text-2xl text-amber-400"></i>
                     </div>
                     <h3 class="text-2xl font-bold mb-4">Short Summaries</h3>
-                    <p class="text-gray-300">AI-generated news summaries that respect your time and deliver key
+                    <p class="text-gray-400">AI-generated news summaries that respect your time and deliver key
                         insights.</p>
                 </div>
 
-                <div class="glass-effect p-8 rounded-2xl hover-glow animate-slide-up" style="animation-delay: 0.1s">
-                    <div class="w-16 h-16 bg-brevity-blue rounded-full flex items-center justify-center mb-6">
-                        <i class="fas fa-robot text-2xl text-white"></i>
+                <div class="feature-card p-8 rounded-2xl transition-all animate-slide-up" style="animation-delay: 0.1s">
+                    <div class="icon-wrapper w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-robot text-2xl text-amber-400"></i>
                     </div>
                     <h3 class="text-2xl font-bold mb-4">AI Chatbot</h3>
-                    <p class="text-gray-300">Inbuilt AI assistant for Q&A and deeper insights on any news topic.</p>
+                    <p class="text-gray-400">Inbuilt AI assistant for Q&A and deeper insights on any news topic.</p>
                 </div>
 
-                <div class="glass-effect p-8 rounded-2xl hover-glow animate-slide-up" style="animation-delay: 0.2s">
-                    <div class="w-16 h-16 bg-brevity-blue rounded-full flex items-center justify-center mb-6">
-                        <i class="fas fa-palette text-2xl text-white"></i>
+                <div class="feature-card p-8 rounded-2xl transition-all animate-slide-up" style="animation-delay: 0.2s">
+                    <div class="icon-wrapper w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-palette text-2xl text-amber-400"></i>
                     </div>
                     <h3 class="text-2xl font-bold mb-4">Custom Themes</h3>
-                    <p class="text-gray-300">Light, dark, and custom themes to match your reading preferences.</p>
+                    <p class="text-gray-400">Light, dark, and custom themes to match your reading preferences.</p>
                 </div>
 
-                <div class="glass-effect p-8 rounded-2xl hover-glow animate-slide-up" style="animation-delay: 0.3s">
-                    <div class="w-16 h-16 bg-brevity-blue rounded-full flex items-center justify-center mb-6">
-                        <i class="fas fa-shield-alt text-2xl text-white"></i>
+                <div class="feature-card p-8 rounded-2xl transition-all animate-slide-up" style="animation-delay: 0.3s">
+                    <div class="icon-wrapper w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-shield-alt text-2xl text-amber-400"></i>
                     </div>
                     <h3 class="text-2xl font-bold mb-4">Secure Auth</h3>
-                    <p class="text-gray-300">Secure authentication with password reset and data protection.</p>
+                    <p class="text-gray-400">Secure authentication with password reset and data protection.</p>
                 </div>
 
-                <div class="glass-effect p-8 rounded-2xl hover-glow animate-slide-up" style="animation-delay: 0.4s">
-                    <div class="w-16 h-16 bg-brevity-blue rounded-full flex items-center justify-center mb-6">
-                        <i class="fas fa-sync-alt text-2xl text-white"></i>
+                <div class="feature-card p-8 rounded-2xl transition-all animate-slide-up" style="animation-delay: 0.4s">
+                    <div class="icon-wrapper w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-sync-alt text-2xl text-amber-400"></i>
                     </div>
                     <h3 class="text-2xl font-bold mb-4">Real-time Updates</h3>
-                    <p class="text-gray-300">Get breaking news instantly with our real-time notification system.</p>
+                    <p class="text-gray-400">Get breaking news instantly with our real-time notification system.</p>
                 </div>
 
-                <div class="glass-effect p-8 rounded-2xl hover-glow animate-slide-up" style="animation-delay: 0.5s">
-                    <div class="w-16 h-16 bg-brevity-blue rounded-full flex items-center justify-center mb-6">
-                        <i class="fas fa-code-branch text-2xl text-white"></i>
+                <div class="feature-card p-8 rounded-2xl transition-all animate-slide-up" style="animation-delay: 0.5s">
+                    <div class="icon-wrapper w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-code-branch text-2xl text-amber-400"></i>
                     </div>
                     <h3 class="text-2xl font-bold mb-4">Open Source</h3>
-                    <p class="text-gray-300">Community-driven development with transparent, accessible code.</p>
+                    <p class="text-gray-400">Community-driven development with transparent, accessible code.</p>
                 </div>
             </div>
         </div>
@@ -175,75 +353,86 @@
     <!-- How It Works -->
     <section id="how-it-works" class="py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold text-center mb-16 animate-fade-in">How It Works</h2>
+            <h2 class="text-4xl font-bold text-center mb-4 animate-fade-in">How It Works</h2>
+            <p class="text-center text-gray-400 mb-16 text-lg">Three simple steps to stay informed</p>
+
             <div class="grid md:grid-cols-3 gap-12">
                 <div class="text-center animate-slide-up">
-                    <div class="w-20 h-20 bg-brevity-blue rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="text-2xl font-bold text-white">1</span>
+                    <div
+                        class="step-number w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                        <span class="text-2xl font-bold text-black">1</span>
                     </div>
                     <h3 class="text-2xl font-bold mb-4">Choose Your Sources</h3>
-                    <p class="text-gray-300">Select from trusted news sources and topics that matter to you.</p>
+                    <p class="text-gray-400">Select from trusted news sources and topics that matter to you.</p>
                 </div>
 
                 <div class="text-center animate-slide-up" style="animation-delay: 0.2s">
-                    <div class="w-20 h-20 bg-brevity-blue rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="text-2xl font-bold text-white">2</span>
+                    <div
+                        class="step-number w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                        <span class="text-2xl font-bold text-black">2</span>
                     </div>
                     <h3 class="text-2xl font-bold mb-4">AI Summarizes</h3>
-                    <p class="text-gray-300">Our AI reads and creates concise, accurate summaries instantly.</p>
+                    <p class="text-gray-400">Our AI reads and creates concise, accurate summaries instantly.</p>
                 </div>
 
                 <div class="text-center animate-slide-up" style="animation-delay: 0.4s">
-                    <div class="w-20 h-20 bg-brevity-blue rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="text-2xl font-bold text-white">3</span>
+                    <div
+                        class="step-number w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                        <span class="text-2xl font-bold text-black">3</span>
                     </div>
                     <h3 class="text-2xl font-bold mb-4">Stay Informed</h3>
-                    <p class="text-gray-300">Receive personalized news that respects your time and preferences.</p>
+                    <p class="text-gray-400">Receive personalized news that respects your time and preferences.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Community -->
-    <section id="community" class="py-20 bg-brevity-gray">
+    <section id="community" class="py-20 section-dark">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold text-center mb-16 animate-fade-in">Join Our Community</h2>
+            <h2 class="text-4xl font-bold text-center mb-4 animate-fade-in">Join Our Community</h2>
+            <p class="text-center text-gray-400 mb-16 text-lg">Be part of something bigger</p>
+
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div class="animate-slide-in-left">
                     <h3 class="text-3xl font-bold mb-6">Built by the Community</h3>
-                    <p class="text-gray-300 mb-8 text-lg">Selected for GSoC 2025, Brevity is open-source and driven by
+                    <p class="text-gray-400 mb-8 text-lg">Selected for GSoC 2025, Brevity is open-source and driven by
                         passionate developers worldwide.</p>
                     <div class="flex space-x-6">
                         <button
-                            class="bg-brevity-blue hover:bg-blue-600 px-6 py-3 rounded-lg font-semibold transition-all hover-glow flex items-center space-x-2">
+                            class="btn-primary px-6 py-3 rounded-xl font-semibold text-black transition-all flex items-center space-x-2">
                             <i class="fab fa-discord text-xl"></i>
                             <span>Join Discord</span>
                         </button>
                         <button
-                            class="bg-gray-800 hover:bg-gray-700 px-6 py-3 rounded-lg font-semibold transition-all hover-glow flex items-center space-x-2">
+                            class="border border-gray-700 hover:border-amber-400/50 px-6 py-3 rounded-xl font-semibold transition-all flex items-center space-x-2">
                             <i class="fab fa-github text-xl"></i>
                             <span>Contribute</span>
                         </button>
                     </div>
                 </div>
                 <div class="animate-slide-in-right">
-                    <div class="glass-effect p-8 rounded-2xl">
+                    <div class="community-card p-8 rounded-2xl">
                         <h4 class="text-xl font-bold mb-4">Contributors</h4>
                         <div class="flex flex-wrap gap-2 mb-6">
-                            <div class="w-12 h-12 bg-brevity-blue rounded-full flex items-center justify-center">
-                                <span class="text-white font-bold">JD</span>
+                            <div
+                                class="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
+                                <span class="text-black font-bold">JD</span>
                             </div>
-                            <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
+                            <div
+                                class="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center">
                                 <span class="text-white font-bold">AS</span>
                             </div>
-                            <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center">
+                            <div
+                                class="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center">
                                 <span class="text-white font-bold">MK</span>
                             </div>
-                            <div class="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center">
+                            <div
+                                class="w-12 h-12 bg-gradient-to-br from-red-400 to-rose-500 rounded-full flex items-center justify-center">
                                 <span class="text-white font-bold">LB</span>
                             </div>
                         </div>
-                        <p class="text-gray-300">Join 100+ contributors making news better for everyone.</p>
+                        <p class="text-gray-400">Join 100+ contributors making news better for everyone.</p>
                     </div>
                 </div>
             </div>
@@ -255,30 +444,30 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold mb-6 animate-fade-in">Open Source on GitHub</h2>
-                <p class="text-xl text-gray-300 animate-fade-in">Contribute to Brevity and help shape the future of news
+                <p class="text-xl text-gray-400 animate-fade-in">Contribute to Brevity and help shape the future of news
                     consumption</p>
             </div>
 
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 <div class="animate-slide-in-left">
-                    <div class="glass-effect p-8 rounded-2xl">
+                    <div class="community-card p-8 rounded-2xl">
                         <div class="flex items-center space-x-4 mb-6">
-                            <i class="fab fa-github text-4xl text-brevity-blue"></i>
+                            <i class="fab fa-github text-4xl text-amber-400"></i>
                             <div>
                                 <h3 class="text-2xl font-bold">github.com/brevity-app/brevity</h3>
-                                <p class="text-gray-400">★ 1.2k • 🍴 240 • MIT License</p>
+                                <p class="text-gray-400">⭐ 1.2k • 🍴 240 • MIT License</p>
                             </div>
                         </div>
-                        <p class="text-gray-300 mb-6">Brevity is a completely open-source project. View our code, report
+                        <p class="text-gray-400 mb-6">Brevity is a completely open-source project. View our code, report
                             issues, suggest features, or contribute directly.</p>
                         <div class="flex space-x-4">
                             <button
-                                class="bg-gray-800 hover:bg-gray-700 px-6 py-3 rounded-lg font-semibold transition-all hover-glow flex items-center space-x-2">
+                                class="btn-primary px-6 py-3 rounded-xl font-semibold text-black transition-all flex items-center space-x-2">
                                 <i class="fas fa-star"></i>
                                 <span>Star on GitHub</span>
                             </button>
                             <button
-                                class="border-2 border-brevity-blue text-brevity-blue hover:bg-brevity-blue hover:text-white px-6 py-3 rounded-lg font-semibold transition-all hover-glow">
+                                class="border border-gray-700 hover:border-amber-400/50 px-6 py-3 rounded-xl font-semibold transition-all">
                                 View Code
                             </button>
                         </div>
@@ -287,26 +476,26 @@
 
                 <div class="animate-slide-in-right">
                     <div class="space-y-6">
-                        <div class="glass-effect p-6 rounded-xl">
+                        <div class="feature-card p-6 rounded-xl">
                             <h4 class="text-lg font-bold mb-2 flex items-center">
-                                <i class="fas fa-code-branch text-brevity-blue mr-3"></i>
+                                <i class="fas fa-code-branch text-amber-400 mr-3"></i>
                                 Contributing
                             </h4>
-                            <p class="text-gray-300">Fork, clone, and submit PRs. We welcome all skill levels!</p>
+                            <p class="text-gray-400">Fork, clone, and submit PRs. We welcome all skill levels!</p>
                         </div>
-                        <div class="glass-effect p-6 rounded-xl">
+                        <div class="feature-card p-6 rounded-xl">
                             <h4 class="text-lg font-bold mb-2 flex items-center">
-                                <i class="fas fa-bug text-brevity-blue mr-3"></i>
+                                <i class="fas fa-bug text-amber-400 mr-3"></i>
                                 Issues & Bugs
                             </h4>
-                            <p class="text-gray-300">Report bugs or request features through GitHub Issues.</p>
+                            <p class="text-gray-400">Report bugs or request features through GitHub Issues.</p>
                         </div>
-                        <div class="glass-effect p-6 rounded-xl">
+                        <div class="feature-card p-6 rounded-xl">
                             <h4 class="text-lg font-bold mb-2 flex items-center">
-                                <i class="fas fa-book text-brevity-blue mr-3"></i>
+                                <i class="fas fa-book text-amber-400 mr-3"></i>
                                 Documentation
                             </h4>
-                            <p class="text-gray-300">Comprehensive docs for developers and contributors.</p>
+                            <p class="text-gray-400">Comprehensive docs for developers and contributors.</p>
                         </div>
                     </div>
                 </div>
@@ -315,35 +504,38 @@
     </section>
 
     <!-- About -->
-    <section id="about" class="py-20 bg-brevity-gray">
+    <section id="about" class="py-20 section-dark">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid lg:grid-cols-2 gap-16 items-center">
                 <div class="animate-slide-in-left">
                     <h2 class="text-4xl font-bold mb-8">Our Mission</h2>
-                    <p class="text-gray-300 text-lg mb-6">
+                    <p class="text-gray-400 text-lg mb-6">
                         In a world overwhelmed by information, Brevity cuts through the noise. We believe everyone
                         deserves access to clear, concise, and unbiased news that respects their time.
                     </p>
-                    <p class="text-gray-300 text-lg mb-8">
+                    <p class="text-gray-400 text-lg mb-8">
                         Our vision is simple: make staying informed effortless, enjoyable, and efficient through
                         AI-powered summaries and community-driven development.
                     </p>
                     <div class="space-y-4">
                         <div class="flex items-center space-x-4">
-                            <div class="w-8 h-8 bg-brevity-blue rounded-full flex items-center justify-center">
-                                <i class="fas fa-check text-white text-sm"></i>
+                            <div
+                                class="w-8 h-8 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-check text-black text-sm"></i>
                             </div>
                             <span class="text-lg">Selected for GSoC 2025</span>
                         </div>
                         <div class="flex items-center space-x-4">
-                            <div class="w-8 h-8 bg-brevity-blue rounded-full flex items-center justify-center">
-                                <i class="fas fa-check text-white text-sm"></i>
+                            <div
+                                class="w-8 h-8 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-check text-black text-sm"></i>
                             </div>
                             <span class="text-lg">100% Open Source</span>
                         </div>
                         <div class="flex items-center space-x-4">
-                            <div class="w-8 h-8 bg-brevity-blue rounded-full flex items-center justify-center">
-                                <i class="fas fa-check text-white text-sm"></i>
+                            <div
+                                class="w-8 h-8 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-check text-black text-sm"></i>
                             </div>
                             <span class="text-lg">Community Driven</span>
                         </div>
@@ -351,7 +543,7 @@
                 </div>
                 <div class="animate-slide-in-right">
                     <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop"
-                        alt="Team collaboration" class="rounded-2xl shadow-lg hover-glow">
+                        alt="Team collaboration" class="rounded-2xl shadow-lg hover:shadow-amber-400/20 transition-all">
                 </div>
             </div>
         </div>
@@ -360,45 +552,48 @@
     <!-- Roadmap -->
     <section id="roadmap" class="py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold text-center mb-16 animate-fade-in">Roadmap</h2>
+            <h2 class="text-4xl font-bold text-center mb-4 animate-fade-in">Roadmap</h2>
+            <p class="text-center text-gray-400 mb-16 text-lg">Our journey to revolutionize news consumption</p>
+
             <div class="space-y-8">
                 <div class="flex items-start space-x-6 animate-slide-in-left">
-                    <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <div
+                        class="roadmap-completed w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
                         <i class="fas fa-check text-white"></i>
                     </div>
                     <div>
                         <h3 class="text-xl font-bold text-green-400">Q1 2025 - GSoC Selection</h3>
-                        <p class="text-gray-300">Selected for Google Summer of Code 2025</p>
+                        <p class="text-gray-400">Selected for Google Summer of Code 2025</p>
                     </div>
                 </div>
 
                 <div class="flex items-start space-x-6 animate-slide-in-left" style="animation-delay: 0.1s">
-                    <div class="w-12 h-12 bg-brevity-blue rounded-full flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-cog text-white animate-spin"></i>
+                    <div class="roadmap-active w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-cog text-black animate-spin"></i>
                     </div>
                     <div>
-                        <h3 class="text-xl font-bold text-brevity-blue">Q2 2025 - Core Development</h3>
-                        <p class="text-gray-300">AI summarization, chatbot integration, theme customization</p>
+                        <h3 class="text-xl font-bold text-gradient">Q2 2025 - Core Development</h3>
+                        <p class="text-gray-400">AI summarization, chatbot integration, theme customization</p>
                     </div>
                 </div>
 
                 <div class="flex items-start space-x-6 animate-slide-in-left" style="animation-delay: 0.2s">
-                    <div class="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-clock text-white"></i>
+                    <div class="roadmap-pending w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-clock text-gray-300"></i>
                     </div>
                     <div>
-                        <h3 class="text-xl font-bold text-gray-400">Q3 2025 - Beta Release</h3>
-                        <p class="text-gray-300">Public beta with core features and community feedback integration</p>
+                        <h3 class="text-xl font-bold text-gray-300">Q3 2025 - Beta Release</h3>
+                        <p class="text-gray-400">Public beta with core features and community feedback integration</p>
                     </div>
                 </div>
 
                 <div class="flex items-start space-x-6 animate-slide-in-left" style="animation-delay: 0.3s">
-                    <div class="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-star text-white"></i>
+                    <div class="roadmap-pending w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-star text-gray-300"></i>
                     </div>
                     <div>
-                        <h3 class="text-xl font-bold text-gray-400">Q4 2025 - v1.0 Launch</h3>
-                        <p class="text-gray-300">Full release with advanced features and multi-platform support</p>
+                        <h3 class="text-xl font-bold text-gray-300">Q4 2025 - v1.0 Launch</h3>
+                        <p class="text-gray-400">Full release with advanced features and multi-platform support</p>
                     </div>
                 </div>
             </div>
@@ -406,46 +601,57 @@
     </section>
 
     <!-- FAQ -->
-    <section class="py-20 bg-brevity-gray">
+    <section class="py-20 section-dark">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold text-center mb-16 animate-fade-in">Frequently Asked Questions</h2>
+            <h2 class="text-4xl font-bold text-center mb-4 animate-fade-in">Frequently Asked Questions</h2>
+            <p class="text-center text-gray-400 mb-16 text-lg">Everything you need to know about Brevity</p>
+
             <div class="space-y-4">
-                <div class="glass-effect rounded-lg overflow-hidden">
-                    <button
-                        class="w-full p-6 text-left flex justify-between items-center hover:bg-gray-700 transition-colors faq-toggle"
+                <div class="faq-card rounded-xl overflow-hidden transition-all">
+                    <button class="w-full p-6 text-left flex justify-between items-center transition-colors faq-toggle"
                         data-target="0">
                         <span class="text-lg font-semibold">How accurate are the AI summaries?</span>
-                        <i class="fas fa-chevron-down transition-transform duration-300 faq-icon"></i>
+                        <i class="fas fa-chevron-down transition-transform duration-300 faq-icon text-amber-400"></i>
                     </button>
                     <div class="px-6 pb-6 hidden faq-content">
-                        <p class="text-gray-300">Our AI achieves high accuracy through advanced NLP and continuous
+                        <p class="text-gray-400">Our AI achieves high accuracy through advanced NLP and continuous
                             learning from user feedback and community contributions.</p>
                     </div>
                 </div>
 
-                <div class="glass-effect rounded-lg overflow-hidden">
-                    <button
-                        class="w-full p-6 text-left flex justify-between items-center hover:bg-gray-700 transition-colors faq-toggle"
+                <div class="faq-card rounded-xl overflow-hidden transition-all">
+                    <button class="w-full p-6 text-left flex justify-between items-center transition-colors faq-toggle"
                         data-target="1">
                         <span class="text-lg font-semibold">Is Brevity completely free?</span>
-                        <i class="fas fa-chevron-down transition-transform duration-300 faq-icon"></i>
+                        <i class="fas fa-chevron-down transition-transform duration-300 faq-icon text-amber-400"></i>
                     </button>
                     <div class="px-6 pb-6 hidden faq-content">
-                        <p class="text-gray-300">Yes! As an open-source project, Brevity is completely free to use,
+                        <p class="text-gray-400">Yes! As an open-source project, Brevity is completely free to use,
                             modify, and distribute under the MIT license.</p>
                     </div>
                 </div>
 
-                <div class="glass-effect rounded-lg overflow-hidden">
-                    <button
-                        class="w-full p-6 text-left flex justify-between items-center hover:bg-gray-700 transition-colors faq-toggle"
+                <div class="faq-card rounded-xl overflow-hidden transition-all">
+                    <button class="w-full p-6 text-left flex justify-between items-center transition-colors faq-toggle"
                         data-target="2">
                         <span class="text-lg font-semibold">How can I contribute to Brevity?</span>
-                        <i class="fas fa-chevron-down transition-transform duration-300 faq-icon"></i>
+                        <i class="fas fa-chevron-down transition-transform duration-300 faq-icon text-amber-400"></i>
                     </button>
                     <div class="px-6 pb-6 hidden faq-content">
-                        <p class="text-gray-300">Join our GitHub repository, Discord community, or contribute through
+                        <p class="text-gray-400">Join our GitHub repository, Discord community, or contribute through
                             code, design, documentation, or testing. All skill levels welcome!</p>
+                    </div>
+                </div>
+
+                <div class="faq-card rounded-xl overflow-hidden transition-all">
+                    <button class="w-full p-6 text-left flex justify-between items-center transition-colors faq-toggle"
+                        data-target="3">
+                        <span class="text-lg font-semibold">What makes Brevity different?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300 faq-icon text-amber-400"></i>
+                    </button>
+                    <div class="px-6 pb-6 hidden faq-content">
+                        <p class="text-gray-400">Brevity combines AI-powered summarization with an open-source approach,
+                            giving users both cutting-edge technology and complete transparency.</p>
                     </div>
                 </div>
             </div>
@@ -453,25 +659,26 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-black py-12">
+    <footer class="bg-black py-12 border-t border-gray-800/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid md:grid-cols-4 gap-8">
                 <div>
                     <div class="flex items-center space-x-2 mb-6">
-                        <div class="w-10 h-10 bg-brevity-blue rounded-lg flex items-center justify-center">
-                            <span class="text-white font-bold text-xl">B</span>
+                        <div
+                            class="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center">
+                            <span class="text-black font-bold text-xl">B</span>
                         </div>
-                        <span class="text-xl font-bold text-brevity-blue">BREVITY</span>
+                        <span class="text-xl font-bold">Brevity</span>
                     </div>
                     <p class="text-gray-400 mb-6">Short, Smart, Straight to the point.</p>
                     <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-brevity-blue transition-colors">
+                        <a href="#" class="text-gray-400 hover:text-amber-400 transition-colors">
                             <i class="fab fa-github text-xl"></i>
                         </a>
-                        <a href="#" class="text-gray-400 hover:text-brevity-blue transition-colors">
+                        <a href="#" class="text-gray-400 hover:text-amber-400 transition-colors">
                             <i class="fab fa-discord text-xl"></i>
                         </a>
-                        <a href="#" class="text-gray-400 hover:text-brevity-blue transition-colors">
+                        <a href="#" class="text-gray-400 hover:text-amber-400 transition-colors">
                             <i class="fab fa-twitter text-xl"></i>
                         </a>
                     </div>
@@ -480,32 +687,31 @@
                 <div>
                     <h4 class="text-lg font-semibold mb-6">Product</h4>
                     <ul class="space-y-3 text-gray-400">
-                        <li><a href="#features" class="hover:text-brevity-blue transition-colors">Features</a></li>
-                        <li><a href="#how-it-works" class="hover:text-brevity-blue transition-colors">How It Works</a>
-                        </li>
-                        <li><a href="#github" class="hover:text-brevity-blue transition-colors">GitHub</a></li>
-                        <li><a href="#roadmap" class="hover:text-brevity-blue transition-colors">Roadmap</a></li>
+                        <li><a href="#features" class="hover:text-amber-400 transition-colors">Features</a></li>
+                        <li><a href="#how-it-works" class="hover:text-amber-400 transition-colors">How It Works</a></li>
+                        <li><a href="#github" class="hover:text-amber-400 transition-colors">GitHub</a></li>
+                        <li><a href="#roadmap" class="hover:text-amber-400 transition-colors">Roadmap</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <h4 class="text-lg font-semibold mb-6">Community</h4>
                     <ul class="space-y-3 text-gray-400">
-                        <li><a href="#about" class="hover:text-brevity-blue transition-colors">About</a></li>
-                        <li><a href="#community" class="hover:text-brevity-blue transition-colors">Contributors</a></li>
-                        <li><a href="contact.html" class="hover:text-brevity-blue transition-colors">Contact</a></li>
-                        <li><a href="#" class="hover:text-brevity-blue transition-colors">Blog</a></li>
+                        <li><a href="#about" class="hover:text-amber-400 transition-colors">About</a></li>
+                        <li><a href="#community" class="hover:text-amber-400 transition-colors">Contributors</a></li>
+                        <li><a href="contact.html" class="hover:text-amber-400 transition-colors">Contact</a></li>
+                        <li><a href="#" class="hover:text-amber-400 transition-colors">Blog</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <h4 class="text-lg font-semibold mb-6">Legal</h4>
                     <ul class="space-y-3 text-gray-400">
-                        <li><a href="privacy.html" class="hover:text-brevity-blue transition-colors">Privacy Policy</a>
+                        <li><a href="privacy.html" class="hover:text-amber-400 transition-colors">Privacy Policy</a>
                         </li>
-                        <li><a href="#" class="hover:text-brevity-blue transition-colors">Terms of Service</a></li>
-                        <li><a href="#" class="hover:text-brevity-blue transition-colors">MIT License</a></li>
-                        <li><a href="contact.html" class="hover:text-brevity-blue transition-colors">Support</a></li>
+                        <li><a href="#" class="hover:text-amber-400 transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-amber-400 transition-colors">MIT License</a></li>
+                        <li><a href="contact.html" class="hover:text-amber-400 transition-colors">Support</a></li>
                     </ul>
                 </div>
             </div>
@@ -514,9 +720,9 @@
                 <div class="flex flex-col md:flex-row justify-between items-center">
                     <p class="text-gray-400 mb-4 md:mb-0">© 2025 Brevity. Open Source under MIT License.</p>
                     <div class="flex space-x-6 text-gray-400 text-sm">
-                        <a href="privacy_policy.html" class="hover:text-brevity-blue transition-colors">Privacy</a>
-                        <a href="#" class="hover:text-brevity-blue transition-colors">Terms</a>
-                        <a href="contact_us.html" class="hover:text-brevity-blue transition-colors">Contact</a>
+                        <a href="privacy_policy.html" class="hover:text-amber-400 transition-colors">Privacy</a>
+                        <a href="#" class="hover:text-amber-400 transition-colors">Terms</a>
+                        <a href="contact_us.html" class="hover:text-amber-400 transition-colors">Contact</a>
                     </div>
                 </div>
             </div>
