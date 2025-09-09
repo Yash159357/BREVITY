@@ -1,0 +1,170 @@
+/* Tailwind Config */
+:root {
+    --brevity-blue: #4F46E5;
+    --brevity-dark: #0F172A;
+    --brevity-gray: #1E293B;
+}
+
+/* Custom Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideInLeft {
+    from { transform: translateX(-30px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(30px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.6s ease-out;
+}
+
+.animate-slide-up {
+    animation: slideUp 0.6s ease-out;
+}
+
+.animate-slide-in-left {
+    animation: slideInLeft 0.6s ease-out;
+}
+
+.animate-slide-in-right {
+    animation: slideInRight 0.6s ease-out;
+}
+
+.animate-bounce-slow {
+    animation: bounce 2s infinite;
+}
+
+.animate-pulse-slow {
+    animation: pulse 3s infinite;
+}
+
+/* Custom Styles */
+.gradient-bg {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.glass-effect {
+    backdrop-filter: blur(10px);
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hover-glow:hover {
+    box-shadow: 0 0 20px rgba(79, 70, 229, 0.3);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+.text-glow {
+    text-shadow: 0 0 20px rgba(79, 70, 229, 0.5);
+}
+
+.carousel-container {
+    scroll-behavior: smooth;
+}
+
+.bg-brevity-dark {
+    background-color: var(--brevity-dark);
+}
+
+.bg-brevity-gray {
+    background-color: var(--brevity-gray);
+}
+
+.bg-brevity-blue {
+    background-color: var(--brevity-blue);
+}
+
+.text-brevity-blue {
+    color: var(--brevity-blue);
+}
+
+.border-brevity-blue {
+    border-color: var(--brevity-blue);
+}
+
+/* Loading Animation */
+body {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+body.loaded {
+    opacity: 1;
+}
+
+/* Contact Page Styles */
+.contact-card {
+    transition: all 0.3s ease;
+}
+
+.contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(79, 70, 229, 0.2);
+}
+
+/* Privacy Page Styles */
+.privacy-section {
+    margin-bottom: 2rem;
+}
+
+.privacy-section h3 {
+    color: var(--brevity-blue);
+    margin-bottom: 1rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .text-glow {
+        font-size: 3rem;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .carousel-container {
+        padding-left: 1rem;
+    }
+}
+
+/* Smooth Transitions */
+* {
+    scroll-behavior: smooth;
+}
+
+a, button {
+    transition: all 0.3s ease;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--brevity-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--brevity-blue);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #6366f1;
+}
