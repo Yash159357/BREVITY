@@ -13,11 +13,15 @@ const Color panelBottom = Color(0xFF111827);
 const Color mutedText = Color(0xFF9AA8BF);
 
 class TutorialOverlay {
-  static void showTutorial(BuildContext context, {
+  static void showTutorial(
+    BuildContext context, {
     required GlobalKey swipeRightKey,
     required GlobalKey swipeUpKey,
     required GlobalKey chatbotKey,
     required GlobalKey headlineKey,
+    required GlobalKey likeKey,
+    required GlobalKey dislikeKey,
+    required GlobalKey speakerKey,
     required VoidCallback onFinish,
   }) {
     List<TargetFocus> targets = [];
@@ -110,7 +114,7 @@ class TutorialOverlay {
       ),
     );
 
-// Target 2: Swipe right for dashboard
+    // Target 2: Swipe right for dashboard
     targets.add(
       TargetFocus(
         identify: "swipe_right",
@@ -363,6 +367,258 @@ class TutorialOverlay {
         ],
         shape: ShapeLightFocus.Circle,
         radius: 30,
+      ),
+    );
+
+    // Target 5: Like button
+    targets.add(
+      TargetFocus(
+        identify: "like_button",
+        keyTarget: likeKey,
+        alignSkip: Alignment.topCenter,
+        enableOverlayTab: true,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [panelTop, panelBottom],
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: primaryA.withOpacity(0.3),
+                    width: 1,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.4),
+                      blurRadius: 20,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [Color(0xFF10B981), Color(0xFF34D399)],
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.thumb_up,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      "Like News Articles",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: -0.5,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      "Tap thumbs up to like articles and improve your personalized feed.",
+                      style: TextStyle(
+                        color: mutedText,
+                        fontSize: 14,
+                        height: 1.4,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
+        shape: ShapeLightFocus.Circle,
+        radius: 25,
+      ),
+    );
+
+    // Target 6: Dislike button
+    targets.add(
+      TargetFocus(
+        identify: "dislike_button",
+        keyTarget: dislikeKey,
+        alignSkip: Alignment.topCenter,
+        enableOverlayTab: true,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [panelTop, panelBottom],
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: primaryA.withOpacity(0.3),
+                    width: 1,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.4),
+                      blurRadius: 20,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [Color(0xFFE91E63), Color(0xFFF06292)],
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.thumb_down,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      "Dislike News Articles",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: -0.5,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      "Tap thumbs down to dislike articles and see fewer similar stories.",
+                      style: TextStyle(
+                        color: mutedText,
+                        fontSize: 14,
+                        height: 1.4,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
+        shape: ShapeLightFocus.Circle,
+        radius: 25,
+      ),
+    );
+
+    // Target 7: TTS Speaker
+    targets.add(
+      TargetFocus(
+        identify: "tts_speaker",
+        keyTarget: speakerKey,
+        alignSkip: Alignment.topCenter,
+        enableOverlayTab: true,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [panelTop, panelBottom],
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: primaryA.withOpacity(0.3),
+                    width: 1,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.4),
+                      blurRadius: 20,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [Color(0xFFF59E0B), Color(0xFFFBBF24)],
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.volume_up,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      "Listen to News",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: -0.5,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      "Tap the speaker icon to hear the news article read aloud.",
+                      style: TextStyle(
+                        color: mutedText,
+                        fontSize: 14,
+                        height: 1.4,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
+        shape: ShapeLightFocus.Circle,
+        radius: 20,
       ),
     );
 

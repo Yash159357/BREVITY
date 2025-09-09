@@ -15,20 +15,27 @@ class BookmarkServices {
 
   /// Save bookmarks to local storage
   Future<void> _saveBookmarksToLocal(List<Article> bookmarks) async {
-    Log.i('BOOKMARK_SERVICES: Saving ${bookmarks.length} bookmarks to local storage');
+    Log.i(
+      'BOOKMARK_SERVICES: Saving ${bookmarks.length} bookmarks to local storage',
+    );
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      final bookmarksJson = bookmarks.map((article) => {
-        'title': article.title,
-        'description': article.description,
-        'url': article.url,
-        'urlToImage': article.urlToImage,
-        'publishedAt': article.publishedAt.toIso8601String(),
-        'sourceName': article.sourceName,
-        'author': article.author,
-        'content': article.content,
-      }).toList();
+      final bookmarksJson =
+          bookmarks
+              .map(
+                (article) => {
+                  'title': article.title,
+                  'description': article.description,
+                  'url': article.url,
+                  'urlToImage': article.urlToImage,
+                  'publishedAt': article.publishedAt.toIso8601String(),
+                  'sourceName': article.sourceName,
+                  'author': article.author,
+                  'content': article.content,
+                },
+              )
+              .toList();
       await prefs.setString(_bookmarksKey, json.encode(bookmarksJson));
 
       Log.d('BOOKMARK_SERVICES: Successfully saved bookmarks to local storage');
@@ -51,9 +58,12 @@ class BookmarkServices {
       }
 
       final List<dynamic> bookmarksJson = json.decode(bookmarksString);
-      final bookmarks = bookmarksJson.map((json) => Article.fromJson(json)).toList();
+      final bookmarks =
+          bookmarksJson.map((json) => Article.fromJson(json)).toList();
 
-      Log.d('BOOKMARK_SERVICES: Loaded ${bookmarks.length} bookmarks from local storage');
+      Log.d(
+        'BOOKMARK_SERVICES: Loaded ${bookmarks.length} bookmarks from local storage',
+      );
       return bookmarks;
     } catch (e) {
       Log.e('BOOKMARK_SERVICES: Error loading bookmarks from local storage', e);
@@ -68,25 +78,33 @@ class BookmarkServices {
     try {
       final token = _authService.accessToken;
       if (token == null) {
-        Log.w('BOOKMARK_SERVICES: User not authenticated, cannot fetch from backend');
+        Log.w(
+          'BOOKMARK_SERVICES: User not authenticated, cannot fetch from backend',
+        );
         throw Exception('User not authenticated');
       }
 
-      final response = await http.get(
-        Uri.parse(ApiConfig.bookmarksUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-      ).timeout(_httpTimeout);
+      final response = await http
+          .get(
+            Uri.parse(ApiConfig.bookmarksUrl),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $token',
+            },
+          )
+          .timeout(_httpTimeout);
 
-      Log.d('BOOKMARK_SERVICES: Backend response status: ${response.statusCode}');
+      Log.d(
+        'BOOKMARK_SERVICES: Backend response status: ${response.statusCode}',
+      );
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body) as List;
         final bookmarks = data.map((json) => Article.fromJson(json)).toList();
 
-        Log.i('BOOKMARK_SERVICES: Successfully fetched ${bookmarks.length} bookmarks from backend');
+        Log.i(
+          'BOOKMARK_SERVICES: Successfully fetched ${bookmarks.length} bookmarks from backend',
+        );
 
         // Save to local storage for future use
         await _saveBookmarksToLocal(bookmarks);
@@ -95,7 +113,9 @@ class BookmarkServices {
         Log.d('BOOKMARK_SERVICES: No bookmarks found on backend (404)');
         return [];
       } else {
-        Log.e('BOOKMARK_SERVICES: Backend fetch failed with status: ${response.statusCode}');
+        Log.e(
+          'BOOKMARK_SERVICES: Backend fetch failed with status: ${response.statusCode}',
+        );
         throw Exception('Failed to fetch bookmarks: ${response.statusCode}');
       }
     } catch (e) {
@@ -120,7 +140,9 @@ class BookmarkServices {
     try {
       // Get local data immediately for instant loading
       final localBookmarks = await _loadBookmarksFromLocal();
-      Log.d('BOOKMARK_SERVICES: Returned ${localBookmarks.length} local bookmarks, starting background sync');
+      Log.d(
+        'BOOKMARK_SERVICES: Returned ${localBookmarks.length} local bookmarks, starting background sync',
+      );
 
       // Sync with backend in background
       _syncWithBackendInBackground(onBackendDataLoaded);
@@ -140,7 +162,9 @@ class BookmarkServices {
       final backendBookmarks = await _getBookmarksFromBackendSilent();
       if (backendBookmarks.isNotEmpty) {
         await _saveBookmarksToLocal(backendBookmarks);
-        Log.i('BOOKMARK_SERVICES: Background sync completed with ${backendBookmarks.length} bookmarks');
+        Log.i(
+          'BOOKMARK_SERVICES: Background sync completed with ${backendBookmarks.length} bookmarks',
+        );
         onComplete?.call(backendBookmarks);
       } else {
         Log.d('BOOKMARK_SERVICES: Background sync completed with no bookmarks');
@@ -152,7 +176,9 @@ class BookmarkServices {
 
   /// Get user's bookmarks (fetch from backend and merge with local)
   Future<List<Article>> getBookmarks() async {
-    Log.i('BOOKMARK_SERVICES: Getting bookmarks (backend first, local fallback)');
+    Log.i(
+      'BOOKMARK_SERVICES: Getting bookmarks (backend first, local fallback)',
+    );
 
     try {
       // Always fetch from backend first to get latest data
@@ -161,16 +187,23 @@ class BookmarkServices {
       if (backendBookmarks.isNotEmpty) {
         // Save the latest backend data to local storage
         await _saveBookmarksToLocal(backendBookmarks);
-        Log.d('BOOKMARK_SERVICES: Using backend data (${backendBookmarks.length} bookmarks)');
+        Log.d(
+          'BOOKMARK_SERVICES: Using backend data (${backendBookmarks.length} bookmarks)',
+        );
         return backendBookmarks;
       }
 
       // If backend fails or returns empty, fallback to local storage
       final localBookmarks = await _loadBookmarksFromLocal();
-      Log.d('BOOKMARK_SERVICES: Using local fallback data (${localBookmarks.length} bookmarks)');
+      Log.d(
+        'BOOKMARK_SERVICES: Using local fallback data (${localBookmarks.length} bookmarks)',
+      );
       return localBookmarks;
     } catch (e) {
-      Log.e('BOOKMARK_SERVICES: Error getting bookmarks, falling back to local', e);
+      Log.e(
+        'BOOKMARK_SERVICES: Error getting bookmarks, falling back to local',
+        e,
+      );
       // Fallback to local storage if backend fails
       return await _loadBookmarksFromLocal();
     }
@@ -187,24 +220,30 @@ class BookmarkServices {
         return [];
       }
 
-      final response = await http.get(
-        Uri.parse(ApiConfig.bookmarksUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-      ).timeout(_httpTimeout);
+      final response = await http
+          .get(
+            Uri.parse(ApiConfig.bookmarksUrl),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $token',
+            },
+          )
+          .timeout(_httpTimeout);
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body) as List;
         final bookmarks = data.map((json) => Article.fromJson(json)).toList();
-        Log.d('BOOKMARK_SERVICES: Silent fetch successful (${bookmarks.length} bookmarks)');
+        Log.d(
+          'BOOKMARK_SERVICES: Silent fetch successful (${bookmarks.length} bookmarks)',
+        );
         return bookmarks;
       } else if (response.statusCode == 404) {
         Log.d('BOOKMARK_SERVICES: Silent fetch - no bookmarks (404)');
         return [];
       } else {
-        Log.d('BOOKMARK_SERVICES: Silent fetch failed with status: ${response.statusCode}');
+        Log.d(
+          'BOOKMARK_SERVICES: Silent fetch failed with status: ${response.statusCode}',
+        );
         return [];
       }
     } catch (e) {
@@ -235,7 +274,9 @@ class BookmarkServices {
       await clearLocalBookmarks();
       // Fetch fresh data from backend
       final refreshedBookmarks = await _getBookmarksFromBackend();
-      Log.i('BOOKMARK_SERVICES: Force refresh completed (${refreshedBookmarks.length} bookmarks)');
+      Log.i(
+        'BOOKMARK_SERVICES: Force refresh completed (${refreshedBookmarks.length} bookmarks)',
+      );
       return refreshedBookmarks;
     } catch (e) {
       Log.e('BOOKMARK_SERVICES: Error refreshing bookmarks from backend', e);
@@ -254,28 +295,34 @@ class BookmarkServices {
         throw Exception('User not authenticated');
       }
 
-      final response = await http.post(
-        Uri.parse(ApiConfig.bookmarksUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-        body: json.encode({
-          'title': article.title,
-          'description': article.description,
-          'url': article.url,
-          'urlToImage': article.urlToImage,
-          'publishedAt': article.publishedAt.toIso8601String(),
-          'sourceName': article.sourceName,
-          'author': article.author,
-          'content': article.content,
-        }),
-      ).timeout(_httpTimeout);
+      final response = await http
+          .post(
+            Uri.parse(ApiConfig.bookmarksUrl),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $token',
+            },
+            body: json.encode({
+              'title': article.title,
+              'description': article.description,
+              'url': article.url,
+              'urlToImage': article.urlToImage,
+              'publishedAt': article.publishedAt.toIso8601String(),
+              'sourceName': article.sourceName,
+              'author': article.author,
+              'content': article.content,
+            }),
+          )
+          .timeout(_httpTimeout);
 
-      Log.d('BOOKMARK_SERVICES: Bookmark toggle response status: ${response.statusCode}');
+      Log.d(
+        'BOOKMARK_SERVICES: Bookmark toggle response status: ${response.statusCode}',
+      );
 
       if (response.statusCode != 200 && response.statusCode != 201) {
-        Log.e('BOOKMARK_SERVICES: Bookmark toggle failed with status: ${response.statusCode}');
+        Log.e(
+          'BOOKMARK_SERVICES: Bookmark toggle failed with status: ${response.statusCode}',
+        );
         throw Exception('Failed to toggle bookmark: ${response.statusCode}');
       }
 
@@ -298,7 +345,9 @@ class BookmarkServices {
 
     try {
       final localBookmarks = await _loadBookmarksFromLocal();
-      final existingIndex = localBookmarks.indexWhere((a) => a.url == article.url);
+      final existingIndex = localBookmarks.indexWhere(
+        (a) => a.url == article.url,
+      );
 
       if (existingIndex >= 0) {
         // Remove if already bookmarked
@@ -328,12 +377,17 @@ class BookmarkServices {
       Log.d('BOOKMARK_SERVICES: Bookmark check result for $url: $isBookmarked');
       return isBookmarked;
     } catch (e) {
-      Log.e('BOOKMARK_SERVICES: Error checking bookmark status, falling back to local', e);
+      Log.e(
+        'BOOKMARK_SERVICES: Error checking bookmark status, falling back to local',
+        e,
+      );
       // Fallback to local storage if backend fails
       final localBookmarks = await _loadBookmarksFromLocal();
       final isBookmarked = localBookmarks.any((a) => a.url == url);
 
-      Log.d('BOOKMARK_SERVICES: Local bookmark check result for $url: $isBookmarked');
+      Log.d(
+        'BOOKMARK_SERVICES: Local bookmark check result for $url: $isBookmarked',
+      );
       return isBookmarked;
     }
   }

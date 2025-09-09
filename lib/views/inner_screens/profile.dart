@@ -8,6 +8,8 @@ import 'package:brevity/controller/cubit/user_profile/user_profile_state.dart';
 import 'package:brevity/views/common_widgets/common_appbar.dart';
 import 'package:brevity/models/theme_model.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/services.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -65,9 +67,9 @@ class _ProfileScreenState extends State<ProfileScreen>
 
     // Only proceed if there are changes
     if (changedFields.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('No changes to save')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('No changes to save')));
       return;
     }
 
@@ -75,23 +77,80 @@ class _ProfileScreenState extends State<ProfileScreen>
     userProfileCubit
         .updateProfilePartial(changedFields)
         .then((_) {
-      if (!mounted) return;
+          if (!mounted) return;
 
-      // Update original values after successful save
-      setState(() {
-        _originalName = _nameController.text.trim();
-        _selectedImage = null; // Reset selected image after save
-      });
+          // Update original values after successful save
+          setState(() {
+            _originalName = _nameController.text.trim();
+            _selectedImage = null; // Reset selected image after save
+          });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Profile updated successfully')),
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Profile updated successfully')),
+          );
+        })
+        .catchError((error) {
+          if (!mounted) return;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error updating profile: $error')),
+          );
+        });
+  }
+
+  // UPDATED HELPER METHOD FOR CROPPING
+  Future<File?> _cropImage(File imageFile) async {
+    final theme = Theme.of(context);
+    final currentTheme = context.read<ThemeCubit>().currentTheme;
+
+    // Save the original status bar style
+    final originalSystemUiOverlayStyle = SystemChrome.latestStyle;
+
+    try {
+      // Set the status bar style for the cropper
+      // This makes the status bar opaque and sets its color.
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarColor:
+              currentTheme.primaryColor, // Matches the toolbar color
+          statusBarIconBrightness:
+              Brightness.light, // For light text/icons on a dark background
+          statusBarBrightness: Brightness.dark, // For iOS
+        ),
       );
-    }).catchError((error) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error updating profile: $error')),
+
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: imageFile.path,
+        compressQuality: 85,
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: 'Crop Profile Picture',
+            toolbarColor: currentTheme.primaryColor,
+            toolbarWidgetColor: theme.colorScheme.onPrimary,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: true,
+            hideBottomControls: false,
+            cropStyle: CropStyle.circle,
+          ),
+          IOSUiSettings(
+            title: 'Crop Profile Picture',
+            aspectRatioLockEnabled: true,
+            aspectRatioPickerButtonHidden: true,
+            resetAspectRatioEnabled: false,
+            cropStyle: CropStyle.circle,
+          ),
+        ],
       );
-    });
+
+      if (croppedFile != null) {
+        return File(croppedFile.path);
+      }
+      return null;
+    } finally {
+      // IMPORTANT: Restore the original status bar style when the cropper is closed
+      if (originalSystemUiOverlayStyle != null) {
+        SystemChrome.setSystemUIOverlayStyle(originalSystemUiOverlayStyle);
+      }
+    }
   }
 
   Future<void> _pickImageFromGallery() async {
@@ -104,15 +163,22 @@ class _ProfileScreenState extends State<ProfileScreen>
       );
 
       if (image != null) {
-        setState(() {
-          _selectedImage = File(image.path);
-        });
+        // New step: Crop the image
+        final croppedImage = await _cropImage(File(image.path));
+        if (!mounted) return;
+
+        // Only update state if cropping was successful (not cancelled)
+        if (croppedImage != null) {
+          setState(() {
+            _selectedImage = croppedImage;
+          });
+        }
       }
     } catch (e) {
-      if(!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to pick image: $e')),
-      );
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Failed to pick image: $e')));
     }
   }
 
@@ -126,15 +192,22 @@ class _ProfileScreenState extends State<ProfileScreen>
       );
 
       if (image != null) {
-        setState(() {
-          _selectedImage = File(image.path);
-        });
+        // New step: Crop the image
+        final croppedImage = await _cropImage(File(image.path));
+        if (!mounted) return;
+
+        // Only update state if cropping was successful (not cancelled)
+        if (croppedImage != null) {
+          setState(() {
+            _selectedImage = croppedImage;
+          });
+        }
       }
     } catch (e) {
-      if(!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to take photo: $e')),
-      );
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Failed to take photo: $e')));
     }
   }
 
@@ -199,9 +272,9 @@ class _ProfileScreenState extends State<ProfileScreen>
       }
     } catch (error) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error removing photo: $error')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error removing photo: $error')));
       }
     }
   }
@@ -242,7 +315,9 @@ class _ProfileScreenState extends State<ProfileScreen>
             physics: const BouncingScrollPhysics(),
             slivers: [
               SliverAppBar(
-                backgroundColor: theme.colorScheme.surface.withAlpha((0.85 * 255).toInt()),
+                backgroundColor: theme.colorScheme.surface.withAlpha(
+                  (0.85 * 255).toInt(),
+                ),
                 expandedHeight: 90,
                 pinned: true,
                 elevation: 0,
@@ -255,7 +330,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                 ),
                 leading: IconButton(
                   icon: const Icon(Icons.arrow_back_ios_new, size: 20),
-                  color: theme.colorScheme.onSurface.withAlpha((0.7 * 255).toInt()),
+                  color: theme.colorScheme.onSurface.withAlpha(
+                    (0.7 * 255).toInt(),
+                  ),
                   onPressed: () => Navigator.pop(context),
                 ),
               ),
@@ -275,46 +352,67 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 children: [
                                   state.status == UserProfileStatus.loading
                                       ? CircleAvatar(
-                                    radius: 50,
-                                    backgroundColor: currentTheme.primaryColor.withAlpha((0.2 * 255).toInt()),
-                                    child: SizedBox(
-                                      width: 24,
-                                      height: 24,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        valueColor: AlwaysStoppedAnimation<Color>(
-                                          theme.brightness == Brightness.light
-                                              ? Colors.black54
-                                              : Colors.white70,
+                                        radius: 50,
+                                        backgroundColor: currentTheme
+                                            .primaryColor
+                                            .withAlpha((0.2 * 255).toInt()),
+                                        child: SizedBox(
+                                          width: 24,
+                                          height: 24,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                  theme.brightness ==
+                                                          Brightness.light
+                                                      ? Colors.black54
+                                                      : Colors.white70,
+                                                ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  )
+                                      )
                                       : CircleAvatar(
-                                    radius: 50,
-                                    backgroundColor: _hasProfileImage(state, user)
-                                        ? Colors.transparent
-                                        : currentTheme.primaryColor.withAlpha((0.2 * 255).toInt()),
-                                    backgroundImage: _getProfileImage(state, user),
-                                    child: !_hasProfileImage(state, user)
-                                        ? Text(
-                                      user?.displayName.isNotEmpty == true
-                                          ? user!.displayName[0].toUpperCase()
-                                          : '?',
-                                      style: TextStyle(
-                                        fontSize: 40,
-                                        fontWeight: FontWeight.bold,
-                                        color: currentTheme.primaryColor,
+                                        radius: 50,
+                                        backgroundColor:
+                                            _hasProfileImage(state, user)
+                                                ? Colors.transparent
+                                                : currentTheme.primaryColor
+                                                    .withAlpha(
+                                                      (0.2 * 255).toInt(),
+                                                    ),
+                                        backgroundImage: _getProfileImage(
+                                          state,
+                                          user,
+                                        ),
+                                        child:
+                                            !_hasProfileImage(state, user)
+                                                ? Text(
+                                                  user
+                                                              ?.displayName
+                                                              .isNotEmpty ==
+                                                          true
+                                                      ? user!.displayName[0]
+                                                          .toUpperCase()
+                                                      : '?',
+                                                  style: TextStyle(
+                                                    fontSize: 40,
+                                                    fontWeight: FontWeight.bold,
+                                                    color:
+                                                        currentTheme
+                                                            .primaryColor,
+                                                  ),
+                                                )
+                                                : null,
                                       ),
-                                    )
-                                        : null,
-                                  ),
                                   Container(
                                     padding: const EdgeInsets.all(6),
                                     decoration: BoxDecoration(
-                                        color: currentTheme.primaryColor,
-                                        borderRadius: BorderRadius.circular(20),
-                                        border: Border.all(color: theme.colorScheme.surface, width: 2)
+                                      color: currentTheme.primaryColor,
+                                      borderRadius: BorderRadius.circular(20),
+                                      border: Border.all(
+                                        color: theme.colorScheme.surface,
+                                        width: 2,
+                                      ),
                                     ),
                                     child: Icon(
                                       Icons.edit,
@@ -358,18 +456,20 @@ class _ProfileScreenState extends State<ProfileScreen>
                         _buildProfileOption(
                           icon: Icons.calendar_today,
                           title: 'Account Created',
-                          subtitle: user?.createdAt != null
-                              ? '${user!.createdAt!.day}/${user.createdAt!.month}/${user.createdAt!.year}'
-                              : 'Unknown',
+                          subtitle:
+                              user?.createdAt != null
+                                  ? '${user!.createdAt!.day}/${user.createdAt!.month}/${user.createdAt!.year}'
+                                  : 'Unknown',
                           onTap: () {},
                           currentTheme: currentTheme,
                         ),
                         _buildProfileOption(
                           icon: Icons.update,
                           title: 'Last Updated',
-                          subtitle: user?.updatedAt != null
-                              ? '${user!.updatedAt!.day}/${user.updatedAt!.month}/${user.updatedAt!.year}'
-                              : 'Never',
+                          subtitle:
+                              user?.updatedAt != null
+                                  ? '${user!.updatedAt!.day}/${user.updatedAt!.month}/${user.updatedAt!.year}'
+                                  : 'Never',
                           onTap: () {},
                           currentTheme: currentTheme,
                         ),
@@ -377,12 +477,18 @@ class _ProfileScreenState extends State<ProfileScreen>
                         ElevatedButton(
                           onPressed: _hasChanges() ? _saveProfile : null,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: _hasChanges()
-                                ? currentTheme.primaryColor
-                                : theme.colorScheme.onSurface.withAlpha((0.12 * 255).toInt()),
-                            foregroundColor: _hasChanges()
-                                ? theme.colorScheme.onPrimary
-                                : theme.colorScheme.onSurface.withAlpha((0.38 * 255).toInt()),
+                            backgroundColor:
+                                _hasChanges()
+                                    ? currentTheme.primaryColor
+                                    : theme.colorScheme.onSurface.withAlpha(
+                                      (0.12 * 255).toInt(),
+                                    ),
+                            foregroundColor:
+                                _hasChanges()
+                                    ? theme.colorScheme.onPrimary
+                                    : theme.colorScheme.onSurface.withAlpha(
+                                      (0.38 * 255).toInt(),
+                                    ),
                             padding: const EdgeInsets.symmetric(
                               horizontal: 40,
                               vertical: 15,
@@ -476,40 +582,47 @@ class _ProfileScreenState extends State<ProfileScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    title,
-                    style: theme.textTheme.titleMedium,
-                  ),
+                  Text(title, style: theme.textTheme.titleMedium),
                   const SizedBox(height: 6),
                   enabled
                       ? TextFormField(
-                    controller: controller,
-                    keyboardType: keyboardType,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurface,
-                    ),
-                    decoration: InputDecoration(
-                      border: enabled ? UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: currentTheme.primaryColor.withAlpha((0.3 * 255).toInt()),
+                        controller: controller,
+                        keyboardType: keyboardType,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.onSurface,
                         ),
-                      ) : InputBorder.none,
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: currentTheme.primaryColor,
-                          width: 2,
+                        decoration: InputDecoration(
+                          border:
+                              enabled
+                                  ? UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: currentTheme.primaryColor
+                                          .withAlpha((0.3 * 255).toInt()),
+                                    ),
+                                  )
+                                  : InputBorder.none,
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: currentTheme.primaryColor,
+                              width: 2,
+                            ),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 4,
+                          ),
+                          isDense: true,
+                        ),
+                      )
+                      : Text(
+                        controller.text.isEmpty
+                            ? 'Loading...'
+                            : controller.text,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.onSurface.withAlpha(
+                            (0.7 * 255).toInt(),
+                          ),
                         ),
                       ),
-                      contentPadding: const EdgeInsets.symmetric(vertical: 4),
-                      isDense: true,
-                    ),
-                  )
-                      : Text(
-                    controller.text.isEmpty ? 'Loading...' : controller.text,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurface.withAlpha((0.7 * 255).toInt()),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -529,17 +642,23 @@ class _ProfileScreenState extends State<ProfileScreen>
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: enabled
-                        ? currentTheme.primaryColor.withAlpha((0.1 * 255).toInt())
-                        : Colors.transparent,
+                    color:
+                        enabled
+                            ? currentTheme.primaryColor.withAlpha(
+                              (0.1 * 255).toInt(),
+                            )
+                            : Colors.transparent,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Icon(
                     enabled ? Icons.check : Icons.edit_outlined,
                     size: 18,
-                    color: enabled
-                        ? currentTheme.primaryColor
-                        : currentTheme.primaryColor.withAlpha((0.7 * 255).toInt()),
+                    color:
+                        enabled
+                            ? currentTheme.primaryColor
+                            : currentTheme.primaryColor.withAlpha(
+                              (0.7 * 255).toInt(),
+                            ),
                   ),
                 ),
               ),
@@ -582,15 +701,14 @@ class _ProfileScreenState extends State<ProfileScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    title,
-                    style: theme.textTheme.titleMedium,
-                  ),
+                  Text(title, style: theme.textTheme.titleMedium),
                   const SizedBox(height: 4),
                   Text(
                     subtitle,
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurface.withAlpha((0.7 * 255).toInt()),
+                      color: theme.colorScheme.onSurface.withAlpha(
+                        (0.7 * 255).toInt(),
+                      ),
                     ),
                   ),
                 ],

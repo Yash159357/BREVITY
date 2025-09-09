@@ -37,31 +37,40 @@ class UserRepository {
         },
       );
 
-      Log.d('FIRESTORE_SERVICE: Profile fetch response status: ${response.statusCode}');
+      Log.d(
+        'FIRESTORE_SERVICE: Profile fetch response status: ${response.statusCode}',
+      );
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         final userData = data['data']['user'];
 
-        Log.d('FIRESTORE_SERVICE: Successfully parsed user data - Email: ${userData['email']}, Display Name: ${userData['displayName']}');
+        Log.d(
+          'FIRESTORE_SERVICE: Successfully parsed user data - Email: ${userData['email']}, Display Name: ${userData['displayName']}',
+        );
 
         return UserModel(
           uid: userData['_id'], // Node.js uses _id
           displayName: userData['displayName'] ?? '',
           email: userData['email'] ?? '',
           emailVerified: userData['emailVerified'] ?? false,
-          createdAt: userData['createdAt'] != null
-              ? DateTime.parse(userData['createdAt'])
-              : null,
-          updatedAt: userData['updatedAt'] != null
-              ? DateTime.parse(userData['updatedAt'])
-              : null,
+          createdAt:
+              userData['createdAt'] != null
+                  ? DateTime.parse(userData['createdAt'])
+                  : null,
+          updatedAt:
+              userData['updatedAt'] != null
+                  ? DateTime.parse(userData['updatedAt'])
+                  : null,
           profileImageUrl: userData['profileImage']?['url'],
         );
       } else {
         final errorData = json.decode(response.body);
-        final errorMessage = errorData['message'] ?? 'Failed to load user profile';
-        Log.e('FIRESTORE_SERVICE: Profile fetch failed - Status: ${response.statusCode}, Message: $errorMessage');
+        final errorMessage =
+            errorData['message'] ?? 'Failed to load user profile';
+        Log.e(
+          'FIRESTORE_SERVICE: Profile fetch failed - Status: ${response.statusCode}, Message: $errorMessage',
+        );
         throw Exception(errorMessage);
       }
     } catch (e) {
@@ -71,8 +80,14 @@ class UserRepository {
   }
 
   // Update user profile
-  Future<UserModel> updateUserProfile(UserModel user, {File? profileImage, bool removeImage = false}) async {
-    Log.i('FIRESTORE_SERVICE: Updating user profile - Display Name: ${user.displayName}, Remove Image: $removeImage');
+  Future<UserModel> updateUserProfile(
+    UserModel user, {
+    File? profileImage,
+    bool removeImage = false,
+  }) async {
+    Log.i(
+      'FIRESTORE_SERVICE: Updating user profile - Display Name: ${user.displayName}, Remove Image: $removeImage',
+    );
 
     try {
       final uri = Uri.parse('$_baseUrl/profile');
@@ -118,7 +133,9 @@ class UserRepository {
             contentType = 'image/jpeg'; // Default fallback
         }
 
-        Log.d('FIRESTORE_SERVICE: Adding profile image - Extension: $extension, Content Type: $contentType');
+        Log.d(
+          'FIRESTORE_SERVICE: Adding profile image - Extension: $extension, Content Type: $contentType',
+        );
 
         final multipartFile = http.MultipartFile(
           'profileImage',
@@ -133,7 +150,9 @@ class UserRepository {
       final streamedResponse = await request.send();
       final response = await http.Response.fromStream(streamedResponse);
 
-      Log.d('FIRESTORE_SERVICE: Profile update response status: ${response.statusCode}');
+      Log.d(
+        'FIRESTORE_SERVICE: Profile update response status: ${response.statusCode}',
+      );
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -146,18 +165,22 @@ class UserRepository {
           displayName: userData['displayName'] ?? '',
           email: userData['email'] ?? '',
           emailVerified: userData['emailVerified'] ?? false,
-          createdAt: userData['createdAt'] != null
-              ? DateTime.parse(userData['createdAt'])
-              : null,
-          updatedAt: userData['updatedAt'] != null
-              ? DateTime.parse(userData['updatedAt'])
-              : null,
+          createdAt:
+              userData['createdAt'] != null
+                  ? DateTime.parse(userData['createdAt'])
+                  : null,
+          updatedAt:
+              userData['updatedAt'] != null
+                  ? DateTime.parse(userData['updatedAt'])
+                  : null,
           profileImageUrl: userData['profileImage']?['url'],
         );
       } else {
         final errorData = json.decode(response.body);
         final errorMessage = errorData['message'] ?? 'Failed to update profile';
-        Log.e('FIRESTORE_SERVICE: Profile update failed - Status: ${response.statusCode}, Message: $errorMessage');
+        Log.e(
+          'FIRESTORE_SERVICE: Profile update failed - Status: ${response.statusCode}, Message: $errorMessage',
+        );
         throw Exception(errorMessage);
       }
     } catch (e) {
@@ -166,8 +189,12 @@ class UserRepository {
     }
   }
 
-  Future<UserModel> updateUserPartial(Map<String, dynamic> changedFields) async {
-    Log.i('FIRESTORE_SERVICE: Updating user profile partially - Fields: ${changedFields.keys.join(', ')}');
+  Future<UserModel> updateUserPartial(
+    Map<String, dynamic> changedFields,
+  ) async {
+    Log.i(
+      'FIRESTORE_SERVICE: Updating user profile partially - Fields: ${changedFields.keys.join(', ')}',
+    );
 
     try {
       final uri = Uri.parse('$_baseUrl/profile');
@@ -176,11 +203,14 @@ class UserRepository {
       // Add auth header
       if (_accessToken != null) {
         request.headers['Authorization'] = 'Bearer $_accessToken';
-        Log.d('FIRESTORE_SERVICE: Added authorization header for partial update');
+        Log.d(
+          'FIRESTORE_SERVICE: Added authorization header for partial update',
+        );
       }
 
       // Handle image update
-      if (changedFields.containsKey('profileImage') && changedFields['profileImage'] != null) {
+      if (changedFields.containsKey('profileImage') &&
+          changedFields['profileImage'] != null) {
         final File imageFile = changedFields['profileImage'];
         final extension = imageFile.path.split('.').last.toLowerCase();
         String contentType;
@@ -203,7 +233,9 @@ class UserRepository {
             contentType = 'image/jpeg';
         }
 
-        Log.d('FIRESTORE_SERVICE: Partial update - Adding profile image with content type: $contentType');
+        Log.d(
+          'FIRESTORE_SERVICE: Partial update - Adding profile image with content type: $contentType',
+        );
 
         final multipartFile = http.MultipartFile(
           'profileImage',
@@ -226,31 +258,39 @@ class UserRepository {
       final streamedResponse = await request.send();
       final response = await http.Response.fromStream(streamedResponse);
 
-      Log.d('FIRESTORE_SERVICE: Partial update response status: ${response.statusCode}');
+      Log.d(
+        'FIRESTORE_SERVICE: Partial update response status: ${response.statusCode}',
+      );
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         final userData = data['data']['user'];
 
-        Log.i('FIRESTORE_SERVICE: Partial profile update completed successfully');
+        Log.i(
+          'FIRESTORE_SERVICE: Partial profile update completed successfully',
+        );
 
         return UserModel(
           uid: userData['_id'],
           displayName: userData['displayName'] ?? '',
           email: userData['email'] ?? '',
           emailVerified: userData['emailVerified'] ?? false,
-          createdAt: userData['createdAt'] != null
-              ? DateTime.parse(userData['createdAt'])
-              : null,
-          updatedAt: userData['updatedAt'] != null
-              ? DateTime.parse(userData['updatedAt'])
-              : null,
+          createdAt:
+              userData['createdAt'] != null
+                  ? DateTime.parse(userData['createdAt'])
+                  : null,
+          updatedAt:
+              userData['updatedAt'] != null
+                  ? DateTime.parse(userData['updatedAt'])
+                  : null,
           profileImageUrl: userData['profileImage']?['url'],
         );
       } else {
         final errorData = json.decode(response.body);
         final errorMessage = errorData['message'] ?? 'Failed to update profile';
-        Log.e('FIRESTORE_SERVICE: Partial update failed - Status: ${response.statusCode}, Message: $errorMessage');
+        Log.e(
+          'FIRESTORE_SERVICE: Partial update failed - Status: ${response.statusCode}, Message: $errorMessage',
+        );
         throw Exception(errorMessage);
       }
     } catch (e) {
@@ -271,12 +311,17 @@ class UserRepository {
         },
       );
 
-      Log.d('FIRESTORE_SERVICE: Remove image response status: ${response.statusCode}');
+      Log.d(
+        'FIRESTORE_SERVICE: Remove image response status: ${response.statusCode}',
+      );
 
       if (response.statusCode != 200) {
         final errorData = json.decode(response.body);
-        final errorMessage = errorData['message'] ?? 'Failed to remove profile image';
-        Log.e('FIRESTORE_SERVICE: Remove image failed - Status: ${response.statusCode}, Message: $errorMessage');
+        final errorMessage =
+            errorData['message'] ?? 'Failed to remove profile image';
+        Log.e(
+          'FIRESTORE_SERVICE: Remove image failed - Status: ${response.statusCode}, Message: $errorMessage',
+        );
         throw Exception(errorMessage);
       } else {
         Log.i('FIRESTORE_SERVICE: Profile image removed successfully');
@@ -288,7 +333,10 @@ class UserRepository {
   }
 
   // Delete user account
-  Future<void> deleteUserAccount({String? password, String? googleIdToken}) async {
+  Future<void> deleteUserAccount({
+    String? password,
+    String? googleIdToken,
+  }) async {
     try {
       final body = <String, dynamic>{};
       if (password != null) {
@@ -329,31 +377,39 @@ class UserRepository {
         },
       );
 
-      Log.d('FIRESTORE_SERVICE: Get user by ID response status: ${response.statusCode}');
+      Log.d(
+        'FIRESTORE_SERVICE: Get user by ID response status: ${response.statusCode}',
+      );
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         final userData = data['data']['user'];
 
-        Log.d('FIRESTORE_SERVICE: Successfully retrieved user data for ID: $userId');
+        Log.d(
+          'FIRESTORE_SERVICE: Successfully retrieved user data for ID: $userId',
+        );
 
         return UserModel(
           uid: userData['_id'],
           displayName: userData['displayName'] ?? '',
           email: userData['email'] ?? '',
           emailVerified: userData['emailVerified'] ?? false,
-          createdAt: userData['createdAt'] != null
-              ? DateTime.parse(userData['createdAt'])
-              : null,
-          updatedAt: userData['updatedAt'] != null
-              ? DateTime.parse(userData['updatedAt'])
-              : null,
+          createdAt:
+              userData['createdAt'] != null
+                  ? DateTime.parse(userData['createdAt'])
+                  : null,
+          updatedAt:
+              userData['updatedAt'] != null
+                  ? DateTime.parse(userData['updatedAt'])
+                  : null,
           profileImageUrl: userData['profileImage']?['url'],
         );
       } else {
         final errorData = json.decode(response.body);
         final errorMessage = errorData['message'] ?? 'Failed to load user';
-        Log.e('FIRESTORE_SERVICE: Get user by ID failed - Status: ${response.statusCode}, Message: $errorMessage');
+        Log.e(
+          'FIRESTORE_SERVICE: Get user by ID failed - Status: ${response.statusCode}, Message: $errorMessage',
+        );
         throw Exception(errorMessage);
       }
     } catch (e) {

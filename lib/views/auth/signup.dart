@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:brevity/controller/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../common_widgets/auth_header.dart';
@@ -66,7 +67,6 @@ class _SignupScreenState extends State<SignupScreen>
   @override
   void initState() {
     super.initState();
-
     _fadeController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 850),
@@ -87,7 +87,6 @@ class _SignupScreenState extends State<SignupScreen>
       vsync: this,
       duration: const Duration(milliseconds: 600),
     );
-
     _pulseAnim = Tween<double>(begin: 1.0, end: 1.04).animate(
       CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
     );
@@ -97,11 +96,8 @@ class _SignupScreenState extends State<SignupScreen>
     _floatAnim = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(parent: _floatController, curve: Curves.easeInOut),
     );
-
     _floatController.repeat(reverse: true);
     _pulseController.repeat(reverse: true);
-
-    // Start entrance animations
     Future.delayed(
       const Duration(milliseconds: 160),
       () => _fadeController.forward(),
@@ -110,8 +106,6 @@ class _SignupScreenState extends State<SignupScreen>
       const Duration(milliseconds: 300),
       () => _slideController.forward(),
     );
-
-    // Add listeners for real-time validation
     _nameController.addListener(_validateName);
     _emailController.addListener(_validateEmail);
     _passwordController.addListener(_validatePassword);
@@ -130,6 +124,7 @@ class _SignupScreenState extends State<SignupScreen>
     super.dispose();
   }
 
+  // --- VALIDATION METHODS (UNCHANGED) ---
   void _validateName() {
     final name = _nameController.text;
     final isValid = name.isNotEmpty && name.length >= 2;
@@ -163,8 +158,6 @@ class _SignupScreenState extends State<SignupScreen>
   void _validatePassword() {
     final password = _passwordController.text;
     final isValid = password.length >= 8;
-
-    // Password strength check
     PasswordStrength newStrength;
     if (password.length < 6) {
       newStrength = PasswordStrength.weak;
@@ -174,13 +167,11 @@ class _SignupScreenState extends State<SignupScreen>
       bool hasUppercase = password.contains(RegExp(r'[A-Z]'));
       bool hasDigits = password.contains(RegExp(r'[0-9]'));
       bool hasSpecial = password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
-
       newStrength =
           (hasUppercase && hasDigits && hasSpecial)
               ? PasswordStrength.strong
               : PasswordStrength.medium;
     }
-
     if (_passwordValid != isValid || _passwordStrength != newStrength) {
       setState(() {
         _passwordValid = isValid;
@@ -193,6 +184,67 @@ class _SignupScreenState extends State<SignupScreen>
     }
   }
 
+  // --- IMAGE HANDLING METHODS (UPDATED) ---
+
+  // NEW HELPER METHOD FOR CROPPING
+  Future<File?> _cropImage(File imageFile) async {
+    final originalSystemUiOverlayStyle = SystemChrome.latestStyle;
+    try {
+      SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(
+          statusBarColor: primaryA,
+          statusBarIconBrightness: Brightness.light,
+          statusBarBrightness: Brightness.dark,
+        ),
+      );
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: imageFile.path,
+        compressQuality: 85,
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: 'Crop Profile Picture',
+            toolbarColor: primaryA,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: true,
+            hideBottomControls: false,
+            cropStyle: CropStyle.circle,
+          ),
+          IOSUiSettings(
+            title: 'Crop Profile Picture',
+            aspectRatioLockEnabled: true,
+            aspectRatioPickerButtonHidden: true,
+            resetAspectRatioEnabled: false,
+            cropStyle: CropStyle.circle,
+          ),
+        ],
+      );
+      if (originalSystemUiOverlayStyle != null) {
+        SystemChrome.setSystemUIOverlayStyle(originalSystemUiOverlayStyle);
+      }
+      if (croppedFile != null) {
+        return File(croppedFile.path);
+      }
+      return null;
+    } on PlatformException catch (e) {
+      debugPrint('Failed to crop image: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to open image cropper.'),
+            backgroundColor: errorColor,
+          ),
+        );
+      }
+      return null;
+    } finally {
+      if (originalSystemUiOverlayStyle != null) {
+        SystemChrome.setSystemUIOverlayStyle(originalSystemUiOverlayStyle);
+      }
+    }
+  }
+
+  // UPDATED METHOD
   Future<void> _pickImageFromGallery() async {
     try {
       final XFile? image = await _imagePicker.pickImage(
@@ -201,15 +253,18 @@ class _SignupScreenState extends State<SignupScreen>
         maxHeight: 1024,
         imageQuality: 85,
       );
-
       if (image != null) {
-        setState(() {
-          _selectedImage = File(image.path);
-        });
-        HapticFeedback.lightImpact();
+        final croppedImage = await _cropImage(File(image.path));
+        if (!mounted) return;
+        if (croppedImage != null) {
+          setState(() {
+            _selectedImage = croppedImage;
+          });
+          HapticFeedback.lightImpact();
+        }
       }
     } catch (e) {
-      if(!mounted) return;
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to pick image: $e'),
@@ -219,6 +274,7 @@ class _SignupScreenState extends State<SignupScreen>
     }
   }
 
+  // UPDATED METHOD
   Future<void> _pickImageFromCamera() async {
     try {
       final XFile? image = await _imagePicker.pickImage(
@@ -227,15 +283,18 @@ class _SignupScreenState extends State<SignupScreen>
         maxHeight: 1024,
         imageQuality: 85,
       );
-
       if (image != null) {
-        setState(() {
-          _selectedImage = File(image.path);
-        });
-        HapticFeedback.lightImpact();
+        final croppedImage = await _cropImage(File(image.path));
+        if (!mounted) return;
+        if (croppedImage != null) {
+          setState(() {
+            _selectedImage = croppedImage;
+          });
+          HapticFeedback.lightImpact();
+        }
       }
     } catch (e) {
-      if(!mounted) return;
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to take photo: $e'),
@@ -245,6 +304,7 @@ class _SignupScreenState extends State<SignupScreen>
     }
   }
 
+  // UNCHANGED METHODS
   void _showImageOptions() {
     showModalBottomSheet(
       context: context,
@@ -262,7 +322,10 @@ class _SignupScreenState extends State<SignupScreen>
                   children: [
                     ListTile(
                       leading: Icon(Icons.camera_alt, color: primaryB),
-                      title: const Text('Take Photo', style: TextStyle(color: Colors.white)),
+                      title: const Text(
+                        'Take Photo',
+                        style: TextStyle(color: Colors.white),
+                      ),
                       onTap: () {
                         Navigator.pop(context);
                         _pickImageFromCamera();
@@ -270,7 +333,10 @@ class _SignupScreenState extends State<SignupScreen>
                     ),
                     ListTile(
                       leading: Icon(Icons.photo_library, color: primaryB),
-                      title: const Text('Choose from Gallery', style: TextStyle(color: Colors.white)),
+                      title: const Text(
+                        'Choose from Gallery',
+                        style: TextStyle(color: Colors.white),
+                      ),
                       onTap: () {
                         Navigator.pop(context);
                         _pickImageFromGallery();
@@ -279,7 +345,10 @@ class _SignupScreenState extends State<SignupScreen>
                     if (_selectedImage != null)
                       ListTile(
                         leading: Icon(Icons.delete, color: errorColor),
-                        title: const Text('Remove Photo', style: TextStyle(color: Colors.white)),
+                        title: const Text(
+                          'Remove Photo',
+                          style: TextStyle(color: Colors.white),
+                        ),
                         onTap: () {
                           Navigator.pop(context);
                           _removeImage();
@@ -587,8 +656,10 @@ class _SignupScreenState extends State<SignupScreen>
                               isValid: _nameValid,
                               errorText: _nameError,
                               validator: (v) {
-                                if (v == null || v.isEmpty) return 'Name is required';
-                                if (v.length < 2) return 'Name must be at least 2 characters';
+                                if (v == null || v.isEmpty)
+                                  return 'Name is required';
+                                if (v.length < 2)
+                                  return 'Name must be at least 2 characters';
                                 return null;
                               },
                             ),
@@ -605,50 +676,63 @@ class _SignupScreenState extends State<SignupScreen>
                               width: 60,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Colors.white.withAlpha((0.05 * 255).toInt()),
+                                color: Colors.white.withAlpha(
+                                  (0.05 * 255).toInt(),
+                                ),
                                 border: Border.all(
-                                  color: _selectedImage != null ? primaryB : Colors.white.withAlpha((0.1 * 255).toInt()),
+                                  color:
+                                      _selectedImage != null
+                                          ? primaryB
+                                          : Colors.white.withAlpha(
+                                            (0.1 * 255).toInt(),
+                                          ),
                                   width: 2,
                                 ),
                               ),
-                              child: _selectedImage != null
-                                  ? Stack(
-                                children: [
-                                  ClipOval(
-                                    child: Image.file(
-                                      _selectedImage!,
-                                      width: 56,
-                                      height: 56,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  Positioned(
-                                    top: -2,
-                                    right: -2,
-                                    child: GestureDetector(
-                                      onTap: _removeImage,
-                                      child: Container(
-                                        padding: const EdgeInsets.all(2),
-                                        decoration: BoxDecoration(
-                                          color: errorColor,
-                                          shape: BoxShape.circle,
-                                          border: Border.all(color: Colors.white, width: 1),
-                                        ),
-                                        child: const Icon(
-                                          Icons.close,
-                                          color: Colors.white,
-                                          size: 10,
-                                        ),
+                              child:
+                                  _selectedImage != null
+                                      ? Stack(
+                                        children: [
+                                          ClipOval(
+                                            child: Image.file(
+                                              _selectedImage!,
+                                              width: 56,
+                                              height: 56,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          Positioned(
+                                            top: -2,
+                                            right: -2,
+                                            child: GestureDetector(
+                                              onTap: _removeImage,
+                                              child: Container(
+                                                padding: const EdgeInsets.all(
+                                                  2,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: errorColor,
+                                                  shape: BoxShape.circle,
+                                                  border: Border.all(
+                                                    color: Colors.white,
+                                                    width: 1,
+                                                  ),
+                                                ),
+                                                child: const Icon(
+                                                  Icons.close,
+                                                  color: Colors.white,
+                                                  size: 10,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                      : Icon(
+                                        Icons.add_a_photo_rounded,
+                                        color: primaryB,
+                                        size: 20,
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              )
-                                  : Icon(
-                                Icons.add_a_photo_rounded,
-                                color: primaryB,
-                                size: 20,
-                              ),
                             ),
                           ),
                         ],
