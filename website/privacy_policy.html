@@ -3,152 +3,408 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy - Brevity</title>
+    <title>Privacy Policy - Blyft</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-brevity-dark text-white">
+<body class="bg-black text-white overflow-x-hidden">
+
+    <!-- Grid Pattern Background -->
+    <div class="fixed inset-0 grid-pattern pointer-events-none"></div>
 
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-effect border-b border-gray-800">
+    <nav class="fixed w-full z-50 backdrop-blur-md bg-black/50 border-b border-gray-800/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <div class="flex items-center space-x-2">
-                    <a href="index.html" class="flex items-center space-x-2">
-                        <div class="w-10 h-10 bg-brevity-blue rounded-lg flex items-center justify-center">
-                            <span class="text-white font-bold text-xl">B</span>
-                        </div>
-                        <span class="text-xl font-bold text-brevity-blue">BREVITY</span>
-                    </a>
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
+                        <span class="text-black font-bold text-xl">B</span>
+                    </div>
+                    <span class="text-xl font-semibold text-white">Blyft</span>
                 </div>
-                <div class="flex space-x-6">
-                    <a href="index.html" class="hover:text-brevity-blue transition-colors">Home</a>
-                    <a href="contact.html" class="hover:text-brevity-blue transition-colors">Contact</a>
+
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-gray-300 hover:text-amber-400 transition-colors">Home</a>
+                    <a href="index.html#features" class="text-gray-300 hover:text-amber-400 transition-colors">Features</a>
+                    <a href="index.html#how-it-works" class="text-gray-300 hover:text-amber-400 transition-colors">How It Works</a>
+                    <a href="index.html#community" class="text-gray-300 hover:text-amber-400 transition-colors">Community</a>
+                    <a href="index.html#github" class="text-gray-300 hover:text-amber-400 transition-colors">GitHub</a>
+                    <a href="index.html#about" class="text-gray-300 hover:text-amber-400 transition-colors">About</a>
+                    <a href="contact_us.html" class="text-gray-300 hover:text-amber-400 transition-colors">Contact</a>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <i class="fab fa-github text-gray-400"></i>
+                        <span class="text-gray-400 text-sm">281</span>
+                    </div>
+                    <button class="btn-primary px-6 py-2 rounded-xl font-semibold text-black transition-all">
+                        Get Started
+                    </button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Privacy Policy Content -->
-    <main class="pt-24 pb-16">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h1 class="text-4xl md:text-5xl font-bold mb-4">Privacy Policy</h1>
-                <p class="text-xl text-gray-300">Last updated: January 2025</p>
-            </div>
-
-            <div class="glass-effect p-8 md:p-12 rounded-2xl">
-                <div class="privacy-section">
-                    <h2 class="text-2xl font-bold text-brevity-blue mb-4">Our Commitment to Privacy</h2>
-                    <p class="text-gray-300 leading-relaxed mb-6">
-                        At Brevity, we believe in transparency and user privacy. As an open-source project, we are committed to protecting your personal information and being clear about how we collect, use, and share your data.
-                    </p>
-                </div>
-
-                <div class="privacy-section">
-                    <h3 class="text-xl font-bold text-brevity-blue mb-4">Information We Collect</h3>
-                    <div class="space-y-4 text-gray-300">
-                        <p><strong class="text-white">Account Information:</strong> When you create an account, we collect your email address and chosen username. Passwords are securely hashed and never stored in plain text.</p>
-                        <p><strong class="text-white">Usage Data:</strong> We collect information about how you use Brevity, including articles read, preferences set, and app interactions to improve our service.</p>
-                        <p><strong class="text-white">Device Information:</strong> We may collect basic device information such as device type, operating system, and app version for technical support and optimization.</p>
-                    </div>
-                </div>
-
-                <div class="privacy-section">
-                    <h3 class="text-xl font-bold text-brevity-blue mb-4">How We Use Your Information</h3>
-                    <div class="space-y-4 text-gray-300">
-                        <p>• <strong class="text-white">Personalization:</strong> To provide personalized news summaries and content recommendations</p>
-                        <p>• <strong class="text-white">Service Improvement:</strong> To analyze usage patterns and improve Brevity's features and performance</p>
-                        <p>• <strong class="text-white">Communication:</strong> To send important updates about the service and respond to your inquiries</p>
-                        <p>• <strong class="text-white">Security:</strong> To protect against fraud, abuse, and unauthorized access</p>
-                    </div>
-                </div>
-
-                <div class="privacy-section">
-                    <h3 class="text-xl font-bold text-brevity-blue mb-4">Data Sharing and Disclosure</h3>
-                    <p class="text-gray-300 leading-relaxed mb-4">
-                        We do not sell, trade, or rent your personal information to third parties. We may share your information only in the following circumstances:
-                    </p>
-                    <div class="space-y-3 text-gray-300">
-                        <p>• With your explicit consent</p>
-                        <p>• To comply with legal obligations or protect our legal rights</p>
-                        <p>• In connection with a business transaction (merger, acquisition, etc.)</p>
-                        <p>• With service providers who assist us in operating Brevity under strict confidentiality agreements</p>
-                    </div>
-                </div>
-
-                <div class="privacy-section">
-                    <h3 class="text-xl font-bold text-brevity-blue mb-4">Data Security</h3>
-                    <p class="text-gray-300 leading-relaxed">
-                        We implement industry-standard security measures to protect your data, including encryption in transit and at rest, secure authentication, and regular security audits. However, no method of transmission over the internet is 100% secure.
-                    </p>
-                </div>
-
-                <div class="privacy-section">
-                    <h3 class="text-xl font-bold text-brevity-blue mb-4">Your Rights and Choices</h3>
-                    <div class="space-y-3 text-gray-300">
-                        <p>• <strong class="text-white">Access:</strong> Request a copy of your personal data</p>
-                        <p>• <strong class="text-white">Correction:</strong> Update or correct your information</p>
-                        <p>• <strong class="text-white">Deletion:</strong> Request deletion of your account and associated data</p>
-                        <p>• <strong class="text-white">Data Portability:</strong> Export your data in a machine-readable format</p>
-                        <p>• <strong class="text-white">Opt-out:</strong> Unsubscribe from non-essential communications</p>
-                    </div>
-                </div>
-
-                <div class="privacy-section">
-                    <h3 class="text-xl font-bold text-brevity-blue mb-4">Open Source and Transparency</h3>
-                    <p class="text-gray-300 leading-relaxed">
-                        As an open-source project, Brevity's code is publicly available on GitHub. You can review our data handling practices, contribute to improvements, and help ensure transparency in how we manage your information.
-                    </p>
-                </div>
-
-                <div class="privacy-section">
-                    <h3 class="text-xl font-bold text-brevity-blue mb-4">Children's Privacy</h3>
-                    <p class="text-gray-300 leading-relaxed">
-                        Brevity is not intended for children under 13 years of age. We do not knowingly collect personal information from children under 13. If we become aware that we have collected such information, we will take steps to delete it.
-                    </p>
-                </div>
-
-                <div class="privacy-section">
-                    <h3 class="text-xl font-bold text-brevity-blue mb-4">Changes to This Policy</h3>
-                    <p class="text-gray-300 leading-relaxed">
-                        We may update this Privacy Policy from time to time. We will notify you of any material changes by posting the new policy on our website and updating the "Last updated" date. Your continued use of Brevity after changes are posted constitutes acceptance of the updated policy.
-                    </p>
-                </div>
-
-                <div class="privacy-section">
-                    <h3 class="text-xl font-bold text-brevity-blue mb-4">Contact Us</h3>
-                    <p class="text-gray-300 leading-relaxed">
-                        If you have any questions about this Privacy Policy or how we handle your data, please contact us through our <a href="contact.html" class="text-brevity-blue hover:underline">contact page</a> or reach out to our development team on GitHub.
-                    </p>
-                </div>
-
-                <div class="border-t border-gray-700 pt-8 mt-8 text-center">
-                    <p class="text-gray-400">
-                        This policy applies to the Brevity app and website. For questions about our open-source project, visit our 
-                        <a href="#" class="text-brevity-blue hover:underline">GitHub repository</a>.
-                    </p>
+    <!-- Hero Section -->
+    <section class="min-h-screen relative overflow-hidden flex items-center">
+        <div class="fixed -top-48 left-1/2 -translate-x-1/2 w-[80rem] h-96 bg-gradient-to-br from-amber-200 to-orange-500 rounded-full opacity-20 filter blur-[120px] pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-24 pb-16">
+            <div class="text-center">
+                <p class="text-amber-400 font-semibold text-sm uppercase tracking-wider mb-4">LEGAL</p>
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                    Privacy <span class="text-gradient">Policy</span>
+                </h1>
+                <p class="text-xl text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed">
+                    Transparency and user privacy are fundamental to Blyft. Learn how we protect your data.
+                </p>
+                <div class="inline-flex items-center space-x-2 badge-beta px-4 py-2 rounded-full text-sm font-medium">
+                    <i class="fas fa-clock text-amber-400"></i>
+                    <span>Last updated: January 2025</span>
                 </div>
             </div>
         </div>
-    </main>
+    </section>
+
+    <!-- Privacy Policy Content -->
+    <section class="py-20 relative z-10">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="community-card p-8 md:p-12 rounded-2xl">
+                
+                <!-- Our Commitment -->
+                <div class="mb-12 animate-fade-in">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="icon-wrapper w-12 h-12 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-shield-alt text-amber-400 text-xl"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gradient">Our Commitment to Privacy</h2>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed text-lg">
+                        At Blyft, we believe in transparency and user privacy. As an open-source project, we are committed to protecting your personal information and being clear about how we collect, use, and share your data.
+                    </p>
+                </div>
+
+                <!-- Information We Collect -->
+                <div class="mb-12 animate-slide-up">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="icon-wrapper w-12 h-12 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-database text-amber-400 text-xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-amber-400">Information We Collect</h3>
+                    </div>
+                    <div class="space-y-6 text-gray-300">
+                        <div class="feature-card p-6 rounded-xl">
+                            <h4 class="font-bold text-white mb-2 flex items-center">
+                                <i class="fas fa-user-circle text-amber-400 mr-3"></i>
+                                Account Information
+                            </h4>
+                            <p>When you create an account, we collect your email address and chosen username. Passwords are securely hashed and never stored in plain text.</p>
+                        </div>
+                        <div class="feature-card p-6 rounded-xl">
+                            <h4 class="font-bold text-white mb-2 flex items-center">
+                                <i class="fas fa-chart-line text-amber-400 mr-3"></i>
+                                Usage Data
+                            </h4>
+                            <p>We collect information about how you use Blyft, including articles read, preferences set, and app interactions to improve our service.</p>
+                        </div>
+                        <div class="feature-card p-6 rounded-xl">
+                            <h4 class="font-bold text-white mb-2 flex items-center">
+                                <i class="fas fa-mobile-alt text-amber-400 mr-3"></i>
+                                Device Information
+                            </h4>
+                            <p>We may collect basic device information such as device type, operating system, and app version for technical support and optimization.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- How We Use Your Information -->
+                <div class="mb-12 animate-slide-up" style="animation-delay: 0.1s">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="icon-wrapper w-12 h-12 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-cogs text-amber-400 text-xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-amber-400">How We Use Your Information</h3>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="feature-card p-6 rounded-xl">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-8 h-8 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                    <i class="fas fa-user-cog text-black text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white mb-2">Personalization</h4>
+                                    <p class="text-gray-300">To provide personalized news summaries and content recommendations</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feature-card p-6 rounded-xl">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-8 h-8 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                    <i class="fas fa-chart-bar text-black text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white mb-2">Service Improvement</h4>
+                                    <p class="text-gray-300">To analyze usage patterns and improve Blyft's features and performance</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feature-card p-6 rounded-xl">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-8 h-8 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                    <i class="fas fa-envelope text-black text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white mb-2">Communication</h4>
+                                    <p class="text-gray-300">To send important updates about the service and respond to your inquiries</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feature-card p-6 rounded-xl">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-8 h-8 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                    <i class="fas fa-lock text-black text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white mb-2">Security</h4>
+                                    <p class="text-gray-300">To protect against fraud, abuse, and unauthorized access</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Sharing -->
+                <div class="mb-12 animate-slide-up" style="animation-delay: 0.2s">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="icon-wrapper w-12 h-12 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-share-alt text-amber-400 text-xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-amber-400">Data Sharing and Disclosure</h3>
+                    </div>
+                    <div class="feature-card p-8 rounded-xl">
+                        <p class="text-gray-300 leading-relaxed mb-6 text-lg">
+                            We do not sell, trade, or rent your personal information to third parties. We may share your information only in the following circumstances:
+                        </p>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-2 h-2 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full"></div>
+                                <span class="text-gray-300">With your explicit consent</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-2 h-2 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full"></div>
+                                <span class="text-gray-300">To comply with legal obligations</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-2 h-2 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full"></div>
+                                <span class="text-gray-300">In business transactions</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-2 h-2 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full"></div>
+                                <span class="text-gray-300">With trusted service providers</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Security -->
+                <div class="mb-12 animate-slide-up" style="animation-delay: 0.3s">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="icon-wrapper w-12 h-12 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-shield-virus text-amber-400 text-xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-amber-400">Data Security</h3>
+                    </div>
+                    <div class="feature-card p-8 rounded-xl">
+                        <p class="text-gray-300 leading-relaxed text-lg">
+                            We implement industry-standard security measures to protect your data, including encryption in transit and at rest, secure authentication, and regular security audits. However, no method of transmission over the internet is 100% secure.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Your Rights -->
+                <div class="mb-12 animate-slide-up" style="animation-delay: 0.4s">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="icon-wrapper w-12 h-12 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-user-check text-amber-400 text-xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-amber-400">Your Rights and Choices</h3>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="feature-card p-6 rounded-xl text-center">
+                            <div class="w-16 h-16 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-eye text-black text-xl"></i>
+                            </div>
+                            <h4 class="font-bold text-white mb-2">Access</h4>
+                            <p class="text-gray-300 text-sm">Request a copy of your personal data</p>
+                        </div>
+                        <div class="feature-card p-6 rounded-xl text-center">
+                            <div class="w-16 h-16 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-edit text-black text-xl"></i>
+                            </div>
+                            <h4 class="font-bold text-white mb-2">Correction</h4>
+                            <p class="text-gray-300 text-sm">Update or correct your information</p>
+                        </div>
+                        <div class="feature-card p-6 rounded-xl text-center">
+                            <div class="w-16 h-16 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-trash text-black text-xl"></i>
+                            </div>
+                            <h4 class="font-bold text-white mb-2">Deletion</h4>
+                            <p class="text-gray-300 text-sm">Request deletion of your account and data</p>
+                        </div>
+                        <div class="feature-card p-6 rounded-xl text-center">
+                            <div class="w-16 h-16 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-download text-black text-xl"></i>
+                            </div>
+                            <h4 class="font-bold text-white mb-2">Portability</h4>
+                            <p class="text-gray-300 text-sm">Export your data in machine-readable format</p>
+                        </div>
+                        <div class="feature-card p-6 rounded-xl text-center">
+                            <div class="w-16 h-16 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-times-circle text-black text-xl"></i>
+                            </div>
+                            <h4 class="font-bold text-white mb-2">Opt-out</h4>
+                            <p class="text-gray-300 text-sm">Unsubscribe from non-essential communications</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Open Source -->
+                <div class="mb-12 animate-slide-up" style="animation-delay: 0.5s">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="icon-wrapper w-12 h-12 rounded-xl flex items-center justify-center">
+                            <i class="fab fa-github text-amber-400 text-xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-amber-400">Open Source and Transparency</h3>
+                    </div>
+                    <div class="feature-card p-8 rounded-xl">
+                        <p class="text-gray-300 leading-relaxed text-lg">
+                            As an open-source project, Blyft's code is publicly available on GitHub. You can review our data handling practices, contribute to improvements, and help ensure transparency in how we manage your information.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Additional Sections -->
+                <div class="space-y-8">
+                    <div class="feature-card p-8 rounded-xl animate-slide-up" style="animation-delay: 0.6s">
+                        <h3 class="text-xl font-bold text-amber-400 mb-4 flex items-center">
+                            <i class="fas fa-child text-amber-400 mr-3"></i>
+                            Children's Privacy
+                        </h3>
+                        <p class="text-gray-300 leading-relaxed">
+                            Blyft is not intended for children under 13 years of age. We do not knowingly collect personal information from children under 13. If we become aware that we have collected such information, we will take steps to delete it.
+                        </p>
+                    </div>
+
+                    <div class="feature-card p-8 rounded-xl animate-slide-up" style="animation-delay: 0.7s">
+                        <h3 class="text-xl font-bold text-amber-400 mb-4 flex items-center">
+                            <i class="fas fa-sync text-amber-400 mr-3"></i>
+                            Changes to This Policy
+                        </h3>
+                        <p class="text-gray-300 leading-relaxed">
+                            We may update this Privacy Policy from time to time. We will notify you of any material changes by posting the new policy on our website and updating the "Last updated" date. Your continued use of Blyft after changes are posted constitutes acceptance of the updated policy.
+                        </p>
+                    </div>
+
+                    <div class="feature-card p-8 rounded-xl animate-slide-up" style="animation-delay: 0.8s">
+                        <h3 class="text-xl font-bold text-amber-400 mb-4 flex items-center">
+                            <i class="fas fa-envelope text-amber-400 mr-3"></i>
+                            Contact Us
+                        </h3>
+                        <p class="text-gray-300 leading-relaxed mb-4">
+                            If you have any questions about this Privacy Policy or how we handle your data, please contact us through our contact page or reach out to our development team on GitHub.
+                        </p>
+                        <div class="flex space-x-4">
+                            <a href="contact_us.html" class="btn-primary px-6 py-3 rounded-xl font-semibold text-black transition-all hover:scale-105">
+                                Contact Us
+                            </a>
+                            <a href="#" class="border border-amber-400/30 text-amber-400 hover:bg-amber-400/10 px-6 py-3 rounded-xl font-semibold transition-all">
+                                View on GitHub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Note -->
+                <div class="border-t border-gray-700 pt-8 mt-12 text-center animate-fade-in" style="animation-delay: 0.9s">
+                    <div class="feature-card p-6 rounded-xl inline-block">
+                        <p class="text-gray-400">
+                            This policy applies to the Blyft app and website. For questions about our open-source project, visit our 
+                            <a href="#" class="text-amber-400 hover:underline">GitHub repository</a>.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="bg-black py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div class="flex justify-center items-center space-x-2 mb-4">
-                <div class="w-8 h-8 bg-brevity-blue rounded-lg flex items-center justify-center">
-                    <span class="text-white font-bold text-sm">B</span>
+    <footer class="bg-black py-12 border-t border-gray-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-6">
+                        <div class="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center">
+                            <span class="text-black font-bold text-xl">B</span>
+                        </div>
+                        <span class="text-xl font-bold">Blyft</span>
+                    </div>
+                    <p class="text-gray-400 mb-6">Short, Smart, Straight to the point.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-amber-400 transition-colors">
+                            <i class="fab fa-github text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-amber-400 transition-colors">
+                            <i class="fab fa-discord text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-amber-400 transition-colors">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                    </div>
                 </div>
-                <span class="text-lg font-bold text-brevity-blue">BREVITY</span>
+
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">Product</h4>
+                    <ul class="space-y-3 text-gray-400">
+                        <li><a href="index.html#features" class="hover:text-amber-400 transition-colors">Features</a></li>
+                        <li><a href="index.html#how-it-works" class="hover:text-amber-400 transition-colors">How It Works</a></li>
+                        <li><a href="index.html#github" class="hover:text-amber-400 transition-colors">GitHub</a></li>
+                        <li><a href="index.html#roadmap" class="hover:text-amber-400 transition-colors">Roadmap</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">Community</h4>
+                    <ul class="space-y-3 text-gray-400">
+                        <li><a href="index.html#about" class="hover:text-amber-400 transition-colors">About</a></li>
+                        <li><a href="index.html#community" class="hover:text-amber-400 transition-colors">Contributors</a></li>
+                        <li><a href="contact_us.html" class="hover:text-amber-400 transition-colors">Contact</a></li>
+                        <li><a href="#" class="hover:text-amber-400 transition-colors">Blog</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">Legal</h4>
+                    <ul class="space-y-3 text-gray-400">
+                        <li><a href="#" class="hover:text-amber-400 transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-amber-400 transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-amber-400 transition-colors">MIT License</a></li>
+                        <li><a href="contact_us.html" class="hover:text-amber-400 transition-colors">Support</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="flex justify-center space-x-6 text-gray-400 text-sm">
-                <a href="index.html" class="hover:text-brevity-blue transition-colors">Home</a>
-                <a href="privacy.html" class="hover:text-brevity-blue transition-colors">Privacy</a>
-                <a href="contact.html" class="hover:text-brevity-blue transition-colors">Contact</a>
+
+            <div class="border-t border-gray-800 mt-12 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-400 mb-4 md:mb-0">© 2025 Blyft. Open Source under MIT License.</p>
+                    <div class="flex space-x-6 text-gray-400 text-sm">
+                        <a href="#" class="hover:text-amber-400 transition-colors">Privacy</a>
+                        <a href="#" class="hover:text-amber-400 transition-colors">Terms</a>
+                        <a href="contact_us.html" class="hover:text-amber-400 transition-colors">Contact</a>
+                    </div>
+                </div>
             </div>
-            <p class="text-gray-400 mt-4 text-sm">© 2025 Brevity. Open Source under MIT License.</p>
         </div>
     </footer>
 
