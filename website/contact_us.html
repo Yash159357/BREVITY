@@ -3,177 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - Brevity</title>
+    <title>Contact Us - Blyft</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --brevity-blue: #4F46E5;
-            --brevity-dark: #0F172A;
-            --brevity-gray: #1E293B;
-            --neon-blue: #00D4FF;
-            --electric-purple: #8B5CF6;
-        }
-
-        /* Enhanced Animations */
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            33% { transform: translateY(-10px) rotate(1deg); }
-            66% { transform: translateY(5px) rotate(-1deg); }
-        }
-
-        @keyframes glow-pulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(79, 70, 229, 0.3); }
-            50% { box-shadow: 0 0 40px rgba(79, 70, 229, 0.6), 0 0 60px rgba(0, 212, 255, 0.3); }
-        }
-
-        @keyframes gradient-shift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        @keyframes particle-float {
-            0% { transform: translateY(0px) translateX(0px) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100px) translateX(50px) rotate(180deg); opacity: 0; }
-        }
-
-        .floating-animation {
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .glow-effect {
-            animation: glow-pulse 3s ease-in-out infinite;
-        }
-
-        .gradient-bg-enhanced {
-            background: linear-gradient(-45deg, #0F172A, #1E293B, #4F46E5, #8B5CF6, #00D4FF);
-            background-size: 400% 400%;
-            animation: gradient-shift 15s ease infinite;
-        }
-
-        .glass-enhanced {
-            backdrop-filter: blur(20px);
-            background: rgba(15, 23, 42, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-
-        .neon-border {
-            border: 2px solid transparent;
-            background: linear-gradient(45deg, var(--neon-blue), var(--electric-purple)) border-box;
-            background-clip: padding-box, border-box;
-        }
-
-        .text-glow-enhanced {
-            text-shadow: 
-                0 0 10px rgba(79, 70, 229, 0.5),
-                0 0 20px rgba(0, 212, 255, 0.3),
-                0 0 30px rgba(139, 92, 246, 0.2);
-        }
-
-        .hover-lift {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .hover-lift:hover {
-            transform: translateY(-12px) scale(1.02);
-            box-shadow: 0 25px 50px rgba(79, 70, 229, 0.4);
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: linear-gradient(45deg, #4F46E5, #00D4FF);
-            border-radius: 50%;
-            animation: particle-float 8s linear infinite;
-        }
-
-        .developer-card {
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(139, 92, 246, 0.1) 50%, rgba(0, 212, 255, 0.1) 100%);
-            border: 1px solid rgba(79, 70, 229, 0.3);
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.320, 1);
-        }
-
-        .developer-card:hover {
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.2) 0%, rgba(139, 92, 246, 0.2) 50%, rgba(0, 212, 255, 0.2) 100%);
-            border-color: var(--neon-blue);
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(79, 70, 229, 0.3), 0 0 20px rgba(0, 212, 255, 0.2);
-        }
-
-        .contribution-step {
-            opacity: 0;
-            transform: translateX(-50px);
-            animation: slideInLeft 0.8s ease-out forwards;
-        }
-
-        @keyframes slideInLeft {
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        /* Enhanced scrollbar */
-        ::-webkit-scrollbar {
-            width: 12px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--brevity-dark);
-            border-radius: 6px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(45deg, var(--brevity-blue), var(--neon-blue));
-            border-radius: 6px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(45deg, #6366f1, #00E5FF);
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-brevity-dark text-white overflow-x-hidden">
-    <!-- Animated background particles -->
-    <div class="fixed inset-0 pointer-events-none z-0">
-        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
-        <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
-        <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
-        <div class="particle" style="left: 40%; animation-delay: 1s;"></div>
-        <div class="particle" style="left: 50%; animation-delay: 3s;"></div>
-        <div class="particle" style="left: 60%; animation-delay: 5s;"></div>
-        <div class="particle" style="left: 70%; animation-delay: 2.5s;"></div>
-        <div class="particle" style="left: 80%; animation-delay: 4.5s;"></div>
-        <div class="particle" style="left: 90%; animation-delay: 1.5s;"></div>
-    </div>
+<body class="bg-black text-white overflow-x-hidden">
+
+    <!-- Grid Pattern Background -->
+    <div class="fixed inset-0 grid-pattern pointer-events-none"></div>
 
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-enhanced border-b border-gray-800">
+    <nav class="fixed w-full z-50 backdrop-blur-md bg-black/50 border-b border-gray-800/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <div class="flex items-center space-x-2">
-                    <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center glow-effect">
-                        <span class="text-white font-bold text-xl">B</span>
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
+                        <span class="text-black font-bold text-xl">B</span>
                     </div>
-                    <span class="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">BREVITY</span>
+                    <span class="text-xl font-semibold text-white">Blyft</span>
                 </div>
 
                 <div class="hidden md:flex space-x-8">
-                    <a href="index.html" class="hover:text-blue-400 transition-all duration-300">Home</a>
-                    <a href="index.html#features" class="hover:text-blue-400 transition-all duration-300">Features</a>
-                    <a href="index.html#community" class="hover:text-blue-400 transition-all duration-300">Community</a>
-                    <a href="index.html#github" class="hover:text-blue-400 transition-all duration-300">GitHub</a>
-                    <a href="#contact" class="text-blue-400">Contact</a>
+                    <a href="index.html" class="text-gray-300 hover:text-amber-400 transition-colors">Home</a>
+                    <a href="index.html#features" class="text-gray-300 hover:text-amber-400 transition-colors">Features</a>
+                    <a href="index.html#how-it-works" class="text-gray-300 hover:text-amber-400 transition-colors">How It Works</a>
+                    <a href="index.html#community" class="text-gray-300 hover:text-amber-400 transition-colors">Community</a>
+                    <a href="index.html#github" class="text-gray-300 hover:text-amber-400 transition-colors">GitHub</a>
+                    <a href="index.html#about" class="text-gray-300 hover:text-amber-400 transition-colors">About</a>
+                    <a href="#" class="text-amber-400">Contact</a>
                 </div>
 
-                <div class="flex space-x-4">
-                    <button class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 px-6 py-2 rounded-lg font-semibold transition-all duration-300 glow-effect">
-                        Download
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <i class="fab fa-github text-gray-400"></i>
+                        <span class="text-gray-400 text-sm">281</span>
+                    </div>
+                    <button class="btn-primary px-6 py-2 rounded-xl font-semibold text-black transition-all">
+                        Get Started
                     </button>
                 </div>
             </div>
@@ -181,14 +48,15 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="pt-24 pb-16 relative overflow-hidden">
-        <div class="absolute inset-0 gradient-bg-enhanced opacity-5"></div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section class="min-h-screen relative overflow-hidden flex items-center">
+        <div class="fixed -top-48 left-1/2 -translate-x-1/2 w-[80rem] h-96 bg-gradient-to-br from-amber-200 to-orange-500 rounded-full opacity-20 filter blur-[120px] pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-24 pb-16">
             <div class="text-center">
-                <h1 class="text-6xl md:text-8xl font-bold mb-6 text-glow-enhanced floating-animation">
-                    Get In <span class="bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">Touch</span>
+                <p class="text-amber-400 font-semibold text-sm uppercase tracking-wider mb-4">GET IN TOUCH</p>
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                    Let's <span class="text-gradient">Connect</span>
                 </h1>
-                <p class="text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+                <p class="text-xl text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed">
                     Join our community of developers, contribute to the future of AI-powered news, or just say hello.
                 </p>
             </div>
@@ -196,38 +64,38 @@
     </section>
 
     <!-- Contact Methods -->
-    <section class="py-16 relative z-10">
+    <section class="py-20 relative z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid md:grid-cols-3 gap-8 mb-16">
-                <div class="glass-enhanced p-8 rounded-2xl hover-lift text-center">
-                    <div class="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 glow-effect">
-                        <i class="fab fa-discord text-3xl text-white"></i>
+                <div class="feature-card p-8 rounded-2xl transition-all text-center animate-slide-up">
+                    <div class="icon-wrapper w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fab fa-discord text-2xl text-amber-400"></i>
                     </div>
                     <h3 class="text-2xl font-bold mb-4">Join Discord</h3>
-                    <p class="text-gray-300 mb-6">Connect with our community, get support, and collaborate in real-time.</p>
-                    <button class="neon-border bg-transparent hover:bg-gradient-to-r hover:from-blue-500/20 hover:to-purple-500/20 px-6 py-3 rounded-lg font-semibold transition-all duration-300">
+                    <p class="text-gray-400 mb-6">Connect with our community, get support, and collaborate in real-time.</p>
+                    <button class="border border-amber-400/30 hover:border-amber-400 hover:bg-amber-400/10 px-6 py-3 rounded-xl font-semibold transition-all">
                         Join Server
                     </button>
                 </div>
 
-                <div class="glass-enhanced p-8 rounded-2xl hover-lift text-center">
-                    <div class="w-20 h-20 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-6 glow-effect">
-                        <i class="fab fa-github text-3xl text-white"></i>
+                <div class="feature-card p-8 rounded-2xl transition-all text-center animate-slide-up" style="animation-delay: 0.1s">
+                    <div class="icon-wrapper w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fab fa-github text-2xl text-amber-400"></i>
                     </div>
                     <h3 class="text-2xl font-bold mb-4">GitHub Issues</h3>
-                    <p class="text-gray-300 mb-6">Report bugs, request features, or contribute to our open-source project.</p>
-                    <button class="neon-border bg-transparent hover:bg-gradient-to-r hover:from-purple-500/20 hover:to-cyan-500/20 px-6 py-3 rounded-lg font-semibold transition-all duration-300">
+                    <p class="text-gray-400 mb-6">Report bugs, request features, or contribute to our open-source project.</p>
+                    <button class="border border-amber-400/30 hover:border-amber-400 hover:bg-amber-400/10 px-6 py-3 rounded-xl font-semibold transition-all">
                         Open Issue
                     </button>
                 </div>
 
-                <div class="glass-enhanced p-8 rounded-2xl hover-lift text-center">
-                    <div class="w-20 h-20 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6 glow-effect">
-                        <i class="fas fa-envelope text-3xl text-white"></i>
+                <div class="feature-card p-8 rounded-2xl transition-all text-center animate-slide-up" style="animation-delay: 0.2s">
+                    <div class="icon-wrapper w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-envelope text-2xl text-amber-400"></i>
                     </div>
                     <h3 class="text-2xl font-bold mb-4">Email Us</h3>
-                    <p class="text-gray-300 mb-6">For business inquiries, partnerships, or general questions.</p>
-                    <button class="neon-border bg-transparent hover:bg-gradient-to-r hover:from-cyan-500/20 hover:to-blue-500/20 px-6 py-3 rounded-lg font-semibold transition-all duration-300">
+                    <p class="text-gray-400 mb-6">For business inquiries, partnerships, or general questions.</p>
+                    <button class="border border-amber-400/30 hover:border-amber-400 hover:bg-amber-400/10 px-6 py-3 rounded-xl font-semibold transition-all">
                         Send Email
                     </button>
                 </div>
@@ -236,73 +104,73 @@
     </section>
 
     <!-- Core Developers -->
-    <section class="py-20 relative z-10">
+    <section class="py-20 section-dark relative z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-5xl font-bold mb-6 text-glow-enhanced">Meet the Core Team</h2>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-                    The passionate developers behind Brevity, building the future of AI-powered news consumption.
+                <h2 class="text-4xl font-bold mb-4 animate-fade-in">Meet the Core Team</h2>
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                    The passionate developers behind Blyft, building the future of AI-powered news consumption.
                 </p>
             </div>
             
             <div class="grid lg:grid-cols-2 gap-12">
                 <!-- Developer 1 -->
-                <div class="developer-card p-8 rounded-3xl backdrop-filter backdrop-blur-xl">
+                <div class="community-card p-8 rounded-2xl backdrop-filter backdrop-blur-xl animate-slide-in-left">
                     <div class="flex flex-col items-center text-center">
                         <div class="relative mb-6">
-                            <div class="w-32 h-32 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full p-1 glow-effect">
+                            <div class="w-24 h-24 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full p-1">
                                 <div class="w-full h-full bg-gray-800 rounded-full flex items-center justify-center">
-                                    <span class="text-4xl font-bold">AK</span>
+                                    <span class="text-3xl font-bold">AK</span>
                                 </div>
                             </div>
-                            <div class="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-full border-4 border-gray-800"></div>
+                            <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-gray-800"></div>
                         </div>
                         <h3 class="text-2xl font-bold mb-2">Arjun Kumar</h3>
-                        <p class="text-blue-400 mb-4">Lead Developer & AI Architect</p>
-                        <p class="text-gray-300 mb-6 leading-relaxed">
+                        <p class="text-amber-400 mb-4">Lead Developer & AI Architect</p>
+                        <p class="text-gray-400 mb-6 leading-relaxed">
                             Full-stack developer with expertise in AI/ML, React Native, and backend systems. 
                             Passionate about creating intelligent solutions that enhance user experience.
                         </p>
-                        <div class="flex space-x-6">
-                            <a href="#" class="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center hover:scale-110 transition-all duration-300 glow-effect">
-                                <i class="fab fa-linkedin text-white text-xl"></i>
+                        <div class="flex space-x-4">
+                            <a href="#" class="w-10 h-10 bg-gradient-to-r from-amber-400 to-amber-500 rounded-lg flex items-center justify-center hover:scale-110 transition-all duration-300">
+                                <i class="fab fa-linkedin text-black text-lg"></i>
                             </a>
-                            <a href="#" class="w-12 h-12 bg-gradient-to-r from-gray-700 to-gray-800 rounded-lg flex items-center justify-center hover:scale-110 transition-all duration-300 glow-effect">
-                                <i class="fab fa-github text-white text-xl"></i>
+                            <a href="#" class="w-10 h-10 bg-gray-700 hover:bg-gray-600 rounded-lg flex items-center justify-center hover:scale-110 transition-all duration-300">
+                                <i class="fab fa-github text-white text-lg"></i>
                             </a>
-                            <a href="#" class="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg flex items-center justify-center hover:scale-110 transition-all duration-300 glow-effect">
-                                <i class="fas fa-globe text-white text-xl"></i>
+                            <a href="#" class="w-10 h-10 bg-gradient-to-r from-amber-400 to-orange-500 rounded-lg flex items-center justify-center hover:scale-110 transition-all duration-300">
+                                <i class="fas fa-globe text-black text-lg"></i>
                             </a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Developer 2 -->
-                <div class="developer-card p-8 rounded-3xl backdrop-filter backdrop-blur-xl">
+                <div class="community-card p-8 rounded-2xl backdrop-filter backdrop-blur-xl animate-slide-in-right">
                     <div class="flex flex-col items-center text-center">
                         <div class="relative mb-6">
-                            <div class="w-32 h-32 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-full p-1 glow-effect">
+                            <div class="w-24 h-24 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full p-1">
                                 <div class="w-full h-full bg-gray-800 rounded-full flex items-center justify-center">
-                                    <span class="text-4xl font-bold">SP</span>
+                                    <span class="text-3xl font-bold">SP</span>
                                 </div>
                             </div>
-                            <div class="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-full border-4 border-gray-800"></div>
+                            <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-gray-800"></div>
                         </div>
                         <h3 class="text-2xl font-bold mb-2">Sophia Patel</h3>
-                        <p class="text-purple-400 mb-4">UX/UI Designer & Frontend Lead</p>
-                        <p class="text-gray-300 mb-6 leading-relaxed">
+                        <p class="text-amber-400 mb-4">UX/UI Designer & Frontend Lead</p>
+                        <p class="text-gray-400 mb-6 leading-relaxed">
                             Creative designer and frontend engineer focused on building intuitive, 
                             accessible interfaces that make complex technology feel simple and delightful.
                         </p>
-                        <div class="flex space-x-6">
-                            <a href="#" class="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center hover:scale-110 transition-all duration-300 glow-effect">
-                                <i class="fab fa-linkedin text-white text-xl"></i>
+                        <div class="flex space-x-4">
+                            <a href="#" class="w-10 h-10 bg-gradient-to-r from-amber-400 to-amber-500 rounded-lg flex items-center justify-center hover:scale-110 transition-all duration-300">
+                                <i class="fab fa-linkedin text-black text-lg"></i>
                             </a>
-                            <a href="#" class="w-12 h-12 bg-gradient-to-r from-gray-700 to-gray-800 rounded-lg flex items-center justify-center hover:scale-110 transition-all duration-300 glow-effect">
-                                <i class="fab fa-github text-white text-xl"></i>
+                            <a href="#" class="w-10 h-10 bg-gray-700 hover:bg-gray-600 rounded-lg flex items-center justify-center hover:scale-110 transition-all duration-300">
+                                <i class="fab fa-github text-white text-lg"></i>
                             </a>
-                            <a href="#" class="w-12 h-12 bg-gradient-to-r from-pink-500 to-purple-600 rounded-lg flex items-center justify-center hover:scale-110 transition-all duration-300 glow-effect">
-                                <i class="fab fa-dribbble text-white text-xl"></i>
+                            <a href="#" class="w-10 h-10 bg-gradient-to-r from-amber-400 to-orange-500 rounded-lg flex items-center justify-center hover:scale-110 transition-all duration-300">
+                                <i class="fab fa-dribbble text-black text-lg"></i>
                             </a>
                         </div>
                     </div>
@@ -312,26 +180,26 @@
     </section>
 
     <!-- Contributor Guidelines -->
-    <section class="py-20 bg-gradient-to-r from-gray-900/50 to-gray-800/50 relative z-10">
+    <section class="py-20 relative z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-5xl font-bold mb-6 text-glow-enhanced">Contributor Guidelines</h2>
-                <p class="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
+                <h2 class="text-4xl font-bold mb-4 animate-fade-in">Contributor Guidelines</h2>
+                <p class="text-xl text-gray-400 max-w-4xl mx-auto leading-relaxed">
                     Join our open-source community and help build the future of AI-powered news. 
                     Whether you're a seasoned developer or just starting out, there's a place for you here.
                 </p>
             </div>
             
             <div class="grid lg:grid-cols-2 gap-12 items-start">
-                <div class="space-y-8">
-                    <div class="contribution-step glass-enhanced p-6 rounded-2xl" style="animation-delay: 0.1s">
+                <div class="space-y-6">
+                    <div class="feature-card p-6 rounded-xl animate-slide-up">
                         <div class="flex items-start space-x-4">
-                            <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-blue-500 rounded-lg flex items-center justify-center flex-shrink-0 glow-effect">
-                                <span class="text-white font-bold text-lg">1</span>
+                            <div class="step-number w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <span class="text-black font-bold">1</span>
                             </div>
                             <div>
-                                <h3 class="text-xl font-bold mb-2 text-green-400">Getting Started</h3>
-                                <p class="text-gray-300">
+                                <h3 class="text-xl font-bold mb-2 text-amber-400">Getting Started</h3>
+                                <p class="text-gray-400">
                                     Fork our repository, read the README, and set up your development environment. 
                                     Join our Discord for real-time support and discussions.
                                 </p>
@@ -339,14 +207,14 @@
                         </div>
                     </div>
 
-                    <div class="contribution-step glass-enhanced p-6 rounded-2xl" style="animation-delay: 0.2s">
+                    <div class="feature-card p-6 rounded-xl animate-slide-up" style="animation-delay: 0.1s">
                         <div class="flex items-start space-x-4">
-                            <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center flex-shrink-0 glow-effect">
-                                <span class="text-white font-bold text-lg">2</span>
+                            <div class="step-number w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <span class="text-black font-bold">2</span>
                             </div>
                             <div>
-                                <h3 class="text-xl font-bold mb-2 text-blue-400">Choose Your Area</h3>
-                                <p class="text-gray-300">
+                                <h3 class="text-xl font-bold mb-2 text-amber-400">Choose Your Area</h3>
+                                <p class="text-gray-400">
                                     Pick from frontend (React Native), backend (Node.js), AI/ML (Python), 
                                     design (Figma), documentation, or testing. All skills are valued!
                                 </p>
@@ -354,14 +222,14 @@
                         </div>
                     </div>
 
-                    <div class="contribution-step glass-enhanced p-6 rounded-2xl" style="animation-delay: 0.3s">
+                    <div class="feature-card p-6 rounded-xl animate-slide-up" style="animation-delay: 0.2s">
                         <div class="flex items-start space-x-4">
-                            <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-lg flex items-center justify-center flex-shrink-0 glow-effect">
-                                <span class="text-white font-bold text-lg">3</span>
+                            <div class="step-number w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <span class="text-black font-bold">3</span>
                             </div>
                             <div>
-                                <h3 class="text-xl font-bold mb-2 text-purple-400">Code Standards</h3>
-                                <p class="text-gray-300">
+                                <h3 class="text-xl font-bold mb-2 text-amber-400">Code Standards</h3>
+                                <p class="text-gray-400">
                                     Follow our ESLint config, write tests, use meaningful commit messages, 
                                     and ensure accessibility. Quality over quantity always.
                                 </p>
@@ -369,14 +237,14 @@
                         </div>
                     </div>
 
-                    <div class="contribution-step glass-enhanced p-6 rounded-2xl" style="animation-delay: 0.4s">
+                    <div class="feature-card p-6 rounded-xl animate-slide-up" style="animation-delay: 0.3s">
                         <div class="flex items-start space-x-4">
-                            <div class="w-12 h-12 bg-gradient-to-r from-cyan-500 to-green-500 rounded-lg flex items-center justify-center flex-shrink-0 glow-effect">
-                                <span class="text-white font-bold text-lg">4</span>
+                            <div class="step-number w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <span class="text-black font-bold">4</span>
                             </div>
                             <div>
-                                <h3 class="text-xl font-bold mb-2 text-cyan-400">Submit & Review</h3>
-                                <p class="text-gray-300">
+                                <h3 class="text-xl font-bold mb-2 text-amber-400">Submit & Review</h3>
+                                <p class="text-gray-400">
                                     Create detailed PRs, respond to feedback constructively, 
                                     and celebrate when your contribution gets merged!
                                 </p>
@@ -385,61 +253,61 @@
                     </div>
                 </div>
                 
-                <div class="glass-enhanced p-8 rounded-3xl floating-animation">
-                    <h3 class="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                <div class="community-card p-8 rounded-2xl animate-slide-in-right">
+                    <h3 class="text-2xl font-bold mb-6 text-center text-gradient">
                         What We're Looking For
                     </h3>
                     <div class="space-y-6">
                         <div class="flex items-center space-x-4">
-                            <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center glow-effect">
-                                <i class="fas fa-code text-white text-sm"></i>
+                            <div class="w-8 h-8 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-code text-black text-sm"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-green-400">Developers</h4>
+                                <h4 class="font-bold text-amber-400">Developers</h4>
                                 <p class="text-gray-400 text-sm">React Native, Node.js, Python, AI/ML</p>
                             </div>
                         </div>
                         
                         <div class="flex items-center space-x-4">
-                            <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center glow-effect">
-                                <i class="fas fa-paint-brush text-white text-sm"></i>
+                            <div class="w-8 h-8 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-paint-brush text-black text-sm"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-blue-400">Designers</h4>
+                                <h4 class="font-bold text-amber-400">Designers</h4>
                                 <p class="text-gray-400 text-sm">UI/UX, Visual Design, Prototyping</p>
                             </div>
                         </div>
                         
                         <div class="flex items-center space-x-4">
-                            <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center glow-effect">
-                                <i class="fas fa-pen text-white text-sm"></i>
+                            <div class="w-8 h-8 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-pen text-black text-sm"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-purple-400">Writers</h4>
+                                <h4 class="font-bold text-amber-400">Writers</h4>
                                 <p class="text-gray-400 text-sm">Documentation, Tutorials, Blog Posts</p>
                             </div>
                         </div>
                         
                         <div class="flex items-center space-x-4">
-                            <div class="w-8 h-8 bg-cyan-500 rounded-full flex items-center justify-center glow-effect">
-                                <i class="fas fa-bug text-white text-sm"></i>
+                            <div class="w-8 h-8 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-bug text-black text-sm"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-cyan-400">Testers</h4>
+                                <h4 class="font-bold text-amber-400">Testers</h4>
                                 <p class="text-gray-400 text-sm">QA, Bug Reports, User Testing</p>
                             </div>
                         </div>
                     </div>
                     
                     <div class="mt-8 pt-6 border-t border-gray-700">
-                        <p class="text-gray-300 text-sm text-center mb-4">
+                        <p class="text-gray-400 text-sm text-center mb-4">
                             Ready to contribute? Get started today!
                         </p>
                         <div class="flex space-x-4">
-                            <button class="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 px-6 py-3 rounded-lg font-semibold transition-all duration-300 glow-effect">
+                            <button class="flex-1 btn-primary px-6 py-3 rounded-xl font-semibold transition-all text-black">
                                 View GitHub
                             </button>
-                            <button class="flex-1 border-2 border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300">
+                            <button class="flex-1 border border-amber-400/30 text-amber-400 hover:bg-amber-400/10 px-6 py-3 rounded-xl font-semibold transition-all">
                                 Join Discord
                             </button>
                         </div>
@@ -450,28 +318,28 @@
     </section>
 
     <!-- Contact Form -->
-    <section class="py-20 relative z-10">
+    <section class="py-20 section-dark relative z-10">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-5xl font-bold mb-6 text-glow-enhanced">Send Us a Message</h2>
-                <p class="text-xl text-gray-300">
+                <h2 class="text-4xl font-bold mb-4 animate-fade-in">Send Us a Message</h2>
+                <p class="text-xl text-gray-400">
                     Have a specific question or proposal? Drop us a line directly.
                 </p>
             </div>
             
-            <div class="glass-enhanced p-8 rounded-3xl">
+            <div class="community-card p-8 rounded-2xl">
                 <form class="space-y-6" id="contactForm">
                     <div class="grid md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-sm font-medium mb-2 text-gray-300">Name</label>
                             <input type="text" id="name" required
-                                   class="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 text-white placeholder-gray-400"
+                                   class="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-600 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 transition-all duration-300 text-white placeholder-gray-400"
                                    placeholder="Your full name">
                         </div>
                         <div>
                             <label class="block text-sm font-medium mb-2 text-gray-300">Email</label>
                             <input type="email" id="email" required
-                                   class="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 text-white placeholder-gray-400"
+                                   class="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-600 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 transition-all duration-300 text-white placeholder-gray-400"
                                    placeholder="your@email.com">
                         </div>
                     </div>
@@ -479,9 +347,9 @@
                     <div>
                         <label class="block text-sm font-medium mb-2 text-gray-300">Subject</label>
                         <select id="subject" required
-                                class="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 text-white">
+                                class="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-600 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 transition-all duration-300 text-white">
                             <option value="">Select a topic</option>
-                            <option value="contribution">Contributing to Brevity</option>
+                            <option value="contribution">Contributing to Blyft</option>
                             <option value="bug">Bug Report</option>
                             <option value="feature">Feature Request</option>
                             <option value="partnership">Partnership</option>
@@ -492,13 +360,13 @@
                     <div>
                         <label class="block text-sm font-medium mb-2 text-gray-300">Message</label>
                         <textarea id="message" rows="6" required
-                                  class="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 text-white placeholder-gray-400"
+                                  class="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-600 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 transition-all duration-300 text-white placeholder-gray-400"
                                   placeholder="Tell us more about your inquiry..."></textarea>
                     </div>
                     
                     <div class="flex justify-center">
                         <button type="submit"
-                                class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 px-12 py-4 rounded-lg text-lg font-semibold transition-all duration-300 glow-effect hover:scale-105">
+                                class="btn-primary px-12 py-4 rounded-xl text-lg font-semibold transition-all text-black hover:scale-105">
                             <i class="fas fa-paper-plane mr-2"></i>
                             Send Message
                         </button>
@@ -511,22 +379,22 @@
     <!-- Community Stats -->
     <section class="py-16 relative z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="glass-enhanced p-8 rounded-3xl">
+            <div class="community-card p-8 rounded-2xl">
                 <div class="grid md:grid-cols-4 gap-8 text-center">
-                    <div class="floating-animation" style="animation-delay: 0.1s">
-                        <div class="text-4xl font-bold text-blue-400 mb-2">150+</div>
+                    <div class="animate-fade-in">
+                        <div class="text-4xl font-bold text-gradient mb-2">150+</div>
                         <div class="text-gray-300">Contributors</div>
                     </div>
-                    <div class="floating-animation" style="animation-delay: 0.2s">
-                        <div class="text-4xl font-bold text-purple-400 mb-2">2.5k</div>
+                    <div class="animate-fade-in" style="animation-delay: 0.1s">
+                        <div class="text-4xl font-bold text-gradient mb-2">2.5k</div>
                         <div class="text-gray-300">GitHub Stars</div>
                     </div>
-                    <div class="floating-animation" style="animation-delay: 0.3s">
-                        <div class="text-4xl font-bold text-cyan-400 mb-2">500+</div>
+                    <div class="animate-fade-in" style="animation-delay: 0.2s">
+                        <div class="text-4xl font-bold text-gradient mb-2">500+</div>
                         <div class="text-gray-300">Discord Members</div>
                     </div>
-                    <div class="floating-animation" style="animation-delay: 0.4s">
-                        <div class="text-4xl font-bold text-green-400 mb-2">24/7</div>
+                    <div class="animate-fade-in" style="animation-delay: 0.3s">
+                        <div class="text-4xl font-bold text-gradient mb-2">24/7</div>
                         <div class="text-gray-300">Community Support</div>
                     </div>
                 </div>
@@ -535,25 +403,25 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-black/80 py-12 relative z-10">
+    <footer class="bg-black py-12 border-t border-gray-800/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid md:grid-cols-4 gap-8">
                 <div>
                     <div class="flex items-center space-x-2 mb-6">
-                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center glow-effect">
-                            <span class="text-white font-bold text-xl">B</span>
+                        <div class="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center">
+                            <span class="text-black font-bold text-xl">B</span>
                         </div>
-                        <span class="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">BREVITY</span>
+                        <span class="text-xl font-bold">Blyft</span>
                     </div>
                     <p class="text-gray-400 mb-6">Short, Smart, Straight to the point.</p>
                     <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">
+                        <a href="#" class="text-gray-400 hover:text-amber-400 transition-colors">
                             <i class="fab fa-github text-xl"></i>
                         </a>
-                        <a href="#" class="text-gray-400 hover:text-purple-400 transition-colors">
+                        <a href="#" class="text-gray-400 hover:text-amber-400 transition-colors">
                             <i class="fab fa-discord text-xl"></i>
                         </a>
-                        <a href="#" class="text-gray-400 hover:text-cyan-400 transition-colors">
+                        <a href="#" class="text-gray-400 hover:text-amber-400 transition-colors">
                             <i class="fab fa-twitter text-xl"></i>
                         </a>
                     </div>
@@ -562,187 +430,45 @@
                 <div>
                     <h4 class="text-lg font-semibold mb-6">Product</h4>
                     <ul class="space-y-3 text-gray-400">
-                        <li><a href="index.html#features" class="hover:text-blue-400 transition-colors">Features</a></li>
-                        <li><a href="index.html#how-it-works" class="hover:text-blue-400 transition-colors">How It Works</a></li>
-                        <li><a href="index.html#github" class="hover:text-blue-400 transition-colors">GitHub</a></li>
-                        <li><a href="index.html#roadmap" class="hover:text-blue-400 transition-colors">Roadmap</a></li>
+                        <li><a href="index.html#features" class="hover:text-amber-400 transition-colors">Features</a></li>
+                        <li><a href="index.html#how-it-works" class="hover:text-amber-400 transition-colors">How It Works</a></li>
+                        <li><a href="index.html#github" class="hover:text-amber-400 transition-colors">GitHub</a></li>
+                        <li><a href="index.html#roadmap" class="hover:text-amber-400 transition-colors">Roadmap</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <h4 class="text-lg font-semibold mb-6">Community</h4>
                     <ul class="space-y-3 text-gray-400">
-                        <li><a href="index.html#about" class="hover:text-purple-400 transition-colors">About</a></li>
-                        <li><a href="index.html#community" class="hover:text-purple-400 transition-colors">Contributors</a></li>
-                        <li><a href="#contact" class="hover:text-purple-400 transition-colors">Contact</a></li>
-                        <li><a href="#" class="hover:text-purple-400 transition-colors">Blog</a></li>
+                        <li><a href="index.html#about" class="hover:text-amber-400 transition-colors">About</a></li>
+                        <li><a href="index.html#community" class="hover:text-amber-400 transition-colors">Contributors</a></li>
+                        <li><a href="#" class="hover:text-amber-400 transition-colors">Contact</a></li>
+                        <li><a href="#" class="hover:text-amber-400 transition-colors">Blog</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <h4 class="text-lg font-semibold mb-6">Legal</h4>
                     <ul class="space-y-3 text-gray-400">
-                        <li><a href="privacy.html" class="hover:text-cyan-400 transition-colors">Privacy Policy</a></li>
-                        <li><a href="#" class="hover:text-cyan-400 transition-colors">Terms of Service</a></li>
-                        <li><a href="#" class="hover:text-cyan-400 transition-colors">MIT License</a></li>
-                        <li><a href="#contact" class="hover:text-cyan-400 transition-colors">Support</a></li>
+                        <li><a href="privacy_policy.html" class="hover:text-amber-400 transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-amber-400 transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-amber-400 transition-colors">MIT License</a></li>
+                        <li><a href="#" class="hover:text-amber-400 transition-colors">Support</a></li>
                     </ul>
                 </div>
             </div>
 
             <div class="border-t border-gray-800 mt-12 pt-8">
                 <div class="flex flex-col md:flex-row justify-between items-center">
-                    <p class="text-gray-400 mb-4 md:mb-0">© 2025 Brevity. Open Source under MIT License.</p>
+                    <p class="text-gray-400 mb-4 md:mb-0">© 2025 Blyft. Open Source under MIT License.</p>
                     <div class="flex space-x-6 text-gray-400 text-sm">
-                        <a href="privacy.html" class="hover:text-blue-400 transition-colors">Privacy</a>
-                        <a href="#" class="hover:text-purple-400 transition-colors">Terms</a>
-                        <a href="#contact" class="hover:text-cyan-400 transition-colors">Contact</a>
+                        <a href="privacy_policy.html" class="hover:text-amber-400 transition-colors">Privacy</a>
+                        <a href="#" class="hover:text-amber-400 transition-colors">Terms</a>
+                        <a href="#" class="hover:text-amber-400 transition-colors">Contact</a>
                     </div>
                 </div>
             </div>
         </div>
     </footer>
-
-    <script>
-        // DOM Content Loaded
-        document.addEventListener('DOMContentLoaded', function () {
-            initializeAnimations();
-            initializeContactForm();
-            initializeParticles();
-        });
-
-        // Enhanced animations with intersection observer
-        function initializeAnimations() {
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0) translateX(0)';
-                    }
-                });
-            }, observerOptions);
-
-            // Observe contribution steps
-            document.querySelectorAll('.contribution-step').forEach((el, index) => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateX(-50px)';
-                el.style.animationDelay = `${index * 0.1}s`;
-                observer.observe(el);
-            });
-
-            // Observe floating elements
-            document.querySelectorAll('.floating-animation').forEach(el => {
-                observer.observe(el);
-            });
-        }
-
-        // Contact form handling
-        function initializeContactForm() {
-            const form = document.getElementById('contactForm');
-            if (!form) return;
-
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
-
-                const name = document.getElementById('name').value.trim();
-                const email = document.getElementById('email').value.trim();
-                const subject = document.getElementById('subject').value;
-                const message = document.getElementById('message').value.trim();
-
-                if (!name || !email || !subject || !message) {
-                    showNotification('Please fill in all fields', 'error');
-                    return;
-                }
-
-                if (!isValidEmail(email)) {
-                    showNotification('Please enter a valid email address', 'error');
-                    return;
-                }
-
-                // Simulate form submission
-                const submitBtn = form.querySelector('button[type="submit"]');
-                const originalText = submitBtn.innerHTML;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
-                submitBtn.disabled = true;
-
-                setTimeout(() => {
-                    showNotification('Message sent successfully! We\'ll get back to you soon.', 'success');
-                    form.reset();
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                }, 2000);
-            });
-        }
-
-        // Email validation
-        function isValidEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        }
-
-        // Notification system
-        function showNotification(message, type) {
-            const notification = document.createElement('div');
-            notification.className = `fixed top-20 right-4 z-50 p-4 rounded-lg shadow-lg transition-all duration-500 ${
-                type === 'success' ? 'bg-green-600' : 'bg-red-600'
-            } text-white`;
-            notification.innerHTML = `
-                <div class="flex items-center space-x-2">
-                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
-                    <span>${message}</span>
-                </div>
-            `;
-
-            document.body.appendChild(notification);
-
-            setTimeout(() => {
-                notification.style.transform = 'translateX(100%)';
-                notification.style.opacity = '0';
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 500);
-            }, 4000);
-        }
-
-        // Particle animation enhancement
-        function initializeParticles() {
-            const particles = document.querySelectorAll('.particle');
-            particles.forEach((particle, index) => {
-                setInterval(() => {
-                    particle.style.left = Math.random() * 100 + '%';
-                }, 8000 + (index * 1000));
-            });
-        }
-
-        // Smooth scroll for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Enhanced hover effects for developer cards
-        document.querySelectorAll('.developer-card').forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                card.style.transform = 'translateY(-8px) scale(1.02)';
-            });
-
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translateY(0) scale(1)';
-            });
-        });
-    </script>
 </body>
 </html>
