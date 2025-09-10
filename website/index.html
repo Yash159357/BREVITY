@@ -4,10 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blyft - Short, Smart, Straight to the Point</title>
+    <title>BlyFt - Short, Smart, Straight to the Point</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 
 <body class="bg-black text-white overflow-x-hidden">
@@ -24,18 +25,16 @@
                         class="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
                         <span class="text-black font-bold text-xl">B</span>
                     </div>
-                    <span class="text-xl font-semibold text-white">Blyft</span>
+                    <span class="text-xl font-semibold text-white tracking-wide font-sans">BlyFt</span>
+
                 </div>
 
                 <div class="hidden md:flex space-x-8">
-                    <a href="#features" class="text-gray-300 hover:text-amber-400 transition-colors">Features</a>
-                    <a href="#how-it-works" class="text-gray-300 hover:text-amber-400 transition-colors">How It
-                        Works</a>
-                    <a href="#community" class="text-gray-300 hover:text-amber-400 transition-colors">Community</a>
-                    <a href="#github" class="text-gray-300 hover:text-amber-400 transition-colors">GitHub</a>
                     <a href="#about" class="text-gray-300 hover:text-amber-400 transition-colors">About</a>
-                    <a href="#roadmap" class="text-gray-300 hover:text-amber-400 transition-colors">Roadmap</a>
-                    <a href="contact_us.html" class="text-gray-300 hover:text-amber-400 transition-colors">Contact</a>
+                    <a href="#SS" class="text-gray-300 hover:text-amber-400 transition-colors">Experience</a>
+                    <a href="#features" class="text-gray-300 hover:text-amber-400 transition-colors">Features</a>
+                    <a href="#github" class="text-gray-300 hover:text-amber-400 transition-colors">GitHub</a>
+                    <a href="#community" class="text-gray-300 hover:text-amber-400 transition-colors">Community</a>
                 </div>
 
                 <div class="flex items-center space-x-4">
@@ -66,7 +65,7 @@
             <div class="grid lg:grid-cols-2 gap-16 items-center">
                 <div class="animate-slide-in-left">
                     <!-- Category Label -->
-                    <p class="text-amber-400 font-semibold text-sm uppercase tracking-wider mb-4">MEET Blyft</p>
+                    <p class="text-amber-400 font-semibold text-sm uppercase tracking-wider mb-4">MEET BlyFt</p>
 
                     <h1 class="text-5xl md:text-2xl lg:text-5xl font-bold mb-6 leading-tight">
                         A personal AI assistant<br>
@@ -74,7 +73,7 @@
                     </h1>
 
                     <p class="text-xl text-gray-400 mb-10 leading-relaxed max-w-xl">
-                        Blyft handles your daily news consumption, so you can focus on what matters.
+                        BlyFt handles your daily news consumption, so you can focus on what matters.
                     </p>
 
                     <div class="flex flex-col sm:flex-row gap-4">
@@ -131,10 +130,56 @@
         </div>
     </section>
 
-    <!-- Screenshot Carousel -->
-    <section class="py-16">
+    <!-- About -->
+    <section id="about" class="py-20 section-dark">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold text-center mb-12 animate-fade-in">Experience Blyft</h2>
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="animate-slide-in-left">
+                    <h2 class="text-4xl font-bold mb-8">Our Mission</h2>
+                    <p class="text-gray-400 text-lg mb-6">
+                        In a world overwhelmed by information, BlyFt cuts through the noise. We believe everyone
+                        deserves access to clear, concise, and unbiased news that respects their time.
+                    </p>
+                    <p class="text-gray-400 text-lg mb-8">
+                        Our vision is simple: make staying informed effortless, enjoyable, and efficient through
+                        AI-powered summaries and community-driven development.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-4">
+                            <div
+                                class="w-8 h-8 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-check text-black text-sm"></i>
+                            </div>
+                            <span class="text-lg">Selected for GSSoC 2025</span>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div
+                                class="w-8 h-8 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-check text-black text-sm"></i>
+                            </div>
+                            <span class="text-lg">100% Open Source</span>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div
+                                class="w-8 h-8 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-check text-black text-sm"></i>
+                            </div>
+                            <span class="text-lg">Community Driven</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="animate-slide-in-right">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop"
+                        alt="Team collaboration" class="rounded-2xl shadow-lg hover:shadow-amber-400/20 transition-all">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Screenshot Carousel -->
+    <section id="SS" class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center mb-12 animate-fade-in">Experience BlyFt</h2>
             <div class="relative">
                 <div class="carousel-container flex space-x-6 overflow-x-auto pb-4" id="carousel">
                     <div class="flex-none w-80">
@@ -166,7 +211,7 @@
     <!-- Core Features -->
     <section id="features" class="py-20 section-dark">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold text-center mb-4 animate-fade-in">Why Choose Blyft?</h2>
+            <h2 class="text-4xl font-bold text-center mb-4 animate-fade-in">Why Choose BlyFt?</h2>
             <p class="text-center text-gray-400 mb-16 text-lg">Powerful features designed for modern readers</p>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -222,106 +267,15 @@
         </div>
     </section>
 
-    <!-- How It Works -->
-    <section id="how-it-works" class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold text-center mb-4 animate-fade-in">How It Works</h2>
-            <p class="text-center text-gray-400 mb-16 text-lg">Three simple steps to stay informed</p>
-
-            <div class="grid md:grid-cols-3 gap-12">
-                <div class="text-center animate-slide-up">
-                    <div
-                        class="step-number w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                        <span class="text-2xl font-bold text-black">1</span>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4">Choose Your Sources</h3>
-                    <p class="text-gray-400">Select from trusted news sources and topics that matter to you.</p>
-                </div>
-
-                <div class="text-center animate-slide-up" style="animation-delay: 0.2s">
-                    <div
-                        class="step-number w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                        <span class="text-2xl font-bold text-black">2</span>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4">AI Summarizes</h3>
-                    <p class="text-gray-400">Our AI reads and creates concise, accurate summaries instantly.</p>
-                </div>
-
-                <div class="text-center animate-slide-up" style="animation-delay: 0.4s">
-                    <div
-                        class="step-number w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                        <span class="text-2xl font-bold text-black">3</span>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4">Stay Informed</h3>
-                    <p class="text-gray-400">Receive personalized news that respects your time and preferences.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Community -->
-    <section id="community" class="py-20 section-dark">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold text-center mb-4 animate-fade-in">Join Our Community</h2>
-            <p class="text-center text-gray-400 mb-16 text-lg">Be part of the future of news consumption</p>
-
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="animate-slide-in-left">
-                    <h3 class="text-3xl font-bold mb-6">Built for Everyone</h3>
-                    <p class="text-gray-400 mb-8 text-lg">Blyft is a real-time news app that delivers concise updates
-                        with infinite scrolling, personalized feeds, and category browsing. Experience seamless
-                        navigation with search, sharing, news chatbot, notifications, text-to-speech, tutorials, and
-                        custom theming—all built for a smooth and engaging experience.</p>
-                    <div class="flex space-x-6">
-                        <button
-                            class="btn-primary px-6 py-3 rounded-xl font-semibold text-black transition-all flex items-center space-x-2">
-                            <i class="fab fa-discord text-xl"></i>
-                            <span>Join Discord</span>
-                        </button>
-                        <button
-                            class="border border-gray-700 hover:border-amber-400/50 px-6 py-3 rounded-xl font-semibold transition-all flex items-center space-x-2">
-                            <i class="fab fa-github text-xl"></i>
-                            <span>Contribute</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="animate-slide-in-right">
-                    <div class="community-card p-8 rounded-2xl">
-                        <h4 class="text-xl font-bold mb-4">Why Choose Blyft?</h4>
-                        <div class="space-y-4 mb-6">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-3 h-3 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full"></div>
-                                <span class="text-gray-300">Real-time news delivery</span>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <div class="w-3 h-3 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full"></div>
-                                <span class="text-gray-300">AI-powered summarization</span>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <div class="w-3 h-3 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full"></div>
-                                <span class="text-gray-300">Personalized experience</span>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <div class="w-3 h-3 bg-gradient-to-br from-red-400 to-rose-500 rounded-full"></div>
-                                <span class="text-gray-300">Smart & efficient reading</span>
-                            </div>
-                        </div>
-                        <p class="text-gray-400">Join thousands of users who stay informed effortlessly.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- GitHub Section -->
     <section id="github" class="py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold mb-6 animate-fade-in">Open Source on GitHub</h2>
-                <p class="text-xl text-gray-400 animate-fade-in">Contribute to Blyft and help shape the future of news
+                <p class="text-xl text-gray-400 animate-fade-in">Contribute to BlyFt and help shape the future of news
                     consumption</p>
             </div>
-
+    
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 <div class="animate-slide-in-left">
                     <div class="community-card p-8 rounded-2xl">
@@ -332,7 +286,7 @@
                                 <p class="text-gray-400">⭐ Stars • 🍴 Forks • MIT License</p>
                             </div>
                         </div>
-                        <p class="text-gray-400 mb-6">Blyft is a real-time news app that delivers concise updates with
+                        <p class="text-gray-400 mb-6">BlyFt is a real-time news app that delivers concise updates with
                             infinite scrolling, personalized feeds, and category browsing. Features include search,
                             sharing, news chatbot, notifications, text-to-speech, tutorials, and custom theming—built
                             for a smooth and engaging experience.</p>
@@ -349,7 +303,7 @@
                         </div>
                     </div>
                 </div>
-
+    
                 <div class="animate-slide-in-right">
                     <div class="space-y-6">
                         <div class="feature-card p-6 rounded-xl">
@@ -379,97 +333,54 @@
         </div>
     </section>
 
-    <!-- About -->
-    <section id="about" class="py-20 section-dark">
+    <!-- Community -->
+    <section id="community" class="py-20 section-dark">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
+            <h2 class="text-4xl font-bold text-center mb-4 animate-fade-in">Join Our Community</h2>
+            <p class="text-center text-gray-400 mb-16 text-lg">Be part of the future of news consumption</p>
+
+            <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div class="animate-slide-in-left">
-                    <h2 class="text-4xl font-bold mb-8">Our Mission</h2>
-                    <p class="text-gray-400 text-lg mb-6">
-                        In a world overwhelmed by information, Blyft cuts through the noise. We believe everyone
-                        deserves access to clear, concise, and unbiased news that respects their time.
-                    </p>
-                    <p class="text-gray-400 text-lg mb-8">
-                        Our vision is simple: make staying informed effortless, enjoyable, and efficient through
-                        AI-powered summaries and community-driven development.
-                    </p>
-                    <div class="space-y-4">
-                        <div class="flex items-center space-x-4">
-                            <div
-                                class="w-8 h-8 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
-                                <i class="fas fa-check text-black text-sm"></i>
-                            </div>
-                            <span class="text-lg">Selected for GSSoC 2025</span>
-                        </div>
-                        <div class="flex items-center space-x-4">
-                            <div
-                                class="w-8 h-8 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
-                                <i class="fas fa-check text-black text-sm"></i>
-                            </div>
-                            <span class="text-lg">100% Open Source</span>
-                        </div>
-                        <div class="flex items-center space-x-4">
-                            <div
-                                class="w-8 h-8 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
-                                <i class="fas fa-check text-black text-sm"></i>
-                            </div>
-                            <span class="text-lg">Community Driven</span>
-                        </div>
+                    <h3 class="text-3xl font-bold mb-6">Built for Everyone</h3>
+                    <p class="text-gray-400 mb-8 text-lg">BlyFt is a real-time news app that delivers concise updates
+                        with infinite scrolling, personalized feeds, and category browsing. Experience seamless
+                        navigation with search, sharing, news chatbot, notifications, text-to-speech, tutorials, and
+                        custom theming—all built for a smooth and engaging experience.</p>
+                    <div class="flex space-x-6">
+                        <button
+                            class="btn-primary px-6 py-3 rounded-xl font-semibold text-black transition-all flex items-center space-x-2">
+                            <i class="fab fa-discord text-xl"></i>
+                            <span>Join Discord</span>
+                        </button>
+                        <button
+                            class="border border-gray-700 hover:border-amber-400/50 px-6 py-3 rounded-xl font-semibold transition-all flex items-center space-x-2">
+                            <i class="fab fa-github text-xl"></i>
+                            <span>Contribute</span>
+                        </button>
                     </div>
                 </div>
                 <div class="animate-slide-in-right">
-                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop"
-                        alt="Team collaboration" class="rounded-2xl shadow-lg hover:shadow-amber-400/20 transition-all">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Roadmap -->
-    <section id="roadmap" class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold text-center mb-4 animate-fade-in">Roadmap</h2>
-            <p class="text-center text-gray-400 mb-16 text-lg">Our journey to revolutionize news consumption</p>
-
-            <div class="space-y-8">
-                <div class="flex items-start space-x-6 animate-slide-in-left">
-                    <div
-                        class="roadmap-completed w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-check text-white"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-bold text-green-400">Q1 2025 - GSSoC Selection</h3>
-                        <p class="text-gray-400">Selected for GirlScript Summer of Code 2025</p>
-                    </div>
-                </div>
-
-                <div class="flex items-start space-x-6 animate-slide-in-left" style="animation-delay: 0.1s">
-                    <div class="roadmap-active w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-cog text-black animate-spin"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-bold text-gradient">Q2 2025 - Core Development</h3>
-                        <p class="text-gray-400">AI summarization, chatbot integration, theme customization</p>
-                    </div>
-                </div>
-
-                <div class="flex items-start space-x-6 animate-slide-in-left" style="animation-delay: 0.2s">
-                    <div class="roadmap-pending w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-clock text-gray-300"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-bold text-gray-300">Q3 2025 - Beta Release</h3>
-                        <p class="text-gray-400">Public beta with core features and community feedback integration</p>
-                    </div>
-                </div>
-
-                <div class="flex items-start space-x-6 animate-slide-in-left" style="animation-delay: 0.3s">
-                    <div class="roadmap-pending w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-star text-gray-300"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-bold text-gray-300">Q4 2025 - v1.0 Launch</h3>
-                        <p class="text-gray-400">Full release with advanced features and multi-platform support</p>
+                    <div class="community-card p-8 rounded-2xl">
+                        <h4 class="text-xl font-bold mb-4">Why Choose BlyFt?</h4>
+                        <div class="space-y-4 mb-6">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-3 h-3 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full"></div>
+                                <span class="text-gray-300">Real-time news delivery</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-3 h-3 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full"></div>
+                                <span class="text-gray-300">AI-powered summarization</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-3 h-3 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full"></div>
+                                <span class="text-gray-300">Personalized experience</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-3 h-3 bg-gradient-to-br from-red-400 to-rose-500 rounded-full"></div>
+                                <span class="text-gray-300">Smart & efficient reading</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-400">Join thousands of users who stay informed effortlessly.</p>
                     </div>
                 </div>
             </div>
@@ -480,7 +391,7 @@
     <section class="py-20 section-dark">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-4xl font-bold text-center mb-4 animate-fade-in">Frequently Asked Questions</h2>
-            <p class="text-center text-gray-400 mb-16 text-lg">Everything you need to know about Blyft</p>
+            <p class="text-center text-gray-400 mb-16 text-lg">Everything you need to know about BlyFt</p>
 
             <div class="space-y-4">
                 <div class="faq-card rounded-xl overflow-hidden transition-all">
@@ -498,11 +409,11 @@
                 <div class="faq-card rounded-xl overflow-hidden transition-all">
                     <button class="w-full p-6 text-left flex justify-between items-center transition-colors faq-toggle"
                         data-target="1">
-                        <span class="text-lg font-semibold">Is Blyft completely free?</span>
+                        <span class="text-lg font-semibold">Is BlyFt completely free?</span>
                         <i class="fas fa-chevron-down transition-transform duration-300 faq-icon text-amber-400"></i>
                     </button>
                     <div class="px-6 pb-6 hidden faq-content">
-                        <p class="text-gray-400">Yes! As an open-source project, Blyft is completely free to use,
+                        <p class="text-gray-400">Yes! As an open-source project, BlyFt is completely free to use,
                             modify, and distribute under the MIT license.</p>
                     </div>
                 </div>
@@ -510,7 +421,7 @@
                 <div class="faq-card rounded-xl overflow-hidden transition-all">
                     <button class="w-full p-6 text-left flex justify-between items-center transition-colors faq-toggle"
                         data-target="2">
-                        <span class="text-lg font-semibold">How can I contribute to Blyft?</span>
+                        <span class="text-lg font-semibold">How can I contribute to BlyFt?</span>
                         <i class="fas fa-chevron-down transition-transform duration-300 faq-icon text-amber-400"></i>
                     </button>
                     <div class="px-6 pb-6 hidden faq-content">
@@ -522,11 +433,11 @@
                 <div class="faq-card rounded-xl overflow-hidden transition-all">
                     <button class="w-full p-6 text-left flex justify-between items-center transition-colors faq-toggle"
                         data-target="3">
-                        <span class="text-lg font-semibold">What makes Blyft different?</span>
+                        <span class="text-lg font-semibold">What makes BlyFt different?</span>
                         <i class="fas fa-chevron-down transition-transform duration-300 faq-icon text-amber-400"></i>
                     </button>
                     <div class="px-6 pb-6 hidden faq-content">
-                        <p class="text-gray-400">Blyft combines AI-powered summarization with an open-source approach,
+                        <p class="text-gray-400">BlyFt combines AI-powered summarization with an open-source approach,
                             giving users both cutting-edge technology and complete transparency.</p>
                     </div>
                 </div>
@@ -544,7 +455,7 @@
                             class="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center">
                             <span class="text-black font-bold text-xl">B</span>
                         </div>
-                        <span class="text-xl font-bold">Blyft</span>
+                        <span class="text-xl font-bold">BlyFt</span>
                     </div>
                     <p class="text-gray-400 mb-6">Short, Smart, Straight to the point.</p>
                     <div class="flex space-x-4">
@@ -594,7 +505,7 @@
 
             <div class="border-t border-gray-800 mt-12 pt-8">
                 <div class="flex flex-col md:flex-row justify-between items-center">
-                    <p class="text-gray-400 mb-4 md:mb-0">© 2025 Blyft. Open Source under MIT License.</p>
+                    <p class="text-gray-400 mb-4 md:mb-0">© 2025 BlyFt. Open Source under MIT License.</p>
                     <div class="flex space-x-6 text-gray-400 text-sm">
                         <a href="privacy_policy.html" class="hover:text-amber-400 transition-colors">Privacy</a>
                         <a href="#" class="hover:text-amber-400 transition-colors">Terms</a>
