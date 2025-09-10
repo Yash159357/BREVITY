@@ -99,20 +99,6 @@ function initializeCarousel() {
     setInterval(autoScroll, 4000);
 }
 
-// Navbar background change on scroll
-function initializeNavbar() {
-    window.addEventListener('scroll', () => {
-        const navbar = document.querySelector('nav');
-        if (navbar) {
-            if (window.scrollY > 50) {
-                navbar.style.backgroundColor = 'rgba(15, 23, 42, 0.95)';
-            } else {
-                navbar.style.backgroundColor = 'rgba(15, 23, 42, 0.8)';
-            }
-        }
-    });
-}
-
 // Hover effects
 function initializeHoverEffects() {
     document.querySelectorAll('.hover-glow').forEach(card => {
@@ -176,11 +162,10 @@ document.addEventListener('DOMContentLoaded', validateContactForm);
 // Parallax effect for hero section
 window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
-    const heroSection = document.querySelector('section');
-    const heroContent = heroSection?.querySelector('div');
+    const heroContent = document.getElementById('hero-content');
 
     if (heroContent && scrolled < window.innerHeight) {
-        heroContent.style.transform = `translateY(${scrolled * 0.1}px)`;
+        heroContent.style.transform = `translateY(${scrolled * 0.05}px)`;
     }
 });
 

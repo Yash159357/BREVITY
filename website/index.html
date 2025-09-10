@@ -8,129 +8,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-
-        .grid-pattern {
-            background-image:
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0) 100%);
-            -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0) 100%);
-        }
-
-        .text-gradient {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            box-shadow: 0 4px 14px 0 rgba(251, 191, 36, 0.3);
-        }
-
-        .btn-primary:hover {
-            box-shadow: 0 6px 20px 0 rgba(251, 191, 36, 0.4);
-            transform: translateY(-2px);
-        }
-
-        .floating-orb {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            filter: blur(80px);
-            opacity: 0.3;
-            animation: float 20s ease-in-out infinite;
-        }
-
-        @keyframes float {
-
-            0%,
-            100% {
-                transform: translate(0, 0) scale(1);
-            }
-
-            25% {
-                transform: translate(30px, -30px) scale(1.05);
-            }
-
-            50% {
-                transform: translate(-20px, 20px) scale(0.95);
-            }
-
-            75% {
-                transform: translate(-30px, -10px) scale(1.02);
-            }
-        }
-
-        .badge-beta {
-            background: rgba(251, 191, 36, 0.1);
-            border: 1px solid rgba(251, 191, 36, 0.3);
-            color: #fbbf24;
-        }
-
-        .feature-card {
-            background: rgba(17, 24, 39, 0.5);
-            border: 1px solid rgba(251, 191, 36, 0.1);
-            backdrop-filter: blur(10px);
-        }
-
-        .feature-card:hover {
-            border-color: rgba(251, 191, 36, 0.3);
-            box-shadow: 0 0 30px rgba(251, 191, 36, 0.15);
-            transform: translateY(-4px);
-        }
-
-        .icon-wrapper {
-            background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(245, 158, 11, 0.2) 100%);
-            border: 1px solid rgba(251, 191, 36, 0.3);
-        }
-
-        .step-number {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-        }
-
-        .community-card {
-            background: rgba(17, 24, 39, 0.5);
-            border: 1px solid rgba(251, 191, 36, 0.1);
-            backdrop-filter: blur(10px);
-        }
-
-        .roadmap-active {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-        }
-
-        .roadmap-completed {
-            background: #10b981;
-        }
-
-        .roadmap-pending {
-            background: rgba(75, 85, 99, 0.5);
-            border: 1px solid rgba(251, 191, 36, 0.2);
-        }
-
-        .faq-card {
-            background: rgba(17, 24, 39, 0.5);
-            border: 1px solid rgba(251, 191, 36, 0.1);
-            backdrop-filter: blur(10px);
-        }
-
-        .faq-card:hover {
-            border-color: rgba(251, 191, 36, 0.2);
-            background: rgba(17, 24, 39, 0.7);
-        }
-
-        .section-dark {
-            background: rgba(0, 0, 0, 0.5);
-            border-top: 1px solid rgba(251, 191, 36, 0.1);
-            border-bottom: 1px solid rgba(251, 191, 36, 0.1);
-        }
-    </style>
 </head>
 
 <body class="bg-black text-white overflow-x-hidden">
@@ -176,24 +53,22 @@
 
     <!-- Hero Section -->
     <section class="min-h-screen relative overflow-hidden flex items-center">
-        <!-- Floating orbs for visual effect -->
-        <div class="absolute top-20 right-20 w-96 h-96 floating-orb rounded-full"></div>
-        <div class="absolute bottom-20 left-10 w-64 h-64 floating-orb rounded-full" style="animation-delay: -10s;">
-        </div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-32 pb-16">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <div class="animate-slide-in-left">
-                    <!-- Beta Badge -->
-                    <div
-                        class="inline-flex items-center space-x-2 badge-beta px-4 py-2 rounded-full text-sm font-medium mb-8">
+        <div
+            class="fixed -top-48 left-1/2 -translate-x-1/2 w-[80rem] h-96 bg-gradient-to-br from-amber-200 to-orange-500 rounded-full opacity-20 filter blur-[120px] pointer-events-none">
+            </div>
+            <div id="hero-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-2 pb-16">
+                <!-- Beta Badge -->
+                <div class="flex justify-center mb-16">
+                    <div class="inline-flex items-center space-x-2 badge-beta px-4 py-2 rounded-full text-sm font-medium">
                         <span>WE ARE IN PUBLIC BETA</span>
                     </div>
-
+                </div>
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="animate-slide-in-left">
                     <!-- Category Label -->
                     <p class="text-amber-400 font-semibold text-sm uppercase tracking-wider mb-4">MEET Blyft</p>
 
-                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                    <h1 class="text-5xl md:text-2xl lg:text-5xl font-bold mb-6 leading-tight">
                         A personal AI assistant<br>
                         for <span class="text-gradient">overwhelmed readers</span>
                     </h1>
@@ -204,11 +79,11 @@
 
                     <div class="flex flex-col sm:flex-row gap-4">
                         <button
-                            class="btn-primary px-8 py-4 rounded-xl text-lg font-semibold text-black transition-all flex items-center justify-center">
+                            class="btn-primary px-5 py-2 rounded-xl text-lg font-semibold text-black transition-all flex items-center justify-center">
                             Get Started
                         </button>
                         <button
-                            class="border border-gray-700 hover:border-amber-400/50 px-8 py-4 rounded-xl text-lg font-semibold transition-all flex items-center justify-center space-x-3 group">
+                            class="border border-gray-700 hover:border-amber-400/50 px-7 py-3 rounded-xl text-lg font-semibold transition-all flex items-center justify-center space-x-3 group">
                             <i class="fab fa-github text-xl group-hover:text-amber-400 transition-colors"></i>
                             <span>Star on GitHub</span>
                         </button>
@@ -217,10 +92,7 @@
 
                 <div class="animate-slide-in-right relative">
                     <div class="relative">
-                        <!-- Glowing effect behind image -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-br from-amber-400/20 to-orange-500/20 rounded-full filter blur-3xl">
-                        </div>
+                        
 
                         <!-- Abstract visual element -->
                         <div class="relative mx-auto max-w-md">
